@@ -1,14 +1,14 @@
 package game;
 
-import assets.Signe;
+import assets.Couleur;
 
 public class Manche {
 	
 	private Pli[] plis;
-	private Signe atout;
+	private Couleur atout;
 	private int idPremierJoueur, joueurPreneur, pointsEquipeUne, pointsEquipeDeux;
 	
-	public Manche(Signe atout, int idPremierJoueur, int joueurPreneur) throws Exception {
+	public Manche(Couleur atout, int idPremierJoueur, int joueurPreneur) throws Exception {
 		this.plis = new Pli[8];
 		this.atout = atout;
 		this.idPremierJoueur = idPremierJoueur;
@@ -24,7 +24,7 @@ public class Manche {
 		
 	}
 	
-	public void reset(Signe atout, int joueurPreneur) {
+	public void reset(Couleur atout, int joueurPreneur) {
 		this.atout = atout;
 		if (this.idPremierJoueur < 4)
 			this.idPremierJoueur++;
