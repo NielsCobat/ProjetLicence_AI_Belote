@@ -15,10 +15,9 @@ public class Table {
 	
 	Equipe equipe1;
 	Equipe equipe2;
-	private int scoreEquipe1;
-	private int scoreEquipe2;
 	
 	Joueur joueurCourant;
+	static Manche mancheCourante;
 	Couleur atout;
 	
 	LinkedList<Carte> cartesEnMain;
@@ -35,6 +34,10 @@ public class Table {
 		//TODO
 	}
 	
+	/**
+	 * Initialise toutes les variables nécessaires pour débuter une partie
+	 * @throws Exception
+	 */
 	private void init() throws Exception {
 		joueur1 = new Joueur("", 1, 3);
 		joueur2 = new Joueur("", 2, 4);
@@ -44,8 +47,8 @@ public class Table {
 		equipe1 = new Equipe(1, joueur1, joueur3, 0);
 		equipe2 = new Equipe(2, joueur2, joueur4, 0);
 		
-		scoreEquipe1=0;
-		scoreEquipe2=0;
+		equipe1.score=0;
+		equipe2.score=0;
 		int idJoueurCourant = (int) (Math.random()*(4-1+1)+1); //selectionne un int entre 1 et 4
 		switch (idJoueurCourant) {
 			case 1 :
@@ -65,6 +68,9 @@ public class Table {
 		}
 	}
 	
+	/**
+	 * Deroulement de la partie, de l'init jusqu'au game over
+	 */
 	void run() {
 		try {
 			init();

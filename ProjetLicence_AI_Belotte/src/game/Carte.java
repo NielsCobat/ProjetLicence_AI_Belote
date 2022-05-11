@@ -18,11 +18,7 @@ public class Carte {
 		this.valeur = valeur;
 		this.point = point;
 	}
-
-	boolean isLegalMove() {
-		return false;
-	}
-
+	
 	int compareTo(Carte c2) {
 		// -1  this ne l'emporte pas face à c
 		//1  this l'emporte face à c
@@ -56,6 +52,7 @@ public class Carte {
 				}
 			}
 		}
+		return -1;
 	}
 	
 	public Couleur getCouleur() {
