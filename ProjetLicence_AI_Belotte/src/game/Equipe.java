@@ -25,7 +25,11 @@ public class Equipe {
 		this.score = score;
 	}
 	
-	public int getScore(int score) {
+	public void addScore(int score) {
+		this.score += score;
+	}
+	
+	public int getScore() {
 		return score;
 	}
 }
