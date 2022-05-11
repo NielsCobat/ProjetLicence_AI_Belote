@@ -8,23 +8,23 @@ import assets.Valeur;
 
 public class Table {
 	
-	Joueur joueur1;
-	Joueur joueur2;
-	Joueur joueur3;
-	Joueur joueur4;
+	static Joueur joueur1;
+	static Joueur joueur2;
+	static Joueur joueur3;
+	static Joueur joueur4;
 	
-	Equipe equipe1;
-	Equipe equipe2;
+	static Equipe equipe1;
+	static Equipe equipe2;
 	
-	Joueur joueurCourant;
+	static Joueur joueurCourant;
 	static Manche mancheCourante;
-	Couleur atout;
+	static Couleur atout;
 	
-	LinkedList<Carte> cartesEnMain;
-	LinkedList<Carte> cartesPosees;
-	ArrayList<Carte> ensCartes;
+	static LinkedList<Carte> cartesEnMain;
+	static LinkedList<Carte> cartesPosees;
+	static ArrayList<Carte> ensCartes;
 	
-	boolean gameOver = false;
+	static boolean gameOver = false;
 	
 	void setEnsCartes() {
 		//TODO
@@ -34,11 +34,22 @@ public class Table {
 		//TODO
 	}
 	
+	private Table() {
+	}
+	
+	static {
+		try {
+			init();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Initialise toutes les variables nécessaires pour débuter une partie
 	 * @throws Exception
 	 */
-	private void init() throws Exception {
+	public static void init() throws Exception {
 		joueur1 = new Joueur("", 1, 3);
 		joueur2 = new Joueur("", 2, 4);
 		joueur3 = new Joueur("", 3, 1);
@@ -71,7 +82,7 @@ public class Table {
 	/**
 	 * Deroulement de la partie, de l'init jusqu'au game over
 	 */
-	void run() {
+	static void run() {
 		try {
 			init();
 		} catch (Exception e) {
