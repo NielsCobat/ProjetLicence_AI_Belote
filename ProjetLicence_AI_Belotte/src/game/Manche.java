@@ -24,7 +24,7 @@ public class Manche {
 		this.plis = new Pli[8];
 		this.atout = atout;
 		this.idPremierJoueur = idPremierJoueur;
-		this.equipePreneur = ((joueurPreneur % 2) + 4) % 2 - 1; // soit 0 = joueurs 1 et 3 ; 1 = joueurs 2 et 4
+		this.equipePreneur = ((joueurPreneur % 2) + 4) % 2; // soit 1 = joueurs 1 et 3 ; 2 = joueurs 2 et 4
 		this.pointsEquipe = new int[2];
 		this.pointsEquipe[0] = 0; // joueurs 1 et 3
 		this.pointsEquipe[1] = 0; // joueurs 2 et 4
@@ -44,12 +44,12 @@ public class Manche {
 				this.pointsEquipe[0] = 252;
 			else if (this.pointsEquipe[0] == 162)
 				this.pointsEquipe[1] = 252;
-			else if (this.pointsEquipe[this.equipePreneur] == 81) {
-				this.pointsEquipe[this.equipePreneur] = 0;
-				this.pointsEquipe[(this.equipePreneur + 1) % 2] = 81;
-			} else if (this.pointsEquipe[this.equipePreneur] < 81) {
-				this.pointsEquipe[this.equipePreneur] = 0;
-				this.pointsEquipe[(this.equipePreneur + 1) % 2] = 162;
+			else if (this.pointsEquipe[this.equipePreneur - 1] == 81) {
+				this.pointsEquipe[this.equipePreneur - 1] = 0;
+				this.pointsEquipe[(this.equipePreneur) % 2] = 81;
+			} else if (this.pointsEquipe[this.equipePreneur - 1] < 81) {
+				this.pointsEquipe[this.equipePreneur - 1] = 0;
+				this.pointsEquipe[(this.equipePreneur) % 2] = 162;
 			}
 		}
 	}
@@ -70,7 +70,7 @@ public class Manche {
 			this.idPremierJoueur++;
 		else
 			this.idPremierJoueur = 1;
-		this.equipePreneur = ((joueurPreneur % 2) + 4) % 2 - 1; // soit 0 = joueurs 1 et 3 ; 1 = joueurs 2 et 4
+		this.equipePreneur = ((joueurPreneur % 2) + 4) % 2; // soit 0 = joueurs 1 et 3 ; 1 = joueurs 2 et 4
 		this.pointsEquipe[0] = 0; // joueurs 1 et 3
 		this.pointsEquipe[1] = 0; // joueurs 2 et 4
 		this.nbPlis = 0;
@@ -79,11 +79,11 @@ public class Manche {
 	/**
 	 * Ajout du score d'un pli à une équipe
 	 * 
-	 * @param equipe l'id de l'équipe (0 pour joueurs 1 3 et 1 pour joueurs 2 4)
+	 * @param equipe l'id de l'équipe (1 pour joueurs 1 3 et 2 pour joueurs 2 4)
 	 * @param score  le score à incrémenter
 	 */
 	public void addScoreEquipe(int equipe, int score) {
-		this.pointsEquipe[equipe] += score;
+		this.pointsEquipe[equipe - 1] += score;
 	}
 
 	/**
@@ -152,11 +152,11 @@ public class Manche {
 	/**
 	 * Getter du nombre de points d'une équipe
 	 * 
-	 * @param l'id de l'équipe souhaitée (0 ou 1)
+	 * @param l'id de l'équipe souhaitée (1 ou 2)
 	 * @return le score de cette équipe
 	 */
 	public int getPointsEquipe(int equipe) {
-		return pointsEquipe[equipe];
+		return pointsEquipe[equipe - 1];
 	}
 
 }

@@ -4,8 +4,8 @@ import assets.Valeur;
 
 public class Carte {
 	
-	Couleur couleur;
-	Valeur valeur;
+	private Couleur couleur;
+	private Valeur valeur;
 	int point;
 	
 	public Carte(Couleur couleur, Valeur valeur, int point) {
@@ -20,5 +20,17 @@ public class Carte {
 	
 	int compareTo(Carte c2) {
 		return -1;
+	}
+	
+	public Couleur getCouleur() {
+		return this.couleur;
+	}
+	
+	public Valeur getValeur() {
+		return this.valeur;
+	}
+	
+	public int getPoints() {
+		return this.point;
 	}
 }
