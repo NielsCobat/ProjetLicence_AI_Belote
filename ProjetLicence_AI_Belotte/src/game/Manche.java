@@ -37,16 +37,14 @@ public class Manche {
 	public void finManche() {
 		if (this.nbPlis == 8) {
 
-			// calcul des points
-			// TODO penser à la Belotte quand la classe Joueur sera faite et incrémenter
-			// dans la classe Partie à la fin
+			// calcul des points dans la classe Partie à la fin
 			if (this.pointsEquipe[0] == 162)
 				this.pointsEquipe[0] = 252;
-			else if (this.pointsEquipe[0] == 162)
+			else if (this.pointsEquipe[1] == 162)
 				this.pointsEquipe[1] = 252;
 			else if (this.pointsEquipe[this.equipePreneur] == 81) {
 				this.pointsEquipe[this.equipePreneur] = 0;
-				this.pointsEquipe[(this.equipePreneur + 1) % 2] = 81;
+				this.pointsEquipe[(this.equipePreneur) % 2] = 81;
 			} else if (this.pointsEquipe[this.equipePreneur] < 81) {
 				this.pointsEquipe[this.equipePreneur] = 0;
 				this.pointsEquipe[(this.equipePreneur + 1) % 2] = 162;

@@ -17,7 +17,7 @@ public class Table {
 	Equipe equipe2;
 	
 	Joueur joueurCourant;
-	Manche mancheCourante;
+	static Manche mancheCourante;
 	Couleur atout;
 	
 	LinkedList<Carte> cartesEnMain;
