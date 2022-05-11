@@ -6,11 +6,11 @@ public class Pli {
 	
 	private int idPremierJoueur, nbCarte, idJoueurGagnant;
 	private Couleur couleurDemandee;
-	//private Carte[] cartes;
+	private Carte[] cartes;
 	
 	public Pli(int idPremierJoueur) {
 		this.idPremierJoueur = idPremierJoueur;
-		//this.cartes = new Carte[4];
+		this.cartes = new Carte[4];
 		this.couleurDemandee = null;
 		this.nbCarte = 0;
 		this.idJoueurGagnant = 0;
@@ -20,12 +20,12 @@ public class Pli {
 		return 0; //TODO penser à changer this.idJoueurGagnant
 	}
 	
-	/*public void addCarte(Carte c) {
+	public void addCarte(Carte c) {
 		if (this.nbCarte == 0)
-			this.couleurDemandee = c.getSigne();
+			this.couleurDemandee = c.getCouleur();
 		this.cartes[nbCarte] = c;
 		this.nbCarte++;
-	}*/
+	}
 	
 	public int calculPoints() {
 		return 0; //TODO
