@@ -24,7 +24,7 @@ public class Manche {
 		this.plis = new Pli[8];
 		this.atout = atout;
 		this.idPremierJoueur = idPremierJoueur;
-		this.equipePreneur = ((joueurPreneur % 2) + 4) % 2; // soit 1 = joueurs 1 et 3 ; 2 = joueurs 2 et 4
+		this.equipePreneur = ((joueurPreneur % 2) + 4) % 2 - 1; // soit 0 = joueurs 1 et 3 ; 1 = joueurs 2 et 4
 		this.pointsEquipe = new int[2];
 		this.pointsEquipe[0] = 0; // joueurs 1 et 3
 		this.pointsEquipe[1] = 0; // joueurs 2 et 4
@@ -37,18 +37,16 @@ public class Manche {
 	public void finManche() {
 		if (this.nbPlis == 8) {
 
-			// calcul des points
-			// TODO penser à la Belotte quand la classe Joueur sera faite et incrémenter
-			// dans la classe Partie à la fin
+			// calcul des points dans la classe Partie à la fin
 			if (this.pointsEquipe[0] == 162)
 				this.pointsEquipe[0] = 252;
-			else if (this.pointsEquipe[0] == 162)
+			else if (this.pointsEquipe[1] == 162)
 				this.pointsEquipe[1] = 252;
-			else if (this.pointsEquipe[this.equipePreneur - 1] == 81) {
-				this.pointsEquipe[this.equipePreneur - 1] = 0;
+			else if (this.pointsEquipe[this.equipePreneur] == 81) {
+				this.pointsEquipe[this.equipePreneur] = 0;
 				this.pointsEquipe[(this.equipePreneur) % 2] = 81;
-			} else if (this.pointsEquipe[this.equipePreneur - 1] < 81) {
-				this.pointsEquipe[this.equipePreneur - 1] = 0;
+			} else if (this.pointsEquipe[this.equipePreneur] < 81) {
+				this.pointsEquipe[this.equipePreneur] = 0;
 				this.pointsEquipe[(this.equipePreneur) % 2] = 162;
 			}
 		}
@@ -70,7 +68,7 @@ public class Manche {
 			this.idPremierJoueur++;
 		else
 			this.idPremierJoueur = 1;
-		this.equipePreneur = ((joueurPreneur % 2) + 4) % 2; // soit 0 = joueurs 1 et 3 ; 1 = joueurs 2 et 4
+		this.equipePreneur = ((joueurPreneur % 2) + 4) % 2 - 1; // soit 0 = joueurs 1 et 3 ; 1 = joueurs 2 et 4
 		this.pointsEquipe[0] = 0; // joueurs 1 et 3
 		this.pointsEquipe[1] = 0; // joueurs 2 et 4
 		this.nbPlis = 0;
