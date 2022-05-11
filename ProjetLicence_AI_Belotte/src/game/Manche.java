@@ -47,7 +47,7 @@ public class Manche {
 				this.pointsEquipe[(this.equipePreneur) % 2] = 81;
 			} else if (this.pointsEquipe[this.equipePreneur] < 81) {
 				this.pointsEquipe[this.equipePreneur] = 0;
-				this.pointsEquipe[(this.equipePreneur) % 2] = 162;
+				this.pointsEquipe[(this.equipePreneur + 1) % 2] = 162;
 			}
 		}
 	}
@@ -77,11 +77,11 @@ public class Manche {
 	/**
 	 * Ajout du score d'un pli à une équipe
 	 * 
-	 * @param equipe l'id de l'équipe (1 pour joueurs 1 3 et 2 pour joueurs 2 4)
+	 * @param equipe l'id de l'équipe (0 pour joueurs 1 3 et 1 pour joueurs 2 4)
 	 * @param score  le score à incrémenter
 	 */
 	public void addScoreEquipe(int equipe, int score) {
-		this.pointsEquipe[equipe - 1] += score;
+		this.pointsEquipe[equipe] += score;
 	}
 
 	/**
@@ -150,11 +150,11 @@ public class Manche {
 	/**
 	 * Getter du nombre de points d'une équipe
 	 * 
-	 * @param l'id de l'équipe souhaitée (1 ou 2)
+	 * @param l'id de l'équipe souhaitée (0 ou 1)
 	 * @return le score de cette équipe
 	 */
 	public int getPointsEquipe(int equipe) {
-		return pointsEquipe[equipe - 1];
+		return pointsEquipe[equipe];
 	}
 
 }
