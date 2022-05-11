@@ -50,5 +50,9 @@ public class Pli {
 	public int getIdJoueurGagnant() {
 		return this.idJoueurGagnant;
 	}
+	
+	public Carte[] getCartes() {
+		return this.cartes;
+	}
 
 }
