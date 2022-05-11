@@ -1,14 +1,13 @@
 package game;
 
 import assets.Couleur;
-import main.Main;
 
 public class Manche {
 
 	private Pli[] plis;
 	private Couleur atout;
 	private int idPremierJoueur, equipePreneur, nbPlis;
-	private int[] pointsEquipe;
+	private int[] pointsEquipe, belotte;
 
 	/**
 	 * Constructeur de la classe Manche
@@ -30,6 +29,7 @@ public class Manche {
 		this.pointsEquipe[0] = 0; // joueurs 1 et 3
 		this.pointsEquipe[1] = 0; // joueurs 2 et 4
 		this.nbPlis = 0;
+		this.belotte = new int[2];
 	}
 
 	/**
@@ -39,21 +39,29 @@ public class Manche {
 		if (this.nbPlis == 8) {
 
 			// calcul des points dans la classe Partie à la fin
-			
+
 			if (Table.joueur1.hasBelote() || Table.joueur3.hasBelote())
-				
-			
+				this.belotte[0] = 20;
+			else if (Table.joueur2.hasBelote() || Table.joueur4.hasBelote())
+				this.belotte[1] = 20;
+
 			if (this.pointsEquipe[0] == 162)
 				this.pointsEquipe[0] = 252;
 			else if (this.pointsEquipe[1] == 162)
 				this.pointsEquipe[1] = 252;
-			else if (this.pointsEquipe[(this.equipePreneur) % 2] == 81 || this.pointsEquipe[(this.equipePreneur) % 2] + 0 == 81) {
+			else if (this.pointsEquipe[(this.equipePreneur + 1) % 2]
+					+ this.belotte[(this.equipePreneur + 1) % 2] == 81) {
 				this.pointsEquipe[this.equipePreneur] = 0;
 				this.pointsEquipe[(this.equipePreneur) % 2] = 81;
-			} else if (this.pointsEquipe[this.equipePreneur] < 81) {
+			} else if (this.pointsEquipe[this.equipePreneur] + this.belotte[this.equipePreneur] < 81
+					|| this.pointsEquipe[(this.equipePreneur + 1) % 2]
+							+ this.belotte[(this.equipePreneur + 1) % 2] > 81) {
 				this.pointsEquipe[this.equipePreneur] = 0;
 				this.pointsEquipe[(this.equipePreneur + 1) % 2] = 162;
 			}
+
+			Table.equipe1.addScore(this.pointsEquipe[0] + this.belotte[0]);
+			Table.equipe2.addScore(this.pointsEquipe[1] + this.belotte[1]);
 		}
 	}
 
@@ -77,6 +85,9 @@ public class Manche {
 		this.pointsEquipe[0] = 0; // joueurs 1 et 3
 		this.pointsEquipe[1] = 0; // joueurs 2 et 4
 		this.nbPlis = 0;
+		this.belotte[0] = 0;
+		this.belotte[1] = 0;
+		//this.initPliSuivant(); //TODO pas sûr que ça doive être ici
 	}
 
 	/**
@@ -97,12 +108,16 @@ public class Manche {
 	 *                   pli maximum a déjà été atteint
 	 */
 	public void initPliSuivant() throws Exception {
-		if (this.plis[this.nbPlis - 1].getNbCarte() < 4)
-			throw new Exception("game.Manche.initPliSuivant() : le pli actuel n'est pas terminé");
 		if (this.nbPlis == 8)
 			throw new Exception("game.Manche.initPliSuivant() : la manche contient déjà 8 plis");
-		this.pointsEquipe[this.plis[this.nbPlis - 1].equipeGagnante()] += this.plis[this.nbPlis - 1].calculPoints();
-		this.plis[this.nbPlis] = new Pli(this.plis[this.nbPlis - 1].getIdJoueurGagnant());
+		try {
+			if (this.plis[this.nbPlis - 1].getNbCarte() < 4)
+				throw new Exception("game.Manche.initPliSuivant() : le pli actuel n'est pas terminé");
+			this.pointsEquipe[this.plis[this.nbPlis - 1].equipeGagnante()] += this.plis[this.nbPlis - 1].calculPoints();
+			this.plis[this.nbPlis] = new Pli(this.plis[this.nbPlis - 1].getIdJoueurGagnant());
+		} catch (Exception e) {
+			this.plis[0] = new Pli(this.idPremierJoueur);
+		}
 		this.nbPlis++;
 	}
 
