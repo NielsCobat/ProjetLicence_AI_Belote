@@ -1,16 +1,16 @@
 package game;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Random;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Collections;
 import assets.Couleur;
 import assets.Valeur;
 
 public class Table {
 	
 	private final static int scoreToWin = 501;
-	
+
+	private static final Couleur Carreau = null;
 	static Joueur joueur1;
 	static Joueur joueur2;
 	static Joueur joueur3;
@@ -19,139 +19,131 @@ public class Table {
 	static int scoreEquipe1; //joueur 1 et 3
 	static int scoreEquipe2; //joueur 2 et 4
 	
+
+	static Equipe equipe1;
+	static Equipe equipe2;
+
 	static Joueur joueurCourant;
 	static Manche mancheCourante;
 	static Couleur atout;
-	
+
 	static LinkedList<Carte> cartesEnMain;
 	static LinkedList<Carte> cartesPosees;
-	static Carte[] ensCartes;
-	
-	static boolean gameOver = false;
+	static ArrayList<Carte> ensCartes;
 	static int idWinner;
-	
-	
-	/**
-	 * Affecte un ordre aleatoire de cartes au paquet de carte pour debuter la partie
-	 * @param ensCarte
-	 */
-	static void setEnsCartes(Carte[] ensCarte) {
-		Couleur randomColor;
-		Valeur randomValeur;
-		for(int i=0 ; i<ensCarte.length ; i++) {
-			//selection une couleur au hasard dans enum Couleur
-			randomColor =  Couleur.values()[new Random().nextInt(Couleur.values().length)];
-			
-			//selectionne une valeur au hasard dans enum Valeur
-			randomValeur =  Valeur.values()[new Random().nextInt(Valeur.values().length)];
-			
-			Carte randomCarte = new Carte(randomColor,randomValeur,getPoint(randomValeur));
-			
-			//Tant que la carte generee existe deja dans le paquet, on en genere une nouvelle
-			while(contains(ensCartes, randomCarte)) {
-				randomColor =  Couleur.values()[new Random().nextInt(Couleur.values().length)];
-				randomValeur =  Valeur.values()[new Random().nextInt(Valeur.values().length)];
-				randomCarte = new Carte(randomColor,randomValeur,getPoint(randomValeur));
+	static boolean gameOver = false;
+
+
+	static void setEnsCartes() {
+		for (int i = 0; i < 4; i++) {
+			Couleur couleurCourrante = Couleur.Carreau;
+			switch (i) {
+			case 0:
+				couleurCourrante = Couleur.Carreau;
+				break;
+			case 1:
+				couleurCourrante = Couleur.Coeur;
+				break;
+			case 2:
+				couleurCourrante = Couleur.Pique;
+				break;
+			case 3:
+				couleurCourrante = Couleur.Trefle;
+				break;
+			default:
 			}
-			ensCartes[i]=randomCarte;
+			for (int j = 0; j < 8; j++) {
+				Valeur valeurCourrante = Valeur.Sept;
+				int pts = 0;
+				switch (j) {
+				case 0:
+					valeurCourrante = Valeur.Sept;
+					pts = 0;
+					break;
+				case 1:
+					valeurCourrante = Valeur.Huit;
+					pts = 0;
+					break;
+				case 2:
+					valeurCourrante = Valeur.Neuf;
+					pts = 0;
+					break;
+				case 3:
+					valeurCourrante = Valeur.Dix;
+					pts = 10;
+					break;
+				case 4:
+					valeurCourrante = Valeur.Valet;
+					pts = 2;
+					break;
+				case 5:
+					valeurCourrante = Valeur.Dame;
+					pts = 3;
+					break;
+				case 6:
+					valeurCourrante = Valeur.Roi;
+					pts = 4;
+					break;
+				case 7:
+					valeurCourrante = Valeur.As;
+					pts = 11;
+					break;
+				default:
+				}
+				ensCartes.add(new Carte(couleurCourrante, valeurCourrante, pts));
+			}
 		}
+		Collections.shuffle(ensCartes);
 	}
-	
-	
-	/**
-	 * Retourne les points d'une carte en fonction de sa valeur (ne prend en compte l'atout pour l'instant)
-	 * @param val une valeur de l'enum Valeur
-	 * @return les points associes a une valeur
-	 */
-	static int getPoint(Valeur val) {
-		switch (val) {
-		case Sept :
-			return 0;
 
-		case Huit :
-			return 0;
-
-		case Neuf :
-			return 0;
-
-		case Dix :
-			return 10;
-
-		case As :
-			return 11;
-
-		case Valet :
-			return 2;
-
-		case Dame :
-			return 3;
-			
-		case Roi :
-			return 4;
-		default :
-			return -1;
-		}
-	}
-	
-	
-	/**
-	 * Dit si une carte est contenue dans un paquet de carte
-	 * @param ensCarte un paquet de carte
-	 * @param carte une carte dont on verifie la presence dans le paquet
-	 * @return true carte est presente dans paquet, false carte non presente dans le paquet
-	 */
-	static boolean contains(Carte[] ensCarte, Carte carte) {
-		for (int i = 0; i < ensCarte.length; i++) {
-			//eviter le nullPointerException si case vide
-			if(ensCarte[i]==null) return false;
-
-			if(ensCarte[i].getValeur()==carte.getValeur() && ensCarte[i].getCouleur()==carte.getCouleur())
-				return true;
-		}
-		return false;
-	}
-	
 	void distribuer() {
-		//TODO
+		// TODO
 	}
-	
-	public Table() {
+
+	private Table() {
 	}
 	
 	
 	/**
 	 * Initialise toutes les variables nécessaires pour débuter une partie
+	 * 
 	 * @throws Exception
 	 */
 	public static void init() throws Exception {
+		setEnsCartes();
+		
 		joueur1 = new Joueur("", 1, 3);
 		joueur2 = new Joueur("", 2, 4);
 		joueur3 = new Joueur("", 3, 1);
 		joueur4 = new Joueur("", 4, 2);
-		
-		scoreEquipe1=0;
-		scoreEquipe2=0;
-		int idJoueurCourant = (int) (Math.random()*(4-1+1)+1); //selectionne un int entre 1 et 4
+
+
+		equipe1 = new Equipe(1, joueur1, joueur3, 0);
+		equipe2 = new Equipe(2, joueur2, joueur4, 0);
+
+		equipe1.score = 0;
+		equipe2.score = 0;
+		int idJoueurCourant = (int) (Math.random() * (4 - 1 + 1) + 1); // selectionne un int entre 1 et 4
 		switch (idJoueurCourant) {
-			case 1 :
-				joueurCourant = joueur1;
-				break;
-			case 2 :
-				joueurCourant = joueur2;
-				break;
-			case 3 :
-				joueurCourant = joueur3;
-				break;
-			case 4 :
-				joueurCourant = joueur4;
-				break;
-			default :
-				throw new Exception("identifiant du joueur non compatible");
+		case 1:
+			joueurCourant = joueur1;
+			break;
+		case 2:
+			joueurCourant = joueur2;
+			break;
+		case 3:
+			joueurCourant = joueur3;
+			break;
+		case 4:
+			joueurCourant = joueur4;
+			break;
+		default:
+			throw new Exception("identifiant du joueur non compatible");
 		}
-		ensCartes = new Carte[32];
-		setEnsCartes(ensCartes);
+		ensCartes = new ArrayList<Carte>();
+		setEnsCartes();
 	}
-	
+
 	/**
 	 * Deroulement de la partie, de l'init jusqu'au game over
 	 */
@@ -161,7 +153,7 @@ public class Table {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		while(!gameOver) {
+		while (!gameOver) {
 			/**
 			 * gerer distrib , atout , maitre ...
 			 * 
