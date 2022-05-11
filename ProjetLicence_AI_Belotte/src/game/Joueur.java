@@ -28,6 +28,12 @@ public class Joueur {
 	boolean hasBelote() {
 		return false;
 	}
+	
+	
+	boolean isLegalMove() {
+		return false;
+	}
+	
 	void joueCoup(Carte carte) {
 		
 	}

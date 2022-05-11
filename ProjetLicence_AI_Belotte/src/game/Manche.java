@@ -1,6 +1,7 @@
 package game;
 
 import assets.Couleur;
+import main.Main;
 
 public class Manche {
 
@@ -38,11 +39,15 @@ public class Manche {
 		if (this.nbPlis == 8) {
 
 			// calcul des points dans la classe Partie à la fin
+			
+			if (Table.joueur1.hasBelote() || Table.joueur3.hasBelote())
+				
+			
 			if (this.pointsEquipe[0] == 162)
 				this.pointsEquipe[0] = 252;
 			else if (this.pointsEquipe[1] == 162)
 				this.pointsEquipe[1] = 252;
-			else if (this.pointsEquipe[this.equipePreneur] == 81) {
+			else if (this.pointsEquipe[(this.equipePreneur) % 2] == 81 || this.pointsEquipe[(this.equipePreneur) % 2] + 0 == 81) {
 				this.pointsEquipe[this.equipePreneur] = 0;
 				this.pointsEquipe[(this.equipePreneur) % 2] = 81;
 			} else if (this.pointsEquipe[this.equipePreneur] < 81) {

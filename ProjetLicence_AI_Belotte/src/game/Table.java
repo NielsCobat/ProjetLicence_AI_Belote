@@ -8,24 +8,23 @@ import assets.Valeur;
 
 public class Table {
 	
-	Joueur joueur1;
-	Joueur joueur2;
-	Joueur joueur3;
-	Joueur joueur4;
+	static Joueur joueur1;
+	static Joueur joueur2;
+	static Joueur joueur3;
+	static Joueur joueur4;
 	
-	Equipe equipe1;
-	Equipe equipe2;
-	private int scoreEquipe1;
-	private int scoreEquipe2;
+	static Equipe equipe1;
+	static Equipe equipe2;
 	
-	Joueur joueurCourant;
-	Couleur atout;
+	static Joueur joueurCourant;
+	static Manche mancheCourante;
+	static Couleur atout;
 	
-	LinkedList<Carte> cartesEnMain;
-	LinkedList<Carte> cartesPosees;
-	ArrayList<Carte> ensCartes;
+	static LinkedList<Carte> cartesEnMain;
+	static LinkedList<Carte> cartesPosees;
+	static ArrayList<Carte> ensCartes;
 	
-	boolean gameOver = false;
+	static boolean gameOver = false;
 	
 	void setEnsCartes() {
 		//TODO
@@ -35,7 +34,22 @@ public class Table {
 		//TODO
 	}
 	
-	private void init() throws Exception {
+	private Table() {
+	}
+	
+	static {
+		try {
+			init();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Initialise toutes les variables nécessaires pour débuter une partie
+	 * @throws Exception
+	 */
+	public static void init() throws Exception {
 		joueur1 = new Joueur("", 1, 3);
 		joueur2 = new Joueur("", 2, 4);
 		joueur3 = new Joueur("", 3, 1);
@@ -44,8 +58,8 @@ public class Table {
 		equipe1 = new Equipe(1, joueur1, joueur3, 0);
 		equipe2 = new Equipe(2, joueur2, joueur4, 0);
 		
-		scoreEquipe1=0;
-		scoreEquipe2=0;
+		equipe1.score=0;
+		equipe2.score=0;
 		int idJoueurCourant = (int) (Math.random()*(4-1+1)+1); //selectionne un int entre 1 et 4
 		switch (idJoueurCourant) {
 			case 1 :
@@ -65,7 +79,10 @@ public class Table {
 		}
 	}
 	
-	void run() {
+	/**
+	 * Deroulement de la partie, de l'init jusqu'au game over
+	 */
+	static void run() {
 		try {
 			init();
 		} catch (Exception e) {
