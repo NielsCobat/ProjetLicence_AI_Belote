@@ -17,6 +17,7 @@ public class Table {
 	Equipe equipe2;
 	
 	Joueur joueurCourant;
+	Manche mancheCourante;
 	Couleur atout;
 	
 	LinkedList<Carte> cartesEnMain;
@@ -33,6 +34,10 @@ public class Table {
 		//TODO
 	}
 	
+	/**
+	 * Initialise toutes les variables nécessaires pour débuter une partie
+	 * @throws Exception
+	 */
 	private void init() throws Exception {
 		joueur1 = new Joueur("", 1, 3);
 		joueur2 = new Joueur("", 2, 4);
@@ -63,6 +68,9 @@ public class Table {
 		}
 	}
 	
+	/**
+	 * Deroulement de la partie, de l'init jusqu'au game over
+	 */
 	void run() {
 		try {
 			init();
