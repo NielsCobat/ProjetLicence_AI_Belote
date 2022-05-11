@@ -1,7 +1,6 @@
 package game;
 import assets.Couleur;
 import assets.Valeur;
-import game.Manche;
 
 public class Carte {
 	
