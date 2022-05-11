@@ -4,11 +4,9 @@ import assets.Valeur;
 import game.Manche;
 
 public class Carte {
-//<<<<<<< HEAD
 	
 	private Couleur couleur;
 	private Valeur valeur;
-//>>>>>>> branch 'master' of https://github.com/NielsCobat/ProjetLicence_AI_Belotte
 	int point;
 	boolean estJouée;
 
@@ -24,10 +22,8 @@ public class Carte {
 	boolean isLegalMove() {
 		return false;
 	}
-//<<<<<<< HEAD
 
-	int compareTo(Carte c2) {return 0;
-		/*
+	int compareTo(Carte c2) {
 		// -1  this ne l'emporte pas face à c
 		//1  this l'emporte face à c
 		if(this.couleur.name().equals(Table.mancheCourante.getAtout().name())) {
@@ -60,7 +56,7 @@ public class Carte {
 				}
 			}
 		}
-	*/}
+	}
 	
 	public Couleur getCouleur() {
 		return this.couleur;
@@ -73,5 +69,4 @@ public class Carte {
 	public int getPoints() {
 		return this.point;
 	}
-//>>>>>>> branch 'master' of https://github.com/NielsCobat/ProjetLicence_AI_Belotte
 }
