@@ -1,6 +1,8 @@
 package game;
 
 import java.util.LinkedList;
+import java.util.Scanner;
+
 import game.Table;
 import assets.Couleur;
 
@@ -160,5 +162,59 @@ public class Joueur {
 	 */
 	void prend(Carte carte) {
 		this.main.add(carte);
+	}
+	
+	/**
+	 * Lance l'action de prendre ou passer, est geree avec scanner pour l'instant
+	 * @param carte retourner pour decider de l'atout
+	 * @return false si le joueur ne prend pas, true sinon
+	 */
+	boolean veutPrendre(Carte carte) {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Veux prendre ? (o/n)");
+		String reponse = scanner.nextLine();
+		if(reponse.equals("n")) {
+			passe();
+			scanner.close();
+			return false;
+		}
+		else if(reponse.equals("o")){
+			prend(carte);
+			scanner.close();
+			return true;
+		}
+		//par defaut si erreur je considere que le joueur passe
+		passe();
+		scanner.close();
+		return false;
+	}
+	
+	/**
+	 * Durant le deuxieme tour du choix de l'atout, si joueur prend alors designe couleur
+	 * differente de la couleur prise, geree avec un scanner pour l'instant
+	 * @return Couleur designee par le joueur
+	 */
+	Couleur designeCouleur() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Quelle couleur d'atout ? (carreau/pique/coeur/trefle)");
+		String reponse = scanner.nextLine();
+		switch (reponse) {
+		case "carreau" :
+			if(this.main.getLast().getCouleur()!=Couleur.Carreau) return Couleur.Carreau;
+		case "pique" :
+			if(this.main.getLast().getCouleur()!=Couleur.Pique) return Couleur.Pique;
+		case "coeur" :
+			if(this.main.getLast().getCouleur()!=Couleur.Coeur) return Couleur.Coeur;
+		case "trefle" :
+			if(this.main.getLast().getCouleur()!=Couleur.Trefle) return Couleur.Trefle;
+		default :
+			System.out.println("Choisissez une autre couleur");
+			return designeCouleur();
+		}
+	}
+	
+	@Override
+	public Joueur clone() {
+		return new Joueur(this.nom,this.id,this.idPartenaire);
 	}
 }

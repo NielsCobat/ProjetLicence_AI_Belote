@@ -105,6 +105,7 @@ public class Table {
 		// TODO
 		int indiceCourantEnsCartes = 0;
 		for(int i=0 ; i<=7 ; i++) {
+			//commence distribution par le joueur suivant
 			joueurCourant = joueurSuivant();
 			//distribue les 3 premieres cartes a tout le monde
 			if(i<=3) {
@@ -128,6 +129,16 @@ public class Table {
 		//joueur qui commence a parler est le joueur apres celui qui distribue
 		joueurCourant = joueurSuivant();
 		return ensCartes.get(indiceCourantEnsCartes);
+	}
+
+
+	/**
+	 * Distribue le reste des cartes une fois que l'atout est choisi
+	 * Le joueur courant est celui qui a choisi l'atout
+	 * donc 2 puis 3 puis 3 puis 3
+	 */
+	static void distribuerReste() {
+
 	}
 
 	/**
@@ -165,6 +176,7 @@ public class Table {
 
 		equipe1.score = 0;
 		equipe2.score = 0;
+		atout = null;
 		int idJoueurCourant = (int) (Math.random() * (4 - 1 + 1) + 1); // selectionne un int entre 1 et 4
 		switch (idJoueurCourant) {
 		case 1:
@@ -196,11 +208,36 @@ public class Table {
 			e.printStackTrace();
 		}
 		while (!gameOver) {
-			/**
-			 * gerer distrib , atout ...
-			 * 
-			 */
-			Carte head = distribuer();
+			//garder en memoire le joueur qui distribue
+			Joueur distributeur = joueurCourant.clone();
+			
+			//Tant que l'atout n'est pas choisi on fait deux tours de table et on redistribue
+			while(atout==null) {
+				Carte head = distribuer();
+				//premier tour de table pour choisir l'atout (une)
+				for(int i=0; i<4 ; i++) {
+					boolean aPris = joueurCourant.veutPrendre(head);
+					if(aPris) {
+						atout = joueurCourant.main.getLast().getCouleur(); //peut etre pas besoin, on verra
+						break;
+					}
+					joueurCourant = joueurSuivant();
+				}
+
+				//si l'atout n'est pas encore decide alors deuxieme tour de table (deux)
+				if(atout==null) {
+					for(int i=0; i<4 ; i++) {
+						boolean aPris = joueurCourant.veutPrendre(head);
+						if(aPris) {
+							atout = joueurCourant.designeCouleur();
+							break;
+						}
+					}
+				}
+
+				if(atout!=null) distribuerReste();
+			}
+
 
 			if(scoreEquipe1>=scoreToWin) {
 				gameOver = true;
