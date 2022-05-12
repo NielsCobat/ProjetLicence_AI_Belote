@@ -134,11 +134,34 @@ public class Table {
 
 	/**
 	 * Distribue le reste des cartes une fois que l'atout est choisi
-	 * Le joueur courant est celui qui a choisi l'atout
-	 * donc 2 puis 3 puis 3 puis 3
+	 * Le joueur courant est le distributeur
+	 * @param peneur joueur qui se voit distribue deux cartes
 	 */
-	static void distribuerReste() {
+	static void distribuerReste(Joueur preneur) {
 		//TODO
+		//indice 21 car 4*5 cartes distribuees + 1
+		int indiceCourantEnsCartes = 21;
+		for(int i=0 ; i<4 ; i++) {
+			//le distrubution commence avec le joueur suivant le joueur distributeur
+			joueurCourant = joueurSuivant();
+			//joueur courant est le joueur qui recoit 2 cartes
+			if(joueurCourant.id==preneur.id) {
+				int j=0;
+				while(j<2) {
+					joueurCourant.main.add(ensCartes.get(indiceCourantEnsCartes));
+					indiceCourantEnsCartes++;
+					j++;
+				}
+			}
+			else {
+				int j=0;
+				while(j<3) {
+					joueurCourant.main.add(ensCartes.get(indiceCourantEnsCartes));
+					indiceCourantEnsCartes++;
+					j++;
+				}
+			}
+		}
 	}
 
 	/**
@@ -211,7 +234,7 @@ public class Table {
 		while (!gameOver) {
 			//garder en memoire le joueur qui distribue
 			Joueur distributeur = joueurCourant.clone();
-			
+
 			//Tant que l'atout n'est pas choisi on fait deux tours de table et on redistribue
 			while(atout==null) {
 				Carte head = distribuer();
@@ -234,14 +257,18 @@ public class Table {
 							atout = joueurCourant.designeCouleur();
 							break;
 						}
+						joueurCourant = joueurSuivant();
 					}
 				}
 				//atout decide, il faut distribuer le reste des cartes
 				if(atout!=null) {
 					//le joueur courant redevient le joueur qui distribue
+					Joueur preneur = joueurCourant.clone();
 					joueurCourant = distributeur;
-					distribuerReste();
+					distribuerReste(preneur);
 				}
+				//atout encore non decide alors on remelange le paquet de carte
+				else Collections.shuffle(ensCartes);
 			}
 
 
