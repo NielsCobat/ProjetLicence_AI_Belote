@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import game.Table;
 import assets.Couleur;
 
-
 import assets.Valeur;
 
 public class Joueur {
@@ -14,22 +13,21 @@ public class Joueur {
 	boolean maitre;
 	int idPartenaire;
 	LinkedList<Carte> main;
-	
+
 	public Joueur() {
-		nom="";
-		id=0;
-		idPartenaire=0;
-		main= new LinkedList<Carte>();
+		nom = "";
+		id = 0;
+		idPartenaire = 0;
+		main = new LinkedList<Carte>();
 	}
-	
-	public Joueur(String nom, int id,int partenaire){
+
+	public Joueur(String nom, int id, int partenaire) {
 		this.nom = nom;
 		this.id = id;
 		this.idPartenaire = partenaire;
-		this.main = new LinkedList<Carte>(); //A la creation main forcement vide
+		this.main = new LinkedList<Carte>(); // A la creation main forcement vide
 	}
-	
-	
+
 	/**
 	 * 
 	 * @return true si le joueur a la belote, false sinon.
@@ -40,21 +38,24 @@ public class Joueur {
 		Couleur atout = Table.mancheCourante.getAtout();
 		for (Carte c : Table.ensCartes) {
 			if (c.getCouleur() == atout && c.getValeur() == Valeur.Roi) {
-				if (main.contains(c)) roi = true;
-			}
-			else if (c.getCouleur() == atout && c.getValeur() == Valeur.Dame) {
-				if (main.contains(c)) dame = true;
+				if (main.contains(c))
+					roi = true;
+			} else if (c.getCouleur() == atout && c.getValeur() == Valeur.Dame) {
+				if (main.contains(c))
+					dame = true;
 			}
 		}
 		return roi && dame;
 	}
-	
+
 	/**
-	 * Si le pli est vide on peut mettre n'importe quelle carte.
-	 * Si on a la couleur demandée, on doit la jouer, si cette couleur est atout, alors si l'on a un atout de valeur supérieure,
-	 * on doit le jouer, sinon on peut jouer n'importe quel autre atout
-	 * Si on a pas la couleur demandée, alors si notre partenaire est maître, on peut jouer n'importe quelle carte,
-	 * sinon si on a de l'atout, on doit le mettre, si ce n'est pas le cas on peut tout jouer.
+	 * Si le pli est vide on peut mettre n'importe quelle carte. Si on a la couleur
+	 * demandée, on doit la jouer, si cette couleur est atout, alors si l'on a un
+	 * atout de valeur supérieure, on doit le jouer, sinon on peut jouer n'importe
+	 * quel autre atout Si on a pas la couleur demandée, alors si notre partenaire
+	 * est maître, on peut jouer n'importe quelle carte, sinon si on a de l'atout,
+	 * on doit le mettre, si ce n'est pas le cas on peut tout jouer.
+	 * 
 	 * @param carte La carte dont on s'interroge sur la légalité
 	 * @return true si le coup est légal, false sinon.
 	 */
@@ -69,68 +70,64 @@ public class Joueur {
 		boolean pliContientAtout = false;
 		int nbDemande = 0;
 		int nbAtout = 0;
-		
+
 		if (pli.getNbCarte() == 0) {
 			return true;
-		}
-		else {
-			
-			for (Carte c : pli.getCartes()) { //On détermine le plus grand atout du pli.
+		} else {
+
+			for (Carte c : pli.getCartes()) { // On détermine le plus grand atout du pli.
 				if (c.getCouleur() == atoutManche) {
 					if (!pliContientAtout) {
 						pliContientAtout = true;
 						plusGrandAtoutDuPli = c;
-					}
-					else if (c.compareTo(plusGrandAtoutDuPli) == 1) {
-						 plusGrandAtoutDuPli = c;
+					} else if (c.compareTo(plusGrandAtoutDuPli) == 1) {
+						plusGrandAtoutDuPli = c;
 					}
 				}
 			}
-			
+
 			for (Carte c : main) {
-				if (c.getCouleur() == demande) nbDemande++;
-				if (c.getCouleur() == atoutManche)nbAtout++;
-				if (c.compareTo(plusGrandAtoutDuPli) == 1) plusGrandQueLePlusGrandAtoutDuPli.add(c);
+				if (c.getCouleur() == demande)
+					nbDemande++;
+				if (c.getCouleur() == atoutManche)
+					nbAtout++;
+				if (c.compareTo(plusGrandAtoutDuPli) == 1)
+					plusGrandQueLePlusGrandAtoutDuPli.add(c);
 			}
-			
+
 			if (demande != manche.getAtout()) { // Si on ne demande pas d'atout.
 				if (nbDemande > 0) { // Si on a au moins une carte de la couleur demandée dans sa main.
 					return (couleurDeLaCarte == demande);
-				}
-				else { // Si on a pas la couleur demandée.
-					if (pli.getIdJoueurGagnant() == this.idPartenaire) return true; // Si le partenaire est maître, alors le coup est légal.
-					else if (nbAtout > 0) { //Sinon, si l'adversaire et maître et qu'on a un atout.
-						if (plusGrandAtoutDuPli == null) { //S'il n'y a pas encore d'atout dans le pli.
+				} else { // Si on a pas la couleur demandée.
+					if (pli.getIdJoueurGagnant() == this.idPartenaire)
+						return true; // Si le partenaire est maître, alors le coup est légal.
+					else if (nbAtout > 0) { // Sinon, si l'adversaire et maître et qu'on a un atout.
+						if (plusGrandAtoutDuPli == null) { // S'il n'y a pas encore d'atout dans le pli.
 							return (couleurDeLaCarte == atoutManche);
-						}
-						else { //S'il y a au moins un atout dans le pli.
-							if (plusGrandQueLePlusGrandAtoutDuPli.isEmpty()) { //Si on a pas plus grand.
+						} else { // S'il y a au moins un atout dans le pli.
+							if (plusGrandQueLePlusGrandAtoutDuPli.isEmpty()) { // Si on a pas plus grand.
 								return (couleurDeLaCarte == atoutManche);
-							}
-							else {
+							} else {
 								return plusGrandQueLePlusGrandAtoutDuPli.contains(carte);
 							}
 						}
 					}
 				}
-			}
-			else { // Si on demande de l'atout.
+			} else { // Si on demande de l'atout.
 				if (nbAtout > 0) { // Si on en a.
-					if (plusGrandQueLePlusGrandAtoutDuPli.isEmpty()) { //Si on a pas plus grand.
+					if (plusGrandQueLePlusGrandAtoutDuPli.isEmpty()) { // Si on a pas plus grand.
 						return (couleurDeLaCarte == atoutManche);
-					}
-					else { // Si on a plus grand.
+					} else { // Si on a plus grand.
 						return plusGrandQueLePlusGrandAtoutDuPli.contains(carte);
 					}
-				}
-				else { // Si on en n'a pas.
+				} else { // Si on en n'a pas.
 					return true;
 				}
 			}
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 
 	 * @param carte La carte jouée
@@ -140,21 +137,28 @@ public class Joueur {
 		manche.getPli(manche.getNbPlis()).addCarte(carte);
 		main.remove(carte);
 	}
-	
-	
+
 	/**
-	 * 
-	 * @return
+	 * Le joueur ne prend pas et le joueurCourant devient le joueur à sa gauche.
 	 */
-	boolean passe() {
-		return false;
+	void passe() {
+		switch (Table.joueurCourant.id){
+			case 1 : Table.joueurCourant = Table.joueur2;
+			break;
+			case 2 : Table.joueurCourant = Table.joueur3;
+			break;
+			case 3 : Table.joueurCourant = Table.joueur4;
+			break;
+			case 4 : Table.joueurCourant = Table.joueur1;
+			break;
+		}
 	}
-	
+
 	/**
-	 * 
-	 * @return
+	 * Met dans la main du joueur la carte prise.
+	 * @param carte La carte prise
 	 */
-	boolean prend() {
-		return false;
+	void prend(Carte carte) {
+		this.main.add(carte);
 	}
 }
