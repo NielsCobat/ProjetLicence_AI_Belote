@@ -7,7 +7,7 @@ import assets.Couleur;
 import assets.Valeur;
 
 public class Table {
-	
+
 	private final static int scoreToWin = 501;
 
 	private static final Couleur Carreau = null;
@@ -15,10 +15,10 @@ public class Table {
 	static Joueur joueur2;
 	static Joueur joueur3;
 	static Joueur joueur4;
-	
+
 	static int scoreEquipe1; //joueur 1 et 3
 	static int scoreEquipe2; //joueur 2 et 4
-	
+
 
 	static Equipe equipe1;
 	static Equipe equipe2;
@@ -96,14 +96,51 @@ public class Table {
 		Collections.shuffle(ensCartes);
 	}
 
+	/**
+	 * Distribue les 5 premieres cartes aux joueurs ( 3 + 2 )
+	 * Le joueur courant devient le joueur suivant le distributeur
+	 */
 	void distribuer() {
 		// TODO
+		int indiceCourantEnsCartes = 0;
+		for(int i=0 ; i<=7 ; i++) {
+			joueurCourant = joueurSuivant();
+			//distribue les 3 premieres cartes a tout le monde
+			if(i<=3) {
+				int j=0;
+				while(j<3) {
+					joueurCourant.main.add(ensCartes.get(indiceCourantEnsCartes));
+					indiceCourantEnsCartes++;
+					j++;
+				}
+			}
+			//distribue les 2 cartes a tout le monde
+			else {
+				int j=0;
+				while(j<2) {
+					joueurCourant.main.add(ensCartes.get(indiceCourantEnsCartes));
+					indiceCourantEnsCartes++;
+					j++;
+				}
+			}
+		}
+		//joueur qui commence a parler est le joueur apres celui qui distribue
+		joueurCourant = joueurSuivant();
 	}
+
+	Joueur joueurSuivant(){
+		int idCourant = joueurCourant.id;
+		if(idCourant == 1) return joueur2;
+		else if (idCourant == 2) return joueur3;
+		else if (idCourant == 3) return joueur4;
+		else return joueur1;
+	}
+
 
 	private Table() {
 	}
-	
-	
+
+
 	/**
 	 * Initialise toutes les variables nécessaires pour débuter une partie
 	 * 
@@ -111,7 +148,7 @@ public class Table {
 	 */
 	public static void init() throws Exception {
 		setEnsCartes();
-		
+
 		joueur1 = new Joueur("", 1, 3);
 		joueur2 = new Joueur("", 2, 4);
 		joueur3 = new Joueur("", 3, 1);
@@ -155,10 +192,11 @@ public class Table {
 		}
 		while (!gameOver) {
 			/**
-			 * gerer distrib , atout , maitre ...
+			 * gerer distrib , atout ...
 			 * 
 			 */
-			
+
+
 			if(scoreEquipe1>=scoreToWin) {
 				gameOver = true;
 				idWinner=1; //je mets l'id d'un seul membre comme le modulo donne forcement l'equipe des deux joueurs
