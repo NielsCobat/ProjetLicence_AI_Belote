@@ -198,6 +198,7 @@ public class Joueur {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Quelle couleur d'atout ? (carreau/pique/coeur/trefle)");
 		String reponse = scanner.nextLine();
+		scanner.close();
 		switch (reponse) {
 		case "carreau" :
 			if(this.main.getLast().getCouleur()!=Couleur.Carreau) return Couleur.Carreau;

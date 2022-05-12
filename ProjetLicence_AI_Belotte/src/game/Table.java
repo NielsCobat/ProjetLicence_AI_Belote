@@ -138,7 +138,7 @@ public class Table {
 	 * donc 2 puis 3 puis 3 puis 3
 	 */
 	static void distribuerReste() {
-
+		//TODO
 	}
 
 	/**
@@ -207,6 +207,7 @@ public class Table {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		//boucle principale du jeu
 		while (!gameOver) {
 			//garder en memoire le joueur qui distribue
 			Joueur distributeur = joueurCourant.clone();
@@ -229,13 +230,18 @@ public class Table {
 					for(int i=0; i<4 ; i++) {
 						boolean aPris = joueurCourant.veutPrendre(head);
 						if(aPris) {
+							//second tour donc le preneur doit decider de la couleur de l'atout
 							atout = joueurCourant.designeCouleur();
 							break;
 						}
 					}
 				}
-
-				if(atout!=null) distribuerReste();
+				//atout decide, il faut distribuer le reste des cartes
+				if(atout!=null) {
+					//le joueur courant redevient le joueur qui distribue
+					joueurCourant = distributeur;
+					distribuerReste();
+				}
 			}
 
 
