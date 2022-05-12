@@ -99,8 +99,9 @@ public class Table {
 	/**
 	 * Distribue les 5 premieres cartes aux joueurs ( 3 + 2 )
 	 * Le joueur courant devient le joueur suivant le distributeur
+	 * @return la carte au dessus du paquet pour choix de l'atout
 	 */
-	void distribuer() {
+	static Carte distribuer() {
 		// TODO
 		int indiceCourantEnsCartes = 0;
 		for(int i=0 ; i<=7 ; i++) {
@@ -126,9 +127,13 @@ public class Table {
 		}
 		//joueur qui commence a parler est le joueur apres celui qui distribue
 		joueurCourant = joueurSuivant();
+		return ensCartes.get(indiceCourantEnsCartes);
 	}
 
-	Joueur joueurSuivant(){
+	/**
+	 * @return joueur suivant le joueur courant
+	 */
+	static Joueur joueurSuivant(){
 		int idCourant = joueurCourant.id;
 		if(idCourant == 1) return joueur2;
 		else if (idCourant == 2) return joueur3;
@@ -195,7 +200,7 @@ public class Table {
 			 * gerer distrib , atout ...
 			 * 
 			 */
-
+			Carte head = distribuer();
 
 			if(scoreEquipe1>=scoreToWin) {
 				gameOver = true;
