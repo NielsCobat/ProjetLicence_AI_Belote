@@ -120,6 +120,34 @@ public class Manche {
 		}
 		this.nbPlis++;
 	}
+	
+	public void runManche(Joueur jCourant, Couleur atout) {
+		//Une manche == 8 plis
+		for (int i=0 ; i<8 ; i++) {
+			try {
+				initPliSuivant();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			//Tour de table
+			for(int j=0 ; j<4 ; j++) {
+				
+				//Temporaire! joueur joue la premiere carte legale dispo dans sa main
+				for(Carte carte : jCourant.main) {
+					if(jCourant.isLegalMove(carte)) {
+						jCourant.joueCoup(carte);
+						break;
+					}
+				}
+				//jCourant devient joueur suivant
+				jCourant.passe();
+			}
+		}
+		//attribution des points remportes par chaque equipe
+		finManche();
+	}
 
 	/**
 	 * Getter de l'atout de la manche courante

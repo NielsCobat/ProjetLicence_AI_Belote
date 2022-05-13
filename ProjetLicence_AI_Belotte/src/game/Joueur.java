@@ -135,9 +135,9 @@ public class Joueur {
 	 * @param carte La carte jouée
 	 */
 	void joueCoup(Carte carte) {
-		Manche manche = Table.mancheCourante;
-		manche.getPli(manche.getNbPlis()).addCarte(carte);
-		main.remove(carte);
+			Manche manche = Table.mancheCourante;
+			manche.getPli(manche.getNbPlis()).addCarte(carte);
+			main.remove(carte);
 	}
 
 	/**
