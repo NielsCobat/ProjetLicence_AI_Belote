@@ -3,18 +3,22 @@ package game;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Collections;
-import java.util.Random;
-
 import assets.Couleur;
 import assets.Valeur;
 
 public class Table {
+
+	private final static int scoreToWin = 501;
 
 	private static final Couleur Carreau = null;
 	static Joueur joueur1;
 	static Joueur joueur2;
 	static Joueur joueur3;
 	static Joueur joueur4;
+
+	static int scoreEquipe1; //joueur 1 et 3
+	static int scoreEquipe2; //joueur 2 et 4
+
 
 	static Equipe equipe1;
 	static Equipe equipe2;
@@ -26,8 +30,9 @@ public class Table {
 	static LinkedList<Carte> cartesEnMain;
 	static LinkedList<Carte> cartesPosees;
 	static ArrayList<Carte> ensCartes;
-
+	static int idWinner;
 	static boolean gameOver = false;
+
 
 	static void setEnsCartes() {
 		for (int i = 0; i < 4; i++) {
@@ -91,20 +96,89 @@ public class Table {
 		Collections.shuffle(ensCartes);
 	}
 
-	void distribuer() {
+	/**
+	 * Distribue les 5 premieres cartes aux joueurs ( 3 + 2 )
+	 * Le joueur courant devient le joueur suivant le distributeur
+	 * @return la carte au dessus du paquet pour choix de l'atout
+	 */
+	static Carte distribuer() {
 		// TODO
+		int indiceCourantEnsCartes = 0;
+		for(int i=0 ; i<=7 ; i++) {
+			//commence distribution par le joueur suivant
+			joueurCourant = joueurSuivant();
+			//distribue les 3 premieres cartes a tout le monde
+			if(i<=3) {
+				int j=0;
+				while(j<3) {
+					joueurCourant.main.add(ensCartes.get(indiceCourantEnsCartes));
+					indiceCourantEnsCartes++;
+					j++;
+				}
+			}
+			//distribue les 2 cartes a tout le monde
+			else {
+				int j=0;
+				while(j<2) {
+					joueurCourant.main.add(ensCartes.get(indiceCourantEnsCartes));
+					indiceCourantEnsCartes++;
+					j++;
+				}
+			}
+		}
+		//joueur qui commence a parler est le joueur apres celui qui distribue
+		joueurCourant = joueurSuivant();
+		return ensCartes.get(indiceCourantEnsCartes);
 	}
+
+
+	/**
+	 * Distribue le reste des cartes une fois que l'atout est choisi
+	 * Le joueur courant est le distributeur
+	 * @param peneur joueur qui se voit distribue deux cartes
+	 */
+	static void distribuerReste(Joueur preneur) {
+		//TODO
+		//indice 21 car 4*5 cartes distribuees + 1
+		int indiceCourantEnsCartes = 21;
+		for(int i=0 ; i<4 ; i++) {
+			//le distrubution commence avec le joueur suivant le joueur distributeur
+			joueurCourant = joueurSuivant();
+			//joueur courant est le joueur qui recoit 2 cartes
+			if(joueurCourant.id==preneur.id) {
+				int j=0;
+				while(j<2) {
+					joueurCourant.main.add(ensCartes.get(indiceCourantEnsCartes));
+					indiceCourantEnsCartes++;
+					j++;
+				}
+			}
+			else {
+				int j=0;
+				while(j<3) {
+					joueurCourant.main.add(ensCartes.get(indiceCourantEnsCartes));
+					indiceCourantEnsCartes++;
+					j++;
+				}
+			}
+		}
+	}
+
+	/**
+	 * @return joueur suivant le joueur courant
+	 */
+	static Joueur joueurSuivant(){
+		int idCourant = joueurCourant.id;
+		if(idCourant == 1) return joueur2;
+		else if (idCourant == 2) return joueur3;
+		else if (idCourant == 3) return joueur4;
+		else return joueur1;
+	}
+
 
 	private Table() {
 	}
 
-	static {
-		try {
-			init();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * Initialise toutes les variables nécessaires pour débuter une partie
@@ -113,17 +187,19 @@ public class Table {
 	 */
 	public static void init() throws Exception {
 		setEnsCartes();
-		
+
 		joueur1 = new Joueur("", 1, 3);
 		joueur2 = new Joueur("", 2, 4);
 		joueur3 = new Joueur("", 3, 1);
 		joueur4 = new Joueur("", 4, 2);
+
 
 		equipe1 = new Equipe(1, joueur1, joueur3, 0);
 		equipe2 = new Equipe(2, joueur2, joueur4, 0);
 
 		equipe1.score = 0;
 		equipe2.score = 0;
+		atout = null;
 		int idJoueurCourant = (int) (Math.random() * (4 - 1 + 1) + 1); // selectionne un int entre 1 et 4
 		switch (idJoueurCourant) {
 		case 1:
@@ -141,6 +217,8 @@ public class Table {
 		default:
 			throw new Exception("identifiant du joueur non compatible");
 		}
+		ensCartes = new ArrayList<Carte>();
+		setEnsCartes();
 	}
 
 	/**
@@ -152,11 +230,56 @@ public class Table {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		//boucle principale du jeu
 		while (!gameOver) {
-			/**
-			 * gerer distrib , atout , maitre ...
-			 * 
-			 */
+			//garder en memoire le joueur qui distribue
+			Joueur distributeur = joueurCourant.clone();
+
+			//Tant que l'atout n'est pas choisi on fait deux tours de table et on redistribue
+			while(atout==null) {
+				Carte head = distribuer();
+				//premier tour de table pour choisir l'atout (une)
+				for(int i=0; i<4 ; i++) {
+					boolean aPris = joueurCourant.veutPrendre(head);
+					if(aPris) {
+						atout = joueurCourant.main.getLast().getCouleur(); //peut etre pas besoin, on verra
+						break;
+					}
+					joueurCourant = joueurSuivant();
+				}
+
+				//si l'atout n'est pas encore decide alors deuxieme tour de table (deux)
+				if(atout==null) {
+					for(int i=0; i<4 ; i++) {
+						boolean aPris = joueurCourant.veutPrendre(head);
+						if(aPris) {
+							//second tour donc le preneur doit decider de la couleur de l'atout
+							atout = joueurCourant.designeCouleur();
+							break;
+						}
+						joueurCourant = joueurSuivant();
+					}
+				}
+				//atout decide, il faut distribuer le reste des cartes
+				if(atout!=null) {
+					//le joueur courant redevient le joueur qui distribue
+					Joueur preneur = joueurCourant.clone();
+					joueurCourant = distributeur;
+					distribuerReste(preneur);
+				}
+				//atout encore non decide alors on remelange le paquet de carte
+				else Collections.shuffle(ensCartes);
+			}
+
+
+			if(scoreEquipe1>=scoreToWin) {
+				gameOver = true;
+				idWinner=1; //je mets l'id d'un seul membre comme le modulo donne forcement l'equipe des deux joueurs
+			}
+			if(scoreEquipe2>=scoreToWin) {
+				gameOver = true;
+				idWinner=2; //je mets l'id d'un seul membre comme le modulo donne forcement l'equipe des deux joueurs
+			}
 		}
 	}
 }
