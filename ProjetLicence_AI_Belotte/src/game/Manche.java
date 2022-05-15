@@ -124,12 +124,14 @@ public class Manche {
 	public void runManche(Joueur jCourant, Couleur atout) {
 		//Une manche == 8 plis
 		for (int i=0 ; i<8 ; i++) {
-			try {
+			/*try {
 				initPliSuivant();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
+			//initialisation du i ème pli
+			plis[i] = new Pli(idPremierJoueur);
 			
 			//Tour de table
 			for(int j=0 ; j<4 ; j++) {
@@ -144,6 +146,13 @@ public class Manche {
 				//jCourant devient joueur suivant
 				jCourant.passe();
 			}
+			
+			//recuperation id equipe gagnante et id premier joueur du pli suivant
+			int idGagnante = plis[i].equipeGagnante();
+			idPremierJoueur = plis[i].getIdJoueurGagnant();
+			
+			//attribution des points du pli a l'equipe gagnante
+			pointsEquipe[idGagnante] = plis[i].calculPoints();
 		}
 		//attribution des points remportes par chaque equipe
 		finManche();

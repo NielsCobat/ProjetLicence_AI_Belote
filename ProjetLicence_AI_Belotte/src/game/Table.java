@@ -173,6 +173,20 @@ public class Table {
 		else if (idCourant == 3) return joueur4;
 		else return joueur1;
 	}
+	
+	/**
+	 * Met les valeurs des cartes a l'atout a jour
+	 * @param atout la couleur de l'atout
+	 */
+	public static void setPointCarte(Couleur atout) {
+		for(Carte carte : ensCartes) {
+			if(carte.getCouleur()==atout && carte.getValeur()==Valeur.Neuf)
+				carte.point = 14;
+			
+			else if (carte.getCouleur()==atout && carte.getValeur()==Valeur.Valet)
+				carte.point = 20;
+		}
+	}
 
 
 	private Table() {
@@ -243,7 +257,8 @@ public class Table {
 					boolean aPris = joueurCourant.veutPrendre(head);
 					if(aPris) {
 						joueurPreneur = joueurCourant.clone();
-						atout = joueurCourant.main.getLast().getCouleur(); //peut etre pas besoin, on verra
+						atout = joueurCourant.main.getLast().getCouleur(); //maj couleur atout
+						setPointCarte(atout); //maj point des atouts
 						break;
 					}
 					joueurCourant = joueurSuivant();
@@ -256,7 +271,8 @@ public class Table {
 						if(aPris) {
 							joueurPreneur = joueurCourant.clone();
 							//second tour donc le preneur doit decider de la couleur de l'atout
-							atout = joueurCourant.designeCouleur();
+							atout = joueurCourant.designeCouleur(); //maj couleur atout
+							setPointCarte(atout); //maj point atout
 							break;
 						}
 						joueurCourant = joueurSuivant();
