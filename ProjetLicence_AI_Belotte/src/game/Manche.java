@@ -24,7 +24,7 @@ public class Manche {
 		this.plis = new Pli[8];
 		this.atout = atout;
 		this.idPremierJoueur = idPremierJoueur;
-		this.equipePreneur = ((joueurPreneur % 2) + 4) % 2 - 1; // soit 0 = joueurs 1 et 3 ; 1 = joueurs 2 et 4
+		this.equipePreneur = (joueurPreneur + 1) % 2; // soit 0 = joueurs 1 et 3 ; 1 = joueurs 2 et 4
 		this.pointsEquipe = new int[2];
 		this.pointsEquipe[0] = 0; // joueurs 1 et 3
 		this.pointsEquipe[1] = 0; // joueurs 2 et 4
@@ -81,7 +81,7 @@ public class Manche {
 			this.idPremierJoueur++;
 		else
 			this.idPremierJoueur = 1;
-		this.equipePreneur = ((joueurPreneur % 2) + 4) % 2 - 1; // soit 0 = joueurs 1 et 3 ; 1 = joueurs 2 et 4
+		this.equipePreneur = (joueurPreneur + 1) % 2; // soit 0 = joueurs 1 et 3 ; 1 = joueurs 2 et 4
 		this.pointsEquipe[0] = 0; // joueurs 1 et 3
 		this.pointsEquipe[1] = 0; // joueurs 2 et 4
 		this.nbPlis = 0;
@@ -121,38 +121,61 @@ public class Manche {
 		this.nbPlis++;
 	}
 	
-	public void runManche(Joueur jCourant, Couleur atout) {
+	public void runManche(Joueur jCourantP, Couleur atout) {
+		Joueur jCourant = Table.joueurCourant;
+
 		//Une manche == 8 plis
 		for (int i=0 ; i<8 ; i++) {
+			System.out.println("Bonjour " + i + " atout " + this.getAtout().name());
+			
+			
 			/*try {
 				initPliSuivant();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}*/
+			
 			//initialisation du i ème pli
+			
 			plis[i] = new Pli(idPremierJoueur);
+			while (idPremierJoueur != Table.joueurCourant.id) {
+				jCourant = Table.joueurSuivant();
+				Table.joueurCourant = Table.joueurSuivant();
+			}
 			
 			//Tour de table
 			for(int j=0 ; j<4 ; j++) {
 				
 				//Temporaire! joueur joue la premiere carte legale dispo dans sa main
 				for(Carte carte : jCourant.main) {
+					jCourant.printMain();
+					System.out.println("Joueur : " + jCourant.id + " Carte " + jCourant.main.indexOf(carte));
+
 					if(jCourant.isLegalMove(carte)) {
 						jCourant.joueCoup(carte);
+						
+						jCourant = Table.joueurSuivant();
+						Table.joueurCourant = Table.joueurSuivant();
 						break;
 					}
+					
 				}
 				//jCourant devient joueur suivant
-				jCourant.passe();
+				
 			}
 			
 			//recuperation id equipe gagnante et id premier joueur du pli suivant
-			int idGagnante = plis[i].equipeGagnante();
+			
+			System.out.println(plis[nbPlis].toString() + nbPlis); // TODO programme s'arrête jsp pourquoi (à l'appel de plis[i])
+			System.out.println("Bonsoir " + i);
+			
+			int idGagnante = plis[i].equipeGagnante(); 
 			idPremierJoueur = plis[i].getIdJoueurGagnant();
 			
 			//attribution des points du pli a l'equipe gagnante
 			pointsEquipe[idGagnante] = plis[i].calculPoints();
+			nbPlis++;
 		}
 		//attribution des points remportes par chaque equipe
 		finManche();
@@ -170,11 +193,11 @@ public class Manche {
 	/**
 	 * Getter d'un seul pli
 	 * 
-	 * @param noPli le numéro du pli souhaité (de 1 à 8)
+	 * @param noPli le numéro du pli souhaité (de 0 à 7)
 	 * @return l'objet du pli en question
 	 */
 	public Pli getPli(int noPli) {
-		return this.plis[noPli - 1];
+		return this.plis[noPli];
 	}
 
 	/**

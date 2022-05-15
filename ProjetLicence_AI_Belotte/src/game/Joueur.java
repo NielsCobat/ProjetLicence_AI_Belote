@@ -61,10 +61,10 @@ public class Joueur {
 	 * @param carte La carte dont on s'interroge sur la légalité
 	 * @return true si le coup est légal, false sinon.
 	 */
-	boolean isLegalMove(Carte carte) {
+	boolean isLegalMove(Carte carte) {//TODO Si le joueur adverse et maitre, que je ne peux pas couper ni fournir, je suis illégal
 		Manche manche = Table.mancheCourante;
 		Pli pli = manche.getPli(manche.getNbPlis());
-		Couleur demande = pli.getCouleurDemandee();
+		
 		Couleur couleurDeLaCarte = carte.getCouleur();
 		Couleur atoutManche = manche.getAtout();
 		Carte plusGrandAtoutDuPli = null;
@@ -76,9 +76,10 @@ public class Joueur {
 		if (pli.getNbCarte() == 0) {
 			return true;
 		} else {
-
+			
+			Couleur demande = pli.getCouleurDemandee();
 			for (Carte c : pli.getCartes()) { // On détermine le plus grand atout du pli.
-				if (c.getCouleur() == atoutManche) {
+				if ((c != null) && c.getCouleur().name().equals(atoutManche.name())) {
 					if (!pliContientAtout) {
 						pliContientAtout = true;
 						plusGrandAtoutDuPli = c;
@@ -89,36 +90,37 @@ public class Joueur {
 			}
 
 			for (Carte c : main) {
-				if (c.getCouleur() == demande)
+				if (c.getCouleur().name().equals(demande.name()))
 					nbDemande++;
-				if (c.getCouleur() == atoutManche)
+				if (c.getCouleur().name().equals(atoutManche.name()))
 					nbAtout++;
-				if (c.compareTo(plusGrandAtoutDuPli) == 1)
+				if (plusGrandAtoutDuPli == null || c.compareTo(plusGrandAtoutDuPli) == 1)
 					plusGrandQueLePlusGrandAtoutDuPli.add(c);
 			}
 
-			if (demande != manche.getAtout()) { // Si on ne demande pas d'atout.
+			if (!demande.name().equals(manche.getAtout().name()) ) { // Si on ne demande pas d'atout.
 				if (nbDemande > 0) { // Si on a au moins une carte de la couleur demandée dans sa main.
-					return (couleurDeLaCarte == demande);
+					return (couleurDeLaCarte.name().equals(demande.name()));
 				} else { // Si on a pas la couleur demandée.
 					if (pli.getIdJoueurGagnant() == this.idPartenaire)
 						return true; // Si le partenaire est maître, alors le coup est légal.
 					else if (nbAtout > 0) { // Sinon, si l'adversaire et maître et qu'on a un atout.
 						if (plusGrandAtoutDuPli == null) { // S'il n'y a pas encore d'atout dans le pli.
-							return (couleurDeLaCarte == atoutManche);
+							return (couleurDeLaCarte.name().equals(atoutManche.name()));
 						} else { // S'il y a au moins un atout dans le pli.
 							if (plusGrandQueLePlusGrandAtoutDuPli.isEmpty()) { // Si on a pas plus grand.
-								return (couleurDeLaCarte == atoutManche);
+								return (couleurDeLaCarte.name().equals(atoutManche.name()));
 							} else {
 								return plusGrandQueLePlusGrandAtoutDuPli.contains(carte);
 							}
 						}
 					}
+					else if (nbAtout == 0){ return true;}
 				}
 			} else { // Si on demande de l'atout.
 				if (nbAtout > 0) { // Si on en a.
 					if (plusGrandQueLePlusGrandAtoutDuPli.isEmpty()) { // Si on a pas plus grand.
-						return (couleurDeLaCarte == atoutManche);
+						return (couleurDeLaCarte.name().equals(atoutManche.name()));
 					} else { // Si on a plus grand.
 						return plusGrandQueLePlusGrandAtoutDuPli.contains(carte);
 					}
@@ -171,6 +173,7 @@ public class Joueur {
 	 */
 	boolean veutPrendre(Carte carte) {
 		Scanner scanner = new Scanner(System.in);
+		System.out.println("Joueur " + this.id);
 		System.out.println("Veux prendre ? (o/n)");
 		String reponse = scanner.nextLine();
 		if(reponse.equals("n")) {
@@ -211,6 +214,12 @@ public class Joueur {
 		default :
 			System.out.println("Choisissez une autre couleur");
 			return designeCouleur();
+		}
+	}
+	
+	public void printMain() {
+		for (Carte c : main) {
+			System.out.print(c.toString() + " | ");
 		}
 	}
 	

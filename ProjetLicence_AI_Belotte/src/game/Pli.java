@@ -35,7 +35,7 @@ public class Pli {
 		Carte meilleureCarte = cartes[0];
 		int res=0;
 		for (int i = 1; i < cartes.length; i++) {
-			if(meilleureCarte.compareTo(cartes[i])==-1) {
+			if(cartes[i] != null && meilleureCarte.compareTo(cartes[i])==-1) {
 				meilleureCarte = cartes[i];
 				res = i;
 			}
@@ -58,9 +58,10 @@ public class Pli {
 	 * 
 	 * @return total des points d'un pli
 	 */
-	public int calculPoints() {
+	public int calculPoints() { // TODO Si valet d'atout ou 9 d'atout, ajouter + de points
 		int res = 0;
 		for (Carte carte : cartes) {
+			if (carte != null)
 			res += carte.getPoints();
 		}
 		return res;
@@ -84,6 +85,17 @@ public class Pli {
 	
 	public Carte[] getCartes() {
 		return this.cartes;
+	}
+	
+	public String toString() {
+		String res = "";
+		for(Carte c : cartes) {
+//			System.out.println(c.toString());
+//			System.out.println("choconut");
+			if (c==null)break;
+			res += c.toString() + "\n";
+		}
+		return res;
 	}
 
 }

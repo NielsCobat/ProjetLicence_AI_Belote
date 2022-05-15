@@ -22,7 +22,8 @@ public class Carte {
 	int compareTo(Carte c2) {
 		// -1  this ne l'emporte pas face à c
 		//1  this l'emporte face à c
-		if(this.couleur.name().equals(Table.mancheCourante.getAtout().name())) {
+		if (c2 != null) {
+			if(this.couleur.name().equals(Table.mancheCourante.getAtout().name())) {
 			if(c2.couleur.name().equals(Table.mancheCourante.getAtout().name())) {
 				for(int i = 0 ; i < ordreAtout.length ; i++) {
 					if(ordreAtout[i].name() == this.valeur.name()) {
@@ -52,6 +53,8 @@ public class Carte {
 				}
 			}
 		}
+		}
+		
 		return -1;
 	}
 	
@@ -66,4 +69,10 @@ public class Carte {
 	public int getPoints() {
 		return this.point;
 	}
+	
+	public String toString() {
+		String res = "" + this.getValeur().name() + " de " + this.getCouleur().name();
+		return res;
+	}
+	
 }
