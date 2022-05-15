@@ -10,14 +10,13 @@ public class Table {
 
 	private final static int scoreToWin = 501;
 
-	private static final Couleur Carreau = null;
 	static Joueur joueur1;
 	static Joueur joueur2;
 	static Joueur joueur3;
 	static Joueur joueur4;
 
-	static int scoreEquipe1; //joueur 1 et 3
-	static int scoreEquipe2; //joueur 2 et 4
+	static int scoreEquipe1; //joueur 1 et 3 (ne sert pas pour l'instant)
+	static int scoreEquipe2; //joueur 2 et 4 (ne sert pas pour l'instant)
 
 
 	static Equipe equipe1;
@@ -174,6 +173,20 @@ public class Table {
 		else if (idCourant == 3) return joueur4;
 		else return joueur1;
 	}
+	
+	/**
+	 * Met les valeurs des cartes a l'atout a jour
+	 * @param atout la couleur de l'atout
+	 */
+	public static void setPointCarte(Couleur atout) {
+		for(Carte carte : ensCartes) {
+			if(carte.getCouleur()==atout && carte.getValeur()==Valeur.Neuf)
+				carte.point = 14;
+			
+			else if (carte.getCouleur()==atout && carte.getValeur()==Valeur.Valet)
+				carte.point = 20;
+		}
+	}
 
 
 	private Table() {
@@ -234,6 +247,7 @@ public class Table {
 		while (!gameOver) {
 			//garder en memoire le joueur qui distribue
 			Joueur distributeur = joueurCourant.clone();
+			Joueur joueurPreneur = null; //pas terrible mais doit etre initialisée
 
 			//Tant que l'atout n'est pas choisi on fait deux tours de table et on redistribue
 			while(atout==null) {
@@ -242,7 +256,9 @@ public class Table {
 				for(int i=0; i<4 ; i++) {
 					boolean aPris = joueurCourant.veutPrendre(head);
 					if(aPris) {
-						atout = joueurCourant.main.getLast().getCouleur(); //peut etre pas besoin, on verra
+						joueurPreneur = joueurCourant.clone();
+						atout = joueurCourant.main.getLast().getCouleur(); //maj couleur atout
+						setPointCarte(atout); //maj point des atouts
 						break;
 					}
 					joueurCourant = joueurSuivant();
@@ -253,8 +269,10 @@ public class Table {
 					for(int i=0; i<4 ; i++) {
 						boolean aPris = joueurCourant.veutPrendre(head);
 						if(aPris) {
+							joueurPreneur = joueurCourant.clone();
 							//second tour donc le preneur doit decider de la couleur de l'atout
-							atout = joueurCourant.designeCouleur();
+							atout = joueurCourant.designeCouleur(); //maj couleur atout
+							setPointCarte(atout); //maj point atout
 							break;
 						}
 						joueurCourant = joueurSuivant();
@@ -263,23 +281,37 @@ public class Table {
 				//atout decide, il faut distribuer le reste des cartes
 				if(atout!=null) {
 					//le joueur courant redevient le joueur qui distribue
-					Joueur preneur = joueurCourant.clone();
 					joueurCourant = distributeur;
-					distribuerReste(preneur);
+					distribuerReste(joueurPreneur);
 				}
 				//atout encore non decide alors on remelange le paquet de carte
 				else Collections.shuffle(ensCartes);
 			}
+			
+			//lancement de la manche
+			while(equipe1.getScore()<scoreToWin || equipe2.getScore()<scoreToWin) {
+				//joueur a gauche du joueur distributeur commence a poser une carte
+				joueurCourant  = joueurSuivant();
+				Joueur premierJoueur = joueurCourant.clone();
 
+				try {
+					mancheCourante = new Manche(atout, premierJoueur.id, joueurPreneur.id );
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				mancheCourante.runManche(joueurCourant, atout);
+			}
 
-			if(scoreEquipe1>=scoreToWin) {
+			if(equipe1.getScore()>=scoreToWin) {
 				gameOver = true;
 				idWinner=1; //je mets l'id d'un seul membre comme le modulo donne forcement l'equipe des deux joueurs
 			}
-			if(scoreEquipe2>=scoreToWin) {
+			if(equipe2.getScore()>=scoreToWin) {
 				gameOver = true;
 				idWinner=2; //je mets l'id d'un seul membre comme le modulo donne forcement l'equipe des deux joueurs
 			}
 		}
+		System.out.println("Equipe " + idWinner + " gagne la partie");
 	}
 }
