@@ -29,70 +29,44 @@ public class Table {
 
 	static LinkedList<Carte> cartesEnMain;
 	static LinkedList<Carte> cartesPosees;
-	static ArrayList<Carte> ensCartes;
+	static ArrayList<Carte> ensCartes = new ArrayList<Carte>();
 	static int idWinner;
 	static boolean gameOver = false;
 
 
 	static void setEnsCartes() {
-		for (int i = 0; i < 4; i++) {
-			Couleur couleurCourrante = Couleur.Carreau;
-			switch (i) {
-			case 0:
-				couleurCourrante = Couleur.Carreau;
-				break;
-			case 1:
-				couleurCourrante = Couleur.Coeur;
-				break;
-			case 2:
-				couleurCourrante = Couleur.Pique;
-				break;
-			case 3:
-				couleurCourrante = Couleur.Trefle;
-				break;
-			default:
-			}
-			for (int j = 0; j < 8; j++) {
-				Valeur valeurCourrante = Valeur.Sept;
-				int pts = 0;
-				switch (j) {
-				case 0:
-					valeurCourrante = Valeur.Sept;
-					pts = 0;
-					break;
-				case 1:
-					valeurCourrante = Valeur.Huit;
-					pts = 0;
-					break;
-				case 2:
-					valeurCourrante = Valeur.Neuf;
-					pts = 0;
-					break;
-				case 3:
-					valeurCourrante = Valeur.Dix;
-					pts = 10;
-					break;
-				case 4:
-					valeurCourrante = Valeur.Valet;
-					pts = 2;
-					break;
-				case 5:
-					valeurCourrante = Valeur.Dame;
-					pts = 3;
-					break;
-				case 6:
-					valeurCourrante = Valeur.Roi;
-					pts = 4;
-					break;
-				case 7:
-					valeurCourrante = Valeur.As;
-					pts = 11;
-					break;
-				default:
-				}
-				ensCartes.add(new Carte(couleurCourrante, valeurCourrante, pts));
-			}
-		}
+		ensCartes.add(new Carte(Couleur.Carreau, Valeur.Sept, 0));
+		ensCartes.add(new Carte(Couleur.Carreau, Valeur.Huit, 0));
+		ensCartes.add(new Carte(Couleur.Carreau, Valeur.Neuf, 0));
+		ensCartes.add(new Carte(Couleur.Carreau, Valeur.Dix, 10));
+		ensCartes.add(new Carte(Couleur.Carreau, Valeur.Valet, 2));
+		ensCartes.add(new Carte(Couleur.Carreau, Valeur.Dame, 3));
+		ensCartes.add(new Carte(Couleur.Carreau, Valeur.Roi, 4));
+		ensCartes.add(new Carte(Couleur.Carreau, Valeur.As, 11));
+		ensCartes.add(new Carte(Couleur.Coeur, Valeur.Sept, 0));
+		ensCartes.add(new Carte(Couleur.Coeur, Valeur.Huit, 0));
+		ensCartes.add(new Carte(Couleur.Coeur, Valeur.Neuf, 0));
+		ensCartes.add(new Carte(Couleur.Coeur, Valeur.Dix, 10));
+		ensCartes.add(new Carte(Couleur.Coeur, Valeur.Valet, 2));
+		ensCartes.add(new Carte(Couleur.Coeur, Valeur.Dame, 3));
+		ensCartes.add(new Carte(Couleur.Coeur, Valeur.Roi, 4));
+		ensCartes.add(new Carte(Couleur.Coeur, Valeur.As, 11));
+		ensCartes.add(new Carte(Couleur.Trefle, Valeur.Sept, 0));
+		ensCartes.add(new Carte(Couleur.Trefle, Valeur.Huit, 0));
+		ensCartes.add(new Carte(Couleur.Trefle, Valeur.Neuf, 0));
+		ensCartes.add(new Carte(Couleur.Trefle, Valeur.Dix, 10));
+		ensCartes.add(new Carte(Couleur.Trefle, Valeur.Valet, 2));
+		ensCartes.add(new Carte(Couleur.Trefle, Valeur.Dame, 3));
+		ensCartes.add(new Carte(Couleur.Trefle, Valeur.Roi, 4));
+		ensCartes.add(new Carte(Couleur.Trefle, Valeur.As, 11));
+		ensCartes.add(new Carte(Couleur.Pique, Valeur.Sept, 0));
+		ensCartes.add(new Carte(Couleur.Pique, Valeur.Huit, 0));
+		ensCartes.add(new Carte(Couleur.Pique, Valeur.Neuf, 0));
+		ensCartes.add(new Carte(Couleur.Pique, Valeur.Dix, 10));
+		ensCartes.add(new Carte(Couleur.Pique, Valeur.Valet, 2));
+		ensCartes.add(new Carte(Couleur.Pique, Valeur.Dame, 3));
+		ensCartes.add(new Carte(Couleur.Pique, Valeur.Roi, 4));
+		ensCartes.add(new Carte(Couleur.Pique, Valeur.As, 11));
 		Collections.shuffle(ensCartes);
 	}
 	
@@ -269,7 +243,7 @@ public class Table {
 	/**
 	 * Deroulement de la partie, de l'init jusqu'au game over
 	 */
-	static void run() {
+	public static void run() {
 		try {
 			init();
 		} catch (Exception e) {
@@ -295,7 +269,6 @@ public class Table {
 						setPointCarte(atout); //maj point des atouts
 						break;
 					}
-					joueurCourant = joueurSuivant();
 				}
 
 				//si l'atout n'est pas encore decide alors deuxieme tour de table (deux)
@@ -323,7 +296,6 @@ public class Table {
 			}
 			
 			//lancement de la manche
-			while(equipe1.getScore()<scoreToWin || equipe2.getScore()<scoreToWin) {
 				//joueur a gauche du joueur distributeur commence a poser une carte
 				joueurCourant  = joueurSuivant();
 				Joueur premierJoueur = joueurCourant.clone();
@@ -335,8 +307,15 @@ public class Table {
 					e.printStackTrace();
 				}
 				mancheCourante.runManche(joueurCourant, atout);
-			}
-
+				//fin de la manche, on reset l'atout et la manche
+				atout = null;
+				try {
+					mancheCourante.reset(atout, joueurPreneur.id);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			if(equipe1.getScore()>=scoreToWin) {
 				gameOver = true;
 				idWinner=1; //je mets l'id d'un seul membre comme le modulo donne forcement l'equipe des deux joueurs
