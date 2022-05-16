@@ -2,6 +2,7 @@ package game;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Scanner;
 import java.util.Collections;
 import assets.Couleur;
 import assets.Valeur;
@@ -93,6 +94,37 @@ public class Table {
 			}
 		}
 		Collections.shuffle(ensCartes);
+	}
+	
+	/**
+	 * Demande au joueur courant à quelle carte il souhaite couper
+	 * Coupe
+	 * Le joueur courant devient le joueur suivant
+	 */
+	static void coupe() {
+		//on demande au joueur courant où il souhaite couper
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Où souhaitez-vous couper? Donnez l'indice de la carte (De 3 à 28). ");
+		int index = scanner.nextInt();
+		scanner.close();
+		
+		while(index < 3 || index > 28) {
+			Scanner scannerBis = new Scanner(System.in);
+			System.out.println("Choisissez un nombre valide svp ( entre 3 et 28 inclus). ");
+			index = scannerBis.nextInt();
+			scannerBis.close();
+		}
+		
+		//on divise le paquet de cartes
+		 ArrayList<Carte> head = (ArrayList<Carte>) ensCartes.subList(0, index);
+		 ArrayList<Carte> tail = (ArrayList<Carte>) ensCartes.subList(index, ensCartes.size());
+		 
+		 //on permute les deux paquets de cartes
+		 tail.addAll(head);
+		 ensCartes = tail;
+		 
+		 //on change de joueur courant qui distribuera
+		 joueurCourant = joueurSuivant();
 	}
 
 	/**
@@ -251,6 +283,8 @@ public class Table {
 
 			//Tant que l'atout n'est pas choisi on fait deux tours de table et on redistribue
 			while(atout==null) {
+				
+				coupe();
 				Carte head = distribuer();
 				//premier tour de table pour choisir l'atout (une)
 				for(int i=0; i<4 ; i++) {

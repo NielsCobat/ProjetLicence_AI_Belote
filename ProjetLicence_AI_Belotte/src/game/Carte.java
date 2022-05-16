@@ -11,16 +11,25 @@ public class Carte {
 
 	final static Valeur[] ordreNonAtout = {Valeur.Sept, Valeur.Huit, Valeur.Neuf, Valeur.Valet, Valeur.Dame, Valeur.Roi, Valeur.Dix, Valeur.As};
 	final static Valeur[] ordreAtout = {Valeur.Sept, Valeur.Huit, Valeur.Dame, Valeur.Roi, Valeur.Dix, Valeur.As, Valeur.Neuf, Valeur.Valet};
-
+	
+	
+	/*
+	 * @param couleur la couleur de la carte
+	 * @param valeur sa valeur ( pour un jeu de 32 cartes)
+	 * @param le nombre de point qu'elle vaut
+	 */
 	public Carte(Couleur couleur, Valeur valeur, int point) {
 		this.couleur = couleur;
 		this.valeur = valeur;
 		this.point = point;
 	}
 	
+	/*
+	 * @param c2 la carte à comparer 
+	 * -1  this ne l'emporte pas face à c
+	 * 1  this l'emporte face à c
+	 */
 	int compareTo(Carte c2) {
-		// -1  this ne l'emporte pas face à c
-		//1  this l'emporte face à c
 		if(this.couleur.name().equals(Table.mancheCourante.getAtout().name())) {
 			if(c2.couleur.name().equals(Table.mancheCourante.getAtout().name())) {
 				for(int i = 0 ; i < ordreAtout.length ; i++) {
