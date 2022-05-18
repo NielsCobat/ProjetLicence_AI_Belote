@@ -36,10 +36,10 @@ public class Carte {
 			if(this.couleur.name().equals(Table.mancheCourante.getAtout().name())) {
 			if(c2.couleur.name().equals(Table.mancheCourante.getAtout().name())) {
 				for(int i = 0 ; i < ordreAtout.length ; i++) {
-					if(ordreAtout[i].name() == this.valeur.name()) {
+					if(ordreAtout[i].name().equals(this.valeur.name())) {
 						return -1;
 					}
-					else if(ordreAtout[i].name() == c2.valeur.name()) {
+					else if(ordreAtout[i].name().equals(c2.valeur.name())) {
 						return 1;
 					}
 				}
@@ -48,16 +48,16 @@ public class Carte {
 				return 1;
 			}
 		}
-		else {
-			if(c2.couleur.name().equals(Table.mancheCourante.getAtout().name())) {
+		else { //this n'est pas un atout
+			if(c2.couleur.name().equals(Table.mancheCourante.getAtout().name())) { //c2 est un atout
 				return -1;
 			}
-			else {
+			else if (c2.couleur.name().equals(this.getCouleur().name())) { //c2 et this sont de la même couleur
 				for(int i = 0 ; i < ordreNonAtout.length ; i++) {
-					if(ordreNonAtout[i].name() == this.valeur.name()) {
+					if(ordreNonAtout[i].name().equals(this.valeur.name())) {
 						return -1;
 					}
-					else if(ordreNonAtout[i].name() == c2.valeur.name()) {
+					else if(ordreNonAtout[i].name().equals(c2.valeur.name())) {
 						return 1;
 					}
 				}
@@ -65,7 +65,7 @@ public class Carte {
 		}
 		}
 		
-		return -1;
+		return 1;
 	}
 	
 	public Couleur getCouleur() {

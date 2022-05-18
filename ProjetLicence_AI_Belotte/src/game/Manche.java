@@ -43,29 +43,46 @@ public class Manche {
 
 			// calcul des points dans la classe Partie à la fin
 
-			if (Table.joueur1.hasBelote() || Table.joueur3.hasBelote())
+			if (Table.joueur1.aBelote || Table.joueur3.aBelote)
 				this.belotte[0] = 20;
-			else if (Table.joueur2.hasBelote() || Table.joueur4.hasBelote())
+			else if (Table.joueur2.aBelote || Table.joueur4.aBelote)
 				this.belotte[1] = 20;
-
-			if (this.pointsEquipe[0] == 162)
+			System.out.println("Fin de Manche ! ");
+			System.out.print("Points de l'équipe 1 : " + this.pointsEquipe[0]);
+			if (this.belotte[0] == 20) System.out.print(" + " + this.belotte[0] + " points de Belote");
+			System.out.println();
+			System.out.print("Points de l'équipe 2 : " + this.pointsEquipe[1]);
+			if (this.belotte[1] == 20) System.out.print(" + " + this.belotte[1] + " points de Belote");
+			System.out.println();
+			
+			if (this.pointsEquipe[0] == 162) { //Équipe 2 capot
 				this.pointsEquipe[0] = 252;
-			else if (this.pointsEquipe[1] == 162)
+				System.out.println("Équipe 2 capot ! ");
+			}
+				
+			
+			else if (this.pointsEquipe[1] == 162) {//Équipe 1 capot
 				this.pointsEquipe[1] = 252;
-			else if (this.pointsEquipe[(this.equipePreneur + 1) % 2]
-					+ this.belotte[(this.equipePreneur + 1) % 2] == 81) {
-				this.pointsEquipe[this.equipePreneur] = 0;
-				this.pointsEquipe[(this.equipePreneur) % 2] = 81;
-			} else if (this.pointsEquipe[this.equipePreneur] + this.belotte[this.equipePreneur] < 81
-					|| this.pointsEquipe[(this.equipePreneur + 1) % 2]
-							+ this.belotte[(this.equipePreneur + 1) % 2] > 81) {
+				System.out.println("Équipe 2 capot ! ");
+			}
+				
+			
+			else if (this.pointsEquipe[(this.equipePreneur)] < 82	   //Si une équipe prend et qu'il n'y a pas de Belote
+					&& this.belotte[(this.equipePreneur)] + this.belotte[(this.equipePreneur + 1) % 2] == 0
+					|| (this.pointsEquipe[(this.equipePreneur)] < 92   //Si une équipe prend et qu'il y a une Belote	
+					&& this.belotte[(this.equipePreneur)] + this.belotte[(this.equipePreneur + 1) % 2] == 20 )) { 
 				this.pointsEquipe[this.equipePreneur] = 0;
 				this.pointsEquipe[(this.equipePreneur + 1) % 2] = 162;
-			}
+				if (this.equipePreneur == 0) System.out.println("Équipe 1 dedans ! ");
+				else System.out.println("Équipe 2 dedans ! ");
+				
+			} 
 
 			Table.equipe1.addScore(this.pointsEquipe[0] + this.belotte[0]);
 			Table.equipe2.addScore(this.pointsEquipe[1] + this.belotte[1]);
 			
+			System.out.println("Score équipe 1 : " + Table.equipe1.score);
+			System.out.println("Score équipe 2 : " + Table.equipe2.score);
 			// On remet les cartes des plis dans le paquet, en commençant par les plis de l'équipe qui ne prend pas.
 			ArrayList<Carte> pasPris = new ArrayList<Carte>();
 			ArrayList<Carte> pris = new ArrayList<Carte>();
@@ -80,6 +97,10 @@ public class Manche {
 			Table.ensCartes.addAll(pasPris);
 			Table.ensCartes.addAll(pris);
 		}
+		Table.joueur1.setABelote();
+		Table.joueur2.setABelote();
+		Table.joueur3.setABelote();
+		Table.joueur4.setABelote();
 	}
 
 	/**
@@ -104,7 +125,7 @@ public class Manche {
 		this.nbPlis = 0;
 		this.belotte[0] = 0;
 		this.belotte[1] = 0;
-		//this.initPliSuivant(); //TODO pas sûr que ça doive être ici
+		//this.initPliSuivant(); // pas sûr que ça doive être ici
 	}
 
 	/**
@@ -139,12 +160,18 @@ public class Manche {
 	}
 	
 	public void runManche(Couleur atout) {
+		boolean half = false; //Pour savoir si la moitié de la belote a été utilisée.
 		Joueur jCourant = Table.joueurCourant;
 		Scanner sc = Table.scannerString;
 		String carteAJouer = "";
+		Table.joueur1.hasBelote();
+		Table.joueur2.hasBelote();
+		Table.joueur3.hasBelote();
+		Table.joueur4.hasBelote();
 		//Une manche == 8 plis
 		for (int i=0 ; i<8 ; i++) {
 			System.out.println("Pli numéro " + (i+1));
+			System.out.println("L'équipe " + (equipePreneur+ 1 ) + " a pris.");
 			
 			
 			/*try {
@@ -155,11 +182,13 @@ public class Manche {
 			
 			//initialisation du i ème pli
 			
-			plis[i] = new Pli(idPremierJoueur);
+			plis[i] = new Pli(idPremierJoueur); 
 			while (idPremierJoueur != Table.joueurCourant.id) {
 				jCourant = Table.joueurSuivant();
 				Table.joueurCourant = Table.joueurSuivant();
 			}
+			
+			
 			
 			//Tour de table
 			boolean aLaCarte;
@@ -169,12 +198,14 @@ public class Manche {
 				aLaCarte = false;
 				played = false;
 				while (!played) {
-					System.out.println("Joueur " + jCourant.id);
+					if ( jCourant.id == 1 || jCourant.id == 3 ) System.out.println("Joueur " + jCourant.id + " Équipe 1");
+					else System.out.println("Joueur " + jCourant.id + " Équipe 2");
 					System.out.println("Entrez le nom de la carte à jouer.");
 					System.out.println("Atout : " + atout);
 					System.out.print("Main : ");
 					jCourant.printMain();
 					System.out.println("\nÉtat actuel du pli : " + plis[i].toString());
+					if (j > 0) System.out.println("Équipe maîtresse : " + (plis[i].equipeGagnante()));
 					carteAJouer = sc.nextLine();
 					
 					for(Carte carte : jCourant.main) {
@@ -182,6 +213,16 @@ public class Manche {
 							aLaCarte = true;
 							
 							if (jCourant.isLegalMove(carte)) {
+								if (jCourant.aBelote && ((carte.getValeur().name().equals("Dame") || (carte.getValeur().name().equals("Roi"))
+										&& carte.getCouleur().name().equals(atout.name())))) {
+									if(!half) {
+										System.out.println("Belote ! ");
+										half = !half;
+									}
+									else {
+										System.out.println("Rebelote ! ");
+									}
+								}
 								jCourant.joueCoup(carte);
 								played = true;
 								jCourant = Table.joueurSuivant();
@@ -195,50 +236,16 @@ public class Manche {
 					if (!aLaCarte) System.out.println("Vous n'avez pas cette carte ! ");
 				}
 				
-				
-				
-				
-//				for(Carte carte : jCourant.main) {
-//					jCourant.printMain();
-//					System.out.println("Joueur : " + jCourant.id + " Carte " + jCourant.main.indexOf(carte));
-//
-//					if(jCourant.isLegalMove(carte)) {
-//						jCourant.joueCoup(carte);
-//						
-//						jCourant = Table.joueurSuivant();
-//						Table.joueurCourant = Table.joueurSuivant();
-//						break;
-//					}
-//					
-//				}
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
 			}
 			
-			//recuperation id equipe gagnante et id premier joueur du pli suivant
-			
-			System.out.println(plis[nbPlis].toString() + nbPlis); 
-			System.out.println("Bonsoir " + i);
-			
-			int idGagnante = plis[i].equipeGagnante(); 
+			//recuperation id equipe gagnante et id premier joueur du pli suivant	
+			int idGagnante = plis[i].equipeGagnante() - 1; 
 			idPremierJoueur = plis[i].getIdJoueurGagnant();
+			System.out.println("\n\nId du joueur gagnant est " + idPremierJoueur + "\n\n");
 			
 			//attribution des points du pli a l'equipe gagnante
-			pointsEquipe[idGagnante] = plis[i].calculPoints();
+			pointsEquipe[idGagnante] += plis[i].calculPoints();
+			if (i == 7) pointsEquipe[idGagnante] += 10; // 10 de der
 			nbPlis++;
 		}
 		//attribution des points remportes par chaque equipe

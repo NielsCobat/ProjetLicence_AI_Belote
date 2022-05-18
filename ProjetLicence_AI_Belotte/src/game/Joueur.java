@@ -2,11 +2,8 @@ package game;
 
 import java.util.LinkedList;
 import java.util.Scanner;
-
-import game.Table;
 import assets.Couleur;
 
-import assets.Valeur;
 
 public class Joueur {
 
@@ -15,7 +12,8 @@ public class Joueur {
 	boolean maitre;
 	int idPartenaire;
 	LinkedList<Carte> main;
-
+	boolean aBelote;
+	
 	public Joueur() {
 		nom = "";
 		id = 0;
@@ -32,22 +30,27 @@ public class Joueur {
 
 	/**
 	 * 
-	 * @return true si le joueur a la belote, false sinon.
+	 * Détermine si le joueur a la belote
 	 */
-	boolean hasBelote() {
+	void hasBelote() {
 		boolean roi = false;
 		boolean dame = false;
-		Couleur atout = Table.mancheCourante.getAtout();
-		for (Carte c : Table.ensCartes) {
-			if (c.getCouleur() == atout && c.getValeur() == Valeur.Roi) {
-				if (main.contains(c))
+		String atout = Table.mancheCourante.getAtout().name();
+		for (Carte c : this.main) {
+			if (c.getCouleur().name().equals(atout) && c.getValeur().name().equals("Roi")) {
 					roi = true;
-			} else if (c.getCouleur() == atout && c.getValeur() == Valeur.Dame) {
-				if (main.contains(c))
+			} else if (c.getCouleur().name().equals(atout) && c.getValeur().name().equals("Dame")) {
 					dame = true;
 			}
 		}
-		return roi && dame;
+		aBelote = roi && dame;
+	}
+	
+	/**
+	 * Met aBelote à faux, utilisé en fin de manche après les calculs de points.
+	 */
+	public void setABelote() {
+		aBelote = false;
 	}
 
 	/**
@@ -61,7 +64,7 @@ public class Joueur {
 	 * @param carte La carte dont on s'interroge sur la légalité
 	 * @return true si le coup est légal, false sinon.
 	 */
-	boolean isLegalMove(Carte carte) {//TODO Si le joueur adverse et maitre, que je ne peux pas couper ni fournir, je suis illégal
+	boolean isLegalMove(Carte carte) {
 		Manche manche = Table.mancheCourante;
 		Pli pli = manche.getPli(manche.getNbPlis());
 		
@@ -138,6 +141,7 @@ public class Joueur {
 	 */
 	void joueCoup(Carte carte) {
 			Manche manche = Table.mancheCourante;
+			
 			manche.getPli(manche.getNbPlis()).addCarte(carte);
 			main.remove(carte);
 	}
@@ -146,16 +150,7 @@ public class Joueur {
 	 * Le joueur ne prend pas et le joueurCourant devient le joueur à sa gauche.
 	 */
 	void passe() {
-		switch (Table.joueurCourant.id){
-			case 1 : Table.joueurCourant = Table.joueur2;
-			break;
-			case 2 : Table.joueurCourant = Table.joueur3;
-			break;
-			case 3 : Table.joueurCourant = Table.joueur4;
-			break;
-			case 4 : Table.joueurCourant = Table.joueur1;
-			break;
-		}
+		Table.joueurCourant = Table.joueurSuivant();
 	}
 
 	/**
@@ -173,22 +168,25 @@ public class Joueur {
 	 */
 	boolean veutPrendre(Carte carte) {
 		Scanner scanner = Table.scannerString;
-		System.out.println("Joueur " + this.id);
-		System.out.println("Veux prendre ? (o/n)");
-		String reponse = scanner.nextLine();
-		if(reponse.equals("n")) {
-			passe();
-			return false;
+		String reponse = "";
+		while (!reponse.equals("o") && !reponse.equals("n")) {
+			System.out.println("Joueur " + this.id);
+			System.out.print("Main : ");
+			this.printMain();
+			System.out.println("\nVeux prendre ? (o/n)");
+			reponse = scanner.nextLine();
+			if(reponse.equals("n")) {
+				return false;
+			}
+			else if(reponse.equals("o")){
+				prend(carte);
+				Table.ensCartes.remove(carte);
+				return true;
+			}
+			else System.out.println("L'entrée doit être valide ! ");
 		}
-		else if(reponse.equals("o")){
-			prend(carte);
-			Table.ensCartes.remove(carte);
-
-			return true;
-		}
-		//par defaut si erreur je considere que le joueur passe
-		passe();
 		return false;
+		
 	}
 	
 	/**
@@ -200,19 +198,24 @@ public class Joueur {
 		Scanner scanner = Table.scannerString;
 		System.out.println("Quelle couleur d'atout ? (carreau/pique/coeur/trefle)");
 		String reponse = scanner.nextLine();
-		switch (reponse) {
+		switch (reponse.toLowerCase()) {
 		case "carreau" :
 			if(this.main.getLast().getCouleur()!=Couleur.Carreau) return Couleur.Carreau;
+			break;
 		case "pique" :
 			if(this.main.getLast().getCouleur()!=Couleur.Pique) return Couleur.Pique;
+			break;
 		case "coeur" :
 			if(this.main.getLast().getCouleur()!=Couleur.Coeur) return Couleur.Coeur;
+			break;
 		case "trefle" :
 			if(this.main.getLast().getCouleur()!=Couleur.Trefle) return Couleur.Trefle;
+			break;
 		default :
-			System.out.println("Choisissez une autre couleur");
-			return designeCouleur();
+			break;
 		}
+		System.out.println("Choisissez une autre couleur");
+		return designeCouleur();
 	}
 	
 	public void printMain() {

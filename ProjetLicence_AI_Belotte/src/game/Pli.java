@@ -1,7 +1,6 @@
 package game;
 
 import assets.Couleur;
-
 public class Pli {
 
 	private int idPremierJoueur, nbCarte, idJoueurGagnant;
@@ -21,10 +20,11 @@ public class Pli {
 	 * @return 0 si equipe1 gagne 1 si equipe2 gagne
 	 */
 	public int equipeGagnante() {
-		int idGagnant = idPremierJoueur + indiceMeilleureCarte();
-		if (idGagnant>4) idGagnant -= 4;
-		idJoueurGagnant = idGagnant;
-		return idGagnant<=2? 0 : 1;
+		int idGagnant = (idPremierJoueur + indiceMeilleureCarte())%4;
+		if (idGagnant == 0) idJoueurGagnant = 4;
+		else idJoueurGagnant = idGagnant;
+		if(idJoueurGagnant == 1 || idJoueurGagnant == 3) return 1;
+		else return 2;
 	}
 	
 	/**
@@ -58,11 +58,15 @@ public class Pli {
 	 * 
 	 * @return total des points d'un pli
 	 */
-	public int calculPoints() { // TODO Si valet d'atout ou 9 d'atout, ajouter + de points
+	public int calculPoints() { //TODO Si valet d'atout ou 9 d'atout, ajouter + de points
 		int res = 0;
 		for (Carte carte : cartes) {
-			if (carte != null)
-			res += carte.getPoints();
+			if (carte != null) {
+				res += carte.getPoints();
+				if(carte.getValeur().name().equals("Valet") && carte.getCouleur().name().equals(Table.atout.name())) res += 18;//valet d'atout = 18 points de plus
+				if(carte.getValeur().name().equals("Neuf") && carte.getCouleur().name().equals(Table.atout.name())) res += 14;
+			}
+			
 		}
 		return res;
 	}

@@ -189,24 +189,8 @@ public class Table {
 		else return joueur1;
 	}
 	
-	/**
-	 * Met les valeurs des cartes a l'atout a jour
-	 * @param atout la couleur de l'atout
-	 */
-	public static void setPointCarte(Couleur atout) {
-		for(Carte carte : ensCartes) {
-			if(carte.getCouleur()==atout && carte.getValeur()==Valeur.Neuf)
-				carte.point = 14;
-			
-			else if (carte.getCouleur()==atout && carte.getValeur()==Valeur.Valet)
-				carte.point = 20;
-		}
+		private Table() {
 	}
-
-
-	private Table() {
-	}
-
 
 	/**
 	 * Initialise toutes les variables nécessaires pour débuter une partie
@@ -267,30 +251,33 @@ public class Table {
 
 			//Tant que l'atout n'est pas choisi on fait deux tours de table et on redistribue
 			while(atout==null) {		
-				
+				distributeur = joueurCourant.clone();
 				Carte head = distribuer();
 				//premier tour de table pour choisir l'atout (une)
 				for(int i=0; i<4 ; i++) {
+					System.out.println("Score équipe 1 : " + equipe1.getScore()  + ". Score équipe 2 : " + equipe2.getScore());
+					System.out.println("Tour 1\nCarte à prendre : " + head.toString());
 					boolean aPris = joueurCourant.veutPrendre(head);
 					if(aPris) {
 						joueurPreneur = joueurCourant.clone();
 						atout = joueurCourant.main.getLast().getCouleur(); //maj couleur atout
-						setPointCarte(atout); //maj point des atouts
 						break;
 					}
+					else joueurCourant = joueurSuivant();
 				}
 
 				//si l'atout n'est pas encore decide alors deuxieme tour de table (deux)
 				if(atout==null) {
 					for(int i=0; i<4 ; i++) {
+						System.out.println("Tour 2\nCarte à prendre : " + head.toString());
 						boolean aPris = joueurCourant.veutPrendre(head);
 						if(aPris) {
 							joueurPreneur = joueurCourant.clone();
 							//second tour donc le preneur doit decider de la couleur de l'atout
 							atout = joueurCourant.designeCouleur(); //maj couleur atout
-							setPointCarte(atout); //maj point atout
 							break;
 						}
+						else if(i != 3) joueurCourant = joueurSuivant();
 					}
 				}
 				//atout decide, il faut distribuer le reste des cartes
@@ -324,7 +311,6 @@ public class Table {
 				//joueur a gauche du joueur distributeur commence a poser une carte
 				joueurCourant  = joueurSuivant();
 				Joueur premierJoueur = joueurCourant.clone();
-
 				try {
 					mancheCourante = new Manche(atout, premierJoueur.id, joueurPreneur.id );
 				} catch (Exception e) {
