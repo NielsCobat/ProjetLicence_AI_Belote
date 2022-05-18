@@ -182,6 +182,8 @@ public class Joueur {
 		}
 		else if(reponse.equals("o")){
 			prend(carte);
+			Table.ensCartes.remove(carte);
+
 			return true;
 		}
 		//par defaut si erreur je considere que le joueur passe

@@ -1,6 +1,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Collections;
@@ -113,7 +114,7 @@ public class Table {
 	 * @return la carte au dessus du paquet pour choix de l'atout
 	 */
 	static Carte distribuer() {
-		int indiceCourantEnsCartes = 0;
+		//int indiceCourantEnsCartes = 0;
 		for(int i=0 ; i<=7 ; i++) {
 			//commence distribution par le joueur suivant
 			joueurCourant = joueurSuivant();
@@ -121,8 +122,9 @@ public class Table {
 			if(i<=3) {
 				int j=0;
 				while(j<3) {
-					joueurCourant.main.add(ensCartes.get(indiceCourantEnsCartes));
-					indiceCourantEnsCartes++;
+					joueurCourant.main.add(ensCartes.get(0));
+					ensCartes.remove(0);
+					//indiceCourantEnsCartes++;
 					j++;
 				}
 			}
@@ -130,15 +132,16 @@ public class Table {
 			else {
 				int j=0;
 				while(j<2) {
-					joueurCourant.main.add(ensCartes.get(indiceCourantEnsCartes));
-					indiceCourantEnsCartes++;
+					joueurCourant.main.add(ensCartes.get(0));
+					ensCartes.remove(0);
+					//indiceCourantEnsCartes++;
 					j++;
 				}
 			}
 		}
 		//joueur qui commence a parler est le joueur apres celui qui distribue
 		joueurCourant = joueurSuivant();
-		return ensCartes.get(indiceCourantEnsCartes);
+		return ensCartes.get(0);
 	}
 
 
@@ -149,7 +152,7 @@ public class Table {
 	 */
 	static void distribuerReste(Joueur preneur) {
 		//indice 21 car 4*5 cartes distribuees + 1
-		int indiceCourantEnsCartes = 21;
+		//int indiceCourantEnsCartes = 21;
 		for(int i=0 ; i<4 ; i++) {
 			//le distrubution commence avec le joueur suivant le joueur distributeur
 			joueurCourant = joueurSuivant();
@@ -157,16 +160,18 @@ public class Table {
 			if(joueurCourant.id==preneur.id) {
 				int j=0;
 				while(j<2) {
-					joueurCourant.main.add(ensCartes.get(indiceCourantEnsCartes));
-					indiceCourantEnsCartes++;
+					joueurCourant.main.add(ensCartes.get(0));
+					ensCartes.remove(0);
+					//indiceCourantEnsCartes++;
 					j++;
 				}
 			}
 			else {
 				int j=0;
 				while(j<3) {
-					joueurCourant.main.add(ensCartes.get(indiceCourantEnsCartes));
-					indiceCourantEnsCartes++;
+					joueurCourant.main.add(ensCartes.get(0));
+					ensCartes.remove(0);
+					//indiceCourantEnsCartes++;
 					j++;
 				}
 			}
@@ -247,6 +252,7 @@ public class Table {
 	/**
 	 * Deroulement de la partie, de l'init jusqu'au game over
 	 */
+	@SuppressWarnings("unchecked")
 	public static void run() {
 		try {
 			init();
@@ -293,9 +299,19 @@ public class Table {
 					joueurCourant = distributeur;
 					distribuerReste(joueurPreneur);
 				}
-				//atout encore non decide alors on remelange le paquet de carte
+				//atout encore non decide alors on remet les cartes dans le paquet
 				else {
-					//TODO Remmettre les cartes dans le paquet dans un ordre cohérent
+					 ArrayList<Carte> tl = (ArrayList<Carte>) ensCartes.clone();
+					 ArrayList<Carte> hd = new ArrayList<Carte>();
+					 for (int i = 0; i< 4; i++) {
+						 hd.addAll((Collection<? extends Carte>) joueurCourant.main.clone());
+						 joueurCourant = joueurSuivant();
+					 }
+					ensCartes.clear();
+					ensCartes.addAll(hd);
+					ensCartes.addAll(tl);
+					hd.clear();
+					tl.clear();
 					joueur1.main.clear();
 					joueur2.main.clear();
 					joueur3.main.clear();

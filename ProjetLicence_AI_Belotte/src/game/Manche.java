@@ -1,5 +1,7 @@
 package game;
 
+import java.util.ArrayList;
+
 import assets.Couleur;
 
 public class Manche {
@@ -62,6 +64,20 @@ public class Manche {
 
 			Table.equipe1.addScore(this.pointsEquipe[0] + this.belotte[0]);
 			Table.equipe2.addScore(this.pointsEquipe[1] + this.belotte[1]);
+			
+			// On remet les cartes des plis dans le paquet, en commençant par les plis de l'équipe qui ne prend pas.
+			ArrayList<Carte> pasPris = new ArrayList<Carte>();
+			ArrayList<Carte> pris = new ArrayList<Carte>();
+			for (int i = 0; i < plis.length; i++){ 
+				if (plis[i].equipeGagnante() != equipePreneur) //L'équipe qui n'a pas pris retourne son tas de plis et compte les cartes une à une
+					for(int j = plis[i].getCartes().length - 1; j >= 0; j--) 
+						pasPris.add(plis[i].getCartes()[j]);
+				else
+					for(int j = 0; j < plis[i].getCartes().length; j++)
+						pris.add(0, plis[i].getCartes()[j]);
+			}
+			Table.ensCartes.addAll(pasPris);
+			Table.ensCartes.addAll(pris);
 		}
 	}
 
@@ -75,7 +91,7 @@ public class Manche {
 	public void reset(Couleur atout, int joueurPreneur) throws Exception {
 		if (joueurPreneur > 4 || joueurPreneur < 1)
 			throw new Exception("game.Manche.reset() : Un id de joueur n'est pas valide");
-
+		
 		this.atout = atout;
 		if (this.idPremierJoueur < 4)
 			this.idPremierJoueur++;
@@ -132,7 +148,6 @@ public class Manche {
 			/*try {
 				initPliSuivant();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}*/
 			
@@ -167,7 +182,7 @@ public class Manche {
 			
 			//recuperation id equipe gagnante et id premier joueur du pli suivant
 			
-			System.out.println(plis[nbPlis].toString() + nbPlis); // TODO programme s'arrête jsp pourquoi (à l'appel de plis[i])
+			System.out.println(plis[nbPlis].toString() + nbPlis); 
 			System.out.println("Bonsoir " + i);
 			
 			int idGagnante = plis[i].equipeGagnante(); 
