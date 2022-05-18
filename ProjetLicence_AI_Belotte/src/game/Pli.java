@@ -90,10 +90,8 @@ public class Pli {
 	public String toString() {
 		String res = "";
 		for(Carte c : cartes) {
-//			System.out.println(c.toString());
-//			System.out.println("choconut");
 			if (c==null)break;
-			res += c.toString() + "\n";
+			res += c.toString() + " | ";
 		}
 		return res;
 	}

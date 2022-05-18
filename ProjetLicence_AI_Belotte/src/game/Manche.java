@@ -1,6 +1,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import assets.Couleur;
 
@@ -137,12 +138,13 @@ public class Manche {
 		this.nbPlis++;
 	}
 	
-	public void runManche(Joueur jCourantP, Couleur atout) {
+	public void runManche(Couleur atout) {
 		Joueur jCourant = Table.joueurCourant;
-
+		Scanner sc = Table.scannerString;
+		String carteAJouer = "";
 		//Une manche == 8 plis
 		for (int i=0 ; i<8 ; i++) {
-			System.out.println("Bonjour " + i + " atout " + this.getAtout().name());
+			System.out.println("Pli numéro " + (i+1));
 			
 			
 			/*try {
@@ -160,23 +162,70 @@ public class Manche {
 			}
 			
 			//Tour de table
+			boolean aLaCarte;
+			boolean played;
+			
 			for(int j=0 ; j<4 ; j++) {
-				
-				//Temporaire! joueur joue la premiere carte legale dispo dans sa main
-				for(Carte carte : jCourant.main) {
+				aLaCarte = false;
+				played = false;
+				while (!played) {
+					System.out.println("Joueur " + jCourant.id);
+					System.out.println("Entrez le nom de la carte à jouer.");
+					System.out.println("Atout : " + atout);
+					System.out.print("Main : ");
 					jCourant.printMain();
-					System.out.println("Joueur : " + jCourant.id + " Carte " + jCourant.main.indexOf(carte));
-
-					if(jCourant.isLegalMove(carte)) {
-						jCourant.joueCoup(carte);
-						
-						jCourant = Table.joueurSuivant();
-						Table.joueurCourant = Table.joueurSuivant();
-						break;
+					System.out.println("\nÉtat actuel du pli : " + plis[i].toString());
+					carteAJouer = sc.nextLine();
+					
+					for(Carte carte : jCourant.main) {
+						if (carte.toString().toLowerCase().equals(carteAJouer.toLowerCase())) {
+							aLaCarte = true;
+							
+							if (jCourant.isLegalMove(carte)) {
+								jCourant.joueCoup(carte);
+								played = true;
+								jCourant = Table.joueurSuivant();
+								Table.joueurCourant = Table.joueurSuivant();
+							}
+							else System.out.println("Coup impossible.");
+							break;
+						}
 					}
 					
+					if (!aLaCarte) System.out.println("Vous n'avez pas cette carte ! ");
 				}
-				//jCourant devient joueur suivant
+				
+				
+				
+				
+//				for(Carte carte : jCourant.main) {
+//					jCourant.printMain();
+//					System.out.println("Joueur : " + jCourant.id + " Carte " + jCourant.main.indexOf(carte));
+//
+//					if(jCourant.isLegalMove(carte)) {
+//						jCourant.joueCoup(carte);
+//						
+//						jCourant = Table.joueurSuivant();
+//						Table.joueurCourant = Table.joueurSuivant();
+//						break;
+//					}
+//					
+//				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				
 			}
 			

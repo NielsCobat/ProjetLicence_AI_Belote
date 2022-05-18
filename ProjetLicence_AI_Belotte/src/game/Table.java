@@ -330,7 +330,7 @@ public class Table {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				mancheCourante.runManche(joueurCourant, atout);
+				mancheCourante.runManche(atout);
 				//fin de la manche, on reset l'atout et la manche
 				atout = null;
 				try {
