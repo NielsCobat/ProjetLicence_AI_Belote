@@ -172,23 +172,20 @@ public class Joueur {
 	 * @return false si le joueur ne prend pas, true sinon
 	 */
 	boolean veutPrendre(Carte carte) {
-		Scanner scanner = new Scanner(System.in);
+		Scanner scanner = Table.scannerString;
 		System.out.println("Joueur " + this.id);
 		System.out.println("Veux prendre ? (o/n)");
 		String reponse = scanner.nextLine();
 		if(reponse.equals("n")) {
 			passe();
-			scanner.close();
 			return false;
 		}
 		else if(reponse.equals("o")){
 			prend(carte);
-			scanner.close();
 			return true;
 		}
 		//par defaut si erreur je considere que le joueur passe
 		passe();
-		scanner.close();
 		return false;
 	}
 	
@@ -198,10 +195,9 @@ public class Joueur {
 	 * @return Couleur designee par le joueur
 	 */
 	Couleur designeCouleur() {
-		Scanner scanner = new Scanner(System.in);
+		Scanner scanner = Table.scannerString;
 		System.out.println("Quelle couleur d'atout ? (carreau/pique/coeur/trefle)");
 		String reponse = scanner.nextLine();
-		scanner.close();
 		switch (reponse) {
 		case "carreau" :
 			if(this.main.getLast().getCouleur()!=Couleur.Carreau) return Couleur.Carreau;

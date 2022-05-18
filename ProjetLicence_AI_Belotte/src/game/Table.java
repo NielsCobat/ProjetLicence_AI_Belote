@@ -32,6 +32,9 @@ public class Table {
 	static ArrayList<Carte> ensCartes = new ArrayList<Carte>();
 	static int idWinner;
 	static boolean gameOver = false;
+	
+	static Scanner scannerString = new Scanner(System.in);
+	static Scanner scannerInt = new Scanner(System.in);
 
 
 	static void setEnsCartes() {
@@ -77,22 +80,25 @@ public class Table {
 	 */
 	static void coupe() {
 		//on demande au joueur courant où il souhaite couper
-		Scanner scanner = new Scanner(System.in);
-		System.out.println("Où souhaitez-vous couper? Donnez l'indice de la carte (De 3 à 28). ");
+		System.out.println();
+		Scanner scanner = scannerInt;
+		System.out.println("Joueur " + joueurCourant.id + ", où souhaitez-vous couper? Donnez l'indice de la carte (De 3 à 28). ");
 		int index = scanner.nextInt();
-		scanner.close();
 		
 		while(index < 3 || index > 28) {
-			Scanner scannerBis = new Scanner(System.in);
 			System.out.println("Choisissez un nombre valide svp ( entre 3 et 28 inclus). ");
-			index = scannerBis.nextInt();
-			scannerBis.close();
+			index = scanner.nextInt();
 		}
 		
 		//on divise le paquet de cartes
-		 ArrayList<Carte> head = (ArrayList<Carte>) ensCartes.subList(0, index);
-		 ArrayList<Carte> tail = (ArrayList<Carte>) ensCartes.subList(index, ensCartes.size());
-		 
+		 ArrayList<Carte> head = new ArrayList<Carte>();
+		 for (int i = 0; i< index; i++) {
+			 head.add(ensCartes.get(i));
+		 }
+		 ArrayList<Carte> tail = new ArrayList<Carte>();
+		 for (int i = index; i< ensCartes.size(); i++) {
+			 tail.add(ensCartes.get(i));
+		 }
 		 //on permute les deux paquets de cartes
 		 tail.addAll(head);
 		 ensCartes = tail;
@@ -107,7 +113,6 @@ public class Table {
 	 * @return la carte au dessus du paquet pour choix de l'atout
 	 */
 	static Carte distribuer() {
-		// TODO
 		int indiceCourantEnsCartes = 0;
 		for(int i=0 ; i<=7 ; i++) {
 			//commence distribution par le joueur suivant
@@ -143,7 +148,6 @@ public class Table {
 	 * @param peneur joueur qui se voit distribue deux cartes
 	 */
 	static void distribuerReste(Joueur preneur) {
-		//TODO
 		//indice 21 car 4*5 cartes distribuees + 1
 		int indiceCourantEnsCartes = 21;
 		for(int i=0 ; i<4 ; i++) {
@@ -256,9 +260,8 @@ public class Table {
 			Joueur joueurPreneur = null; //pas terrible mais doit etre initialisée
 
 			//Tant que l'atout n'est pas choisi on fait deux tours de table et on redistribue
-			while(atout==null) {
+			while(atout==null) {		
 				
-				coupe();
 				Carte head = distribuer();
 				//premier tour de table pour choisir l'atout (une)
 				for(int i=0; i<4 ; i++) {
@@ -282,7 +285,6 @@ public class Table {
 							setPointCarte(atout); //maj point atout
 							break;
 						}
-						joueurCourant = joueurSuivant();
 					}
 				}
 				//atout decide, il faut distribuer le reste des cartes
@@ -292,7 +294,14 @@ public class Table {
 					distribuerReste(joueurPreneur);
 				}
 				//atout encore non decide alors on remelange le paquet de carte
-				else Collections.shuffle(ensCartes);
+				else {
+					//TODO Remmettre les cartes dans le paquet dans un ordre cohérent
+					joueur1.main.clear();
+					joueur2.main.clear();
+					joueur3.main.clear();
+					joueur4.main.clear();
+					coupe();
+				}
 			}
 			
 			//lancement de la manche
@@ -303,7 +312,6 @@ public class Table {
 				try {
 					mancheCourante = new Manche(atout, premierJoueur.id, joueurPreneur.id );
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				mancheCourante.runManche(joueurCourant, atout);
@@ -312,7 +320,6 @@ public class Table {
 				try {
 					mancheCourante.reset(atout, joueurPreneur.id);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -324,7 +331,10 @@ public class Table {
 				gameOver = true;
 				idWinner=2; //je mets l'id d'un seul membre comme le modulo donne forcement l'equipe des deux joueurs
 			}
+			if (!gameOver) coupe();
 		}
 		System.out.println("Equipe " + idWinner + " gagne la partie");
+		scannerString.close();
+		scannerInt.close();
 	}
 }
