@@ -2,7 +2,7 @@ package game;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
+//import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Collections;
 import assets.Couleur;
@@ -17,10 +17,6 @@ public class Table {
 	static Joueur joueur3;
 	static Joueur joueur4;
 
-	static int scoreEquipe1; //joueur 1 et 3 (ne sert pas pour l'instant)
-	static int scoreEquipe2; //joueur 2 et 4 (ne sert pas pour l'instant)
-
-
 	static Equipe equipe1;
 	static Equipe equipe2;
 
@@ -28,8 +24,8 @@ public class Table {
 	static Manche mancheCourante;
 	static Couleur atout;
 
-	static LinkedList<Carte> cartesEnMain;
-	static LinkedList<Carte> cartesPosees;
+	//static LinkedList<Carte> cartesEnMain; //Variable pas utilisée
+	//static LinkedList<Carte> cartesPosees; //Variable pas utilisée
 	static ArrayList<Carte> ensCartes = new ArrayList<Carte>();
 	static int idWinner;
 	static boolean gameOver = false;
@@ -199,16 +195,12 @@ public class Table {
 	 */
 	public static void init() throws Exception {
 		setEnsCartes();
-
 		joueur1 = new Joueur("", 1, 3);
 		joueur2 = new Joueur("", 2, 4);
 		joueur3 = new Joueur("", 3, 1);
 		joueur4 = new Joueur("", 4, 2);
-
-
 		equipe1 = new Equipe(1, joueur1, joueur3, 0);
 		equipe2 = new Equipe(2, joueur2, joueur4, 0);
-
 		equipe1.score = 0;
 		equipe2.score = 0;
 		atout = null;
@@ -312,7 +304,7 @@ public class Table {
 				joueurCourant  = joueurSuivant();
 				Joueur premierJoueur = joueurCourant.clone();
 				try {
-					mancheCourante = new Manche(atout, premierJoueur.id, joueurPreneur.id );
+					mancheCourante = new Manche(premierJoueur.id, joueurPreneur.id );
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -320,7 +312,7 @@ public class Table {
 				//fin de la manche, on reset l'atout et la manche
 				atout = null;
 				try {
-					mancheCourante.reset(atout, joueurPreneur.id);
+					mancheCourante.reset(joueurPreneur.id);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

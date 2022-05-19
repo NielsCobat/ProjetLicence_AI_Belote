@@ -58,7 +58,7 @@ public class Pli {
 	 * 
 	 * @return total des points d'un pli
 	 */
-	public int calculPoints() { //TODO Si valet d'atout ou 9 d'atout, ajouter + de points
+	public int calculPoints() { 
 		int res = 0;
 		for (Carte carte : cartes) {
 			if (carte != null) {
@@ -71,9 +71,9 @@ public class Pli {
 		return res;
 	}
 
-	public int getIdPremierJoueur() {
-		return idPremierJoueur;
-	}
+//	public int getIdPremierJoueur() {
+//		return idPremierJoueur;
+//	}
 
 	public int getNbCarte() {
 		return nbCarte;

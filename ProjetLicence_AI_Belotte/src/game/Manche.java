@@ -8,7 +8,6 @@ import assets.Couleur;
 public class Manche {
 
 	private Pli[] plis;
-	private Couleur atout;
 	private int idPremierJoueur, equipePreneur, nbPlis;
 	private int[] pointsEquipe, belotte;
 
@@ -20,12 +19,11 @@ public class Manche {
 	 * @param joueurPreneur   id du joueur prenant l'atout
 	 * @throws Exception si l'un des id de joueurs n'est pas valide
 	 */
-	public Manche(Couleur atout, int idPremierJoueur, int joueurPreneur) throws Exception {
+	public Manche(int idPremierJoueur, int joueurPreneur) throws Exception {
 		if ((this.idPremierJoueur > 4 || this.idPremierJoueur < 1) && (joueurPreneur > 4 || joueurPreneur < 1))
 			throw new Exception("game.Manche.Manche() : Un id de joueur n'est pas valide");
 
 		this.plis = new Pli[8];
-		this.atout = atout;
 		this.idPremierJoueur = idPremierJoueur;
 		this.equipePreneur = (joueurPreneur + 1) % 2; // soit 0 = joueurs 1 et 3 ; 1 = joueurs 2 et 4
 		this.pointsEquipe = new int[2];
@@ -67,10 +65,10 @@ public class Manche {
 			}
 				
 			
-			else if (this.pointsEquipe[(this.equipePreneur)] < 82	   //Si une équipe prend et qu'il n'y a pas de Belote
-					&& this.belotte[(this.equipePreneur)] + this.belotte[(this.equipePreneur + 1) % 2] == 0
-					|| (this.pointsEquipe[(this.equipePreneur)] < 92   //Si une équipe prend et qu'il y a une Belote	
-					&& this.belotte[(this.equipePreneur)] + this.belotte[(this.equipePreneur + 1) % 2] == 20 )) { 
+			else if (this.pointsEquipe[(this.equipePreneur)] < 82	  
+					&& this.belotte[(this.equipePreneur)] + this.belotte[(this.equipePreneur + 1) % 2] == 0 //Si une équipe prend et qu'il n'y a pas de Belote
+					|| (this.pointsEquipe[(this.equipePreneur + 1) % 2] + this.belotte[(this.equipePreneur + 1) % 2] >= 91  //Ou
+					&& this.belotte[(this.equipePreneur)] + this.belotte[(this.equipePreneur + 1) % 2] == 20 )) { //Si une équipe prend et qu'il y a une Belote	
 				this.pointsEquipe[this.equipePreneur] = 0;
 				this.pointsEquipe[(this.equipePreneur + 1) % 2] = 162;
 				if (this.equipePreneur == 0) System.out.println("Équipe 1 dedans ! ");
@@ -97,10 +95,10 @@ public class Manche {
 			Table.ensCartes.addAll(pasPris);
 			Table.ensCartes.addAll(pris);
 		}
-		Table.joueur1.setABelote();
-		Table.joueur2.setABelote();
-		Table.joueur3.setABelote();
-		Table.joueur4.setABelote();
+		Table.joueur1.hasBelote();
+		Table.joueur2.hasBelote();
+		Table.joueur3.hasBelote();
+		Table.joueur4.hasBelote();
 	}
 
 	/**
@@ -110,11 +108,10 @@ public class Manche {
 	 * @param joueurPreneur le joueur prenant
 	 * @throws Exception si l'id du joueur prenant n'est pas valide
 	 */
-	public void reset(Couleur atout, int joueurPreneur) throws Exception {
+	public void reset(int joueurPreneur) throws Exception {
 		if (joueurPreneur > 4 || joueurPreneur < 1)
 			throw new Exception("game.Manche.reset() : Un id de joueur n'est pas valide");
 		
-		this.atout = atout;
 		if (this.idPremierJoueur < 4)
 			this.idPremierJoueur++;
 		else
@@ -138,26 +135,26 @@ public class Manche {
 		this.pointsEquipe[equipe] += score;
 	}
 
-	/**
-	 * Initialisation du pli suivant et incrémentation du score du pli précédent au
-	 * score de la manche
-	 * 
-	 * @throws Exception si le pli précédent n'est pas terminé ou si le nombre de
-	 *                   pli maximum a déjà été atteint
-	 */
-	public void initPliSuivant() throws Exception {
-		if (this.nbPlis == 8)
-			throw new Exception("game.Manche.initPliSuivant() : la manche contient déjà 8 plis");
-		try {
-			if (this.plis[this.nbPlis - 1].getNbCarte() < 4)
-				throw new Exception("game.Manche.initPliSuivant() : le pli actuel n'est pas terminé");
-			this.pointsEquipe[this.plis[this.nbPlis - 1].equipeGagnante()] += this.plis[this.nbPlis - 1].calculPoints();
-			this.plis[this.nbPlis] = new Pli(this.plis[this.nbPlis - 1].getIdJoueurGagnant());
-		} catch (Exception e) {
-			this.plis[0] = new Pli(this.idPremierJoueur);
-		}
-		this.nbPlis++;
-	}
+//	/**
+//	 * Initialisation du pli suivant et incrémentation du score du pli précédent au
+//	 * score de la manche
+//	 * 
+//	 * @throws Exception si le pli précédent n'est pas terminé ou si le nombre de
+//	 *                   pli maximum a déjà été atteint
+//	 */
+//	public void initPliSuivant() throws Exception {
+//		if (this.nbPlis == 8)
+//			throw new Exception("game.Manche.initPliSuivant() : la manche contient déjà 8 plis");
+//		try {
+//			if (this.plis[this.nbPlis - 1].getNbCarte() < 4)
+//				throw new Exception("game.Manche.initPliSuivant() : le pli actuel n'est pas terminé");
+//			this.pointsEquipe[this.plis[this.nbPlis - 1].equipeGagnante()] += this.plis[this.nbPlis - 1].calculPoints();
+//			this.plis[this.nbPlis] = new Pli(this.plis[this.nbPlis - 1].getIdJoueurGagnant());
+//		} catch (Exception e) {
+//			this.plis[0] = new Pli(this.idPremierJoueur);
+//		}
+//		this.nbPlis++;
+//	}
 	
 	public void runManche(Couleur atout) {
 		boolean half = false; //Pour savoir si la moitié de la belote a été utilisée.
@@ -187,8 +184,6 @@ public class Manche {
 				jCourant = Table.joueurSuivant();
 				Table.joueurCourant = Table.joueurSuivant();
 			}
-			
-			
 			
 			//Tour de table
 			boolean aLaCarte;
@@ -253,15 +248,6 @@ public class Manche {
 	}
 
 	/**
-	 * Getter de l'atout de la manche courante
-	 * 
-	 * @return l'atout
-	 */
-	public Couleur getAtout() {
-		return this.atout;
-	}
-
-	/**
 	 * Getter d'un seul pli
 	 * 
 	 * @param noPli le numéro du pli souhaité (de 0 à 7)
@@ -271,23 +257,23 @@ public class Manche {
 		return this.plis[noPli];
 	}
 
-	/**
-	 * Getter de l'id du premier joueur de la manche (joueur après le distribueur)
-	 * 
-	 * @return id du joueur en question
-	 */
-	public int getIdPremierJoueur() {
-		return idPremierJoueur;
-	}
+//	/**
+//	 * Getter de l'id du premier joueur de la manche (joueur après le distribueur)
+//	 * 
+//	 * @return id du joueur en question
+//	 */
+//	public int getIdPremierJoueur() {
+//		return idPremierJoueur;
+//	}
 
-	/**
-	 * Getter de l'équipe qui a pris à l'atout
-	 * 
-	 * @return 0 pour joueurs 1 3 et 1 pour joueurs 2 4
-	 */
-	public int getEquipePreneur() {
-		return equipePreneur;
-	}
+//	/**
+//	 * Getter de l'équipe qui a pris à l'atout
+//	 * 
+//	 * @return 0 pour joueurs 1 3 et 1 pour joueurs 2 4
+//	 */
+//	public int getEquipePreneur() {
+//		return equipePreneur;
+//	}
 
 	/**
 	 * Getter du nombre de plis joués dans la manche
@@ -298,14 +284,14 @@ public class Manche {
 		return nbPlis;
 	}
 
-	/**
-	 * Getter du nombre de points d'une équipe
-	 * 
-	 * @param l'id de l'équipe souhaitée (0 ou 1)
-	 * @return le score de cette équipe
-	 */
-	public int getPointsEquipe(int equipe) {
-		return pointsEquipe[equipe];
-	}
+//	/**
+//	 * Getter du nombre de points d'une équipe
+//	 * 
+//	 * @param l'id de l'équipe souhaitée (0 ou 1)
+//	 * @return le score de cette équipe
+//	 */
+//	public int getPointsEquipe(int equipe) {
+//		return pointsEquipe[equipe];
+//	}
 
 }

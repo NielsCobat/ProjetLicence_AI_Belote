@@ -7,7 +7,7 @@ public class Carte {
 	private Couleur couleur;
 	private Valeur valeur;
 	int point;
-	boolean estJouée;
+	//boolean estJouée; //Variable pas utilisée
 
 	final static Valeur[] ordreNonAtout = {Valeur.Sept, Valeur.Huit, Valeur.Neuf, Valeur.Valet, Valeur.Dame, Valeur.Roi, Valeur.Dix, Valeur.As};
 	final static Valeur[] ordreAtout = {Valeur.Sept, Valeur.Huit, Valeur.Dame, Valeur.Roi, Valeur.Dix, Valeur.As, Valeur.Neuf, Valeur.Valet};
@@ -33,8 +33,8 @@ public class Carte {
 		// -1  this ne l'emporte pas face à c
 		//1  this l'emporte face à c
 		if (c2 != null) {
-			if(this.couleur.name().equals(Table.mancheCourante.getAtout().name())) {
-			if(c2.couleur.name().equals(Table.mancheCourante.getAtout().name())) {
+			if(this.couleur.name().equals(Table.atout.name())) {
+			if(c2.couleur.name().equals(Table.atout.name())) {
 				for(int i = 0 ; i < ordreAtout.length ; i++) {
 					if(ordreAtout[i].name().equals(this.valeur.name())) {
 						return -1;
@@ -49,7 +49,7 @@ public class Carte {
 			}
 		}
 		else { //this n'est pas un atout
-			if(c2.couleur.name().equals(Table.mancheCourante.getAtout().name())) { //c2 est un atout
+			if(c2.couleur.name().equals(Table.atout.name())) { //c2 est un atout
 				return -1;
 			}
 			else if (c2.couleur.name().equals(this.getCouleur().name())) { //c2 et this sont de la même couleur

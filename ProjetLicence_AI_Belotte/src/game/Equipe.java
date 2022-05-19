@@ -1,7 +1,7 @@
 
 package game;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 public class Equipe {
 
@@ -9,14 +9,14 @@ public class Equipe {
 	Joueur joueurA;
 	Joueur joueurB;
 	int score;
-	ArrayList<Carte> cartesPli;
+	//ArrayList<Carte> cartesPli;
 	
 	public Equipe() {
 		id=0;
 		joueurA=new Joueur();
 		joueurB=new Joueur();
 		score = 0;
-		cartesPli = new ArrayList<Carte>();
+		//cartesPli = new ArrayList<Carte>();
 	}
 	
 	public Equipe(int id, Joueur joueurA, Joueur joueurB, int score) {
@@ -24,7 +24,7 @@ public class Equipe {
 		this.joueurA= joueurA;
 		this.joueurB= joueurB;
 		this.score = score;
-		cartesPli = new ArrayList<Carte>();
+		//cartesPli = new ArrayList<Carte>();
 	}
 	
 	public void setScore(int score) {

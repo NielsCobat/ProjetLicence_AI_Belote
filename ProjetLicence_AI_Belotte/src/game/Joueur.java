@@ -9,7 +9,7 @@ public class Joueur {
 
 	String nom;
 	int id;
-	boolean maitre;
+	//boolean maitre; //Variable pas utilisée
 	int idPartenaire;
 	LinkedList<Carte> main;
 	boolean aBelote;
@@ -35,7 +35,7 @@ public class Joueur {
 	void hasBelote() {
 		boolean roi = false;
 		boolean dame = false;
-		String atout = Table.mancheCourante.getAtout().name();
+		String atout = Table.atout.name();
 		for (Carte c : this.main) {
 			if (c.getCouleur().name().equals(atout) && c.getValeur().name().equals("Roi")) {
 					roi = true;
@@ -46,12 +46,12 @@ public class Joueur {
 		aBelote = roi && dame;
 	}
 	
-	/**
-	 * Met aBelote à faux, utilisé en fin de manche après les calculs de points.
-	 */
-	public void setABelote() {
-		aBelote = false;
-	}
+//	/**
+//	 * Met aBelote à faux, utilisé en fin de manche après les calculs de points.
+//	 */
+//	public void setABelote() {
+//		aBelote = false;
+//	}
 
 	/**
 	 * Si le pli est vide on peut mettre n'importe quelle carte. Si on a la couleur
@@ -69,7 +69,7 @@ public class Joueur {
 		Pli pli = manche.getPli(manche.getNbPlis());
 		
 		Couleur couleurDeLaCarte = carte.getCouleur();
-		Couleur atoutManche = manche.getAtout();
+		Couleur atout = Table.atout;
 		Carte plusGrandAtoutDuPli = null;
 		LinkedList<Carte> plusGrandQueLePlusGrandAtoutDuPli = new LinkedList<Carte>();
 		boolean pliContientAtout = false;
@@ -82,7 +82,7 @@ public class Joueur {
 			
 			Couleur demande = pli.getCouleurDemandee();
 			for (Carte c : pli.getCartes()) { // On détermine le plus grand atout du pli.
-				if ((c != null) && c.getCouleur().name().equals(atoutManche.name())) {
+				if ((c != null) && c.getCouleur().name().equals(atout.name())) {
 					if (!pliContientAtout) {
 						pliContientAtout = true;
 						plusGrandAtoutDuPli = c;
@@ -95,13 +95,13 @@ public class Joueur {
 			for (Carte c : main) {
 				if (c.getCouleur().name().equals(demande.name()))
 					nbDemande++;
-				if (c.getCouleur().name().equals(atoutManche.name()))
+				if (c.getCouleur().name().equals(atout.name()))
 					nbAtout++;
 				if (plusGrandAtoutDuPli == null || c.compareTo(plusGrandAtoutDuPli) == 1)
 					plusGrandQueLePlusGrandAtoutDuPli.add(c);
 			}
 
-			if (!demande.name().equals(manche.getAtout().name()) ) { // Si on ne demande pas d'atout.
+			if (!demande.name().equals(atout.name()) ) { // Si on ne demande pas d'atout.
 				if (nbDemande > 0) { // Si on a au moins une carte de la couleur demandée dans sa main.
 					return (couleurDeLaCarte.name().equals(demande.name()));
 				} else { // Si on a pas la couleur demandée.
@@ -109,10 +109,10 @@ public class Joueur {
 						return true; // Si le partenaire est maître, alors le coup est légal.
 					else if (nbAtout > 0) { // Sinon, si l'adversaire et maître et qu'on a un atout.
 						if (plusGrandAtoutDuPli == null) { // S'il n'y a pas encore d'atout dans le pli.
-							return (couleurDeLaCarte.name().equals(atoutManche.name()));
+							return (couleurDeLaCarte.name().equals(atout.name()));
 						} else { // S'il y a au moins un atout dans le pli.
 							if (plusGrandQueLePlusGrandAtoutDuPli.isEmpty()) { // Si on a pas plus grand.
-								return (couleurDeLaCarte.name().equals(atoutManche.name()));
+								return (couleurDeLaCarte.name().equals(atout.name()));
 							} else {
 								return plusGrandQueLePlusGrandAtoutDuPli.contains(carte);
 							}
@@ -123,7 +123,7 @@ public class Joueur {
 			} else { // Si on demande de l'atout.
 				if (nbAtout > 0) { // Si on en a.
 					if (plusGrandQueLePlusGrandAtoutDuPli.isEmpty()) { // Si on a pas plus grand.
-						return (couleurDeLaCarte.name().equals(atoutManche.name()));
+						return (couleurDeLaCarte.name().equals(atout.name()));
 					} else { // Si on a plus grand.
 						return plusGrandQueLePlusGrandAtoutDuPli.contains(carte);
 					}
@@ -146,12 +146,6 @@ public class Joueur {
 			main.remove(carte);
 	}
 
-	/**
-	 * Le joueur ne prend pas et le joueurCourant devient le joueur à sa gauche.
-	 */
-	void passe() {
-		Table.joueurCourant = Table.joueurSuivant();
-	}
 
 	/**
 	 * Met dans la main du joueur la carte prise.
