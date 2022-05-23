@@ -24,19 +24,20 @@ public class NeuralNetwork extends Joueur{
 	 * 
 	 * 	296: 1 si le maître est dans ton équipe
 	 */
-	double[] input; 
-	
+	private double[] input; 
+
 	/*
 	 * Position output:
 	 * 0 à31: les 32 cartes du jeu parmi lesquelles l'ia va faire son choix
 	 */
-	double[] output;
+	private double[] output;
 
 	//hashMap de reference pour les positions des inputs et outputs
-	HashMap<Carte, Integer> posCartesInput = new HashMap<Carte, Integer>();
-	HashMap<Integer,Carte> posCartesOutput = new HashMap<Integer,Carte>();
+	private HashMap<Carte, Integer> posCartesInput = new HashMap<Carte, Integer>();
+	private HashMap<Integer,Carte> posCartesOutput = new HashMap<Integer,Carte>();
 
-	int compteurJoueur = 1;
+	//variables utiles pour les fonctions
+	private int compteurJoueur = 1;
 
 	/*
 	 * Constructeur neural network
@@ -46,8 +47,9 @@ public class NeuralNetwork extends Joueur{
 		this.main = new ArrayList<Carte>(); // A la creation main forcement vide
 		this.input = new double[296]; 
 		this.output = new double[31];
+		this.isIA = true;
 	}
-	
+
 	/*
 	 * Remplit le hashMap output
 	 */
@@ -162,8 +164,6 @@ public class NeuralNetwork extends Joueur{
 				compteurJoueur++;
 			}
 		}
-		
-		//TODO les cartes sur table
 
 		//init de l'atout
 		switch(Table.atout) {
@@ -194,7 +194,7 @@ public class NeuralNetwork extends Joueur{
 		//calcul de la meilleure carte à jouer
 		int indice = 0;
 		double maxNum = output[0];
-		
+
 		do {
 			for(int j = 0; j < 32; j++) {
 				if(output[j] > maxNum) {
@@ -214,14 +214,24 @@ public class NeuralNetwork extends Joueur{
 
 	//TODO faire le joueCoup des autres joueurs
 
+	/**
+	 * Met à jour les cartes du pli dans les inputs
+	 */
+	void setCartesSurTable() {
+		Manche manche = Table.mancheCourante;
+		Carte[] cartesDuPli = manche.getPli(manche.getNbPlis()).getCartes();
+		for(int i =0; i < cartesDuPli.length; i++) {
+			input[posCartesInput.get(cartesDuPli[i]) + 256] = 1;
+		}
+	}
+
 	/*
 	 * Met à jour la couleur demandée
 	 */
 	void setCouleurDemandee() {
 		Manche manche = Table.mancheCourante;
-		
 		Couleur couleurEnCours = manche.getPli(manche.getNbPlis()).getCouleurDemandee();
-		
+
 		switch(couleurEnCours) {
 		case Carreau:
 			input[292] = 1;
@@ -237,10 +247,42 @@ public class NeuralNetwork extends Joueur{
 			break;
 		}
 	}
+
+
+	/*
+	 * Met à jour le joueur gagnant 
+	 */
+	void setMaitre() {
+		Manche manche = Table.mancheCourante;
+		int joueurGagnant = manche.getPli(manche.getNbPlis()).getIdJoueurGagnant();
+		if(this.idPartenaire == joueurGagnant ) {
+			input[296] =1;
+		}
+	}
+
+	/*
+	 * Reset le pli
+	 */
+	void resetPli() {
+		for(int i = 256; i < 288; i++) {
+			input[i] = 0;
+		}
+	}
+
+	/*
+	 * Reset la manche
+	 */
+	void resetManche() {
+		for(int i = 0; i < 297; i++) {
+			input[i] = 0;
+		}
+	}
 	
-	//TODO si le partenaire est maitre ou non
+	/*
+	 * 
+	 */
+	void runIA() {
+		//TODO
+	}
 
-	//TODO un reset du pli pour lescartes sur table
-
-	//TODO un reset de l'ia quand on change de manche
 }

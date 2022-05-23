@@ -14,12 +14,14 @@ public class Joueur {
 	int idPartenaire;
 	ArrayList<Carte> main;
 	boolean aBelote;
+	protected boolean isIA;
 	
 	public Joueur() {
 		nom = "";
 		id = 0;
 		idPartenaire = 0;
 		main = new ArrayList<Carte>();
+		isIA= false;
 	}
 
 	public Joueur(String nom, int id, int partenaire) {
@@ -27,6 +29,7 @@ public class Joueur {
 		this.id = id;
 		this.idPartenaire = partenaire;
 		this.main = new ArrayList<Carte>(); // A la creation main forcement vide
+		this.isIA= false;
 	}
 
 	/**
@@ -222,5 +225,9 @@ public class Joueur {
 	@Override
 	public Joueur clone() {
 		return new Joueur(this.nom,this.id,this.idPartenaire);
+	}
+
+	public boolean getIsIA() {
+		return isIA;
 	}
 }
