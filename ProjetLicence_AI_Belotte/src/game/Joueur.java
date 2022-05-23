@@ -9,10 +9,10 @@ import assets.Couleur;
 public class Joueur {
 
 	String nom;
-	int id;
+	protected int id;
 	//boolean maitre; //Variable pas utilisée
-	int idPartenaire;
-	ArrayList<Carte> main;
+	protected int idPartenaire;
+	public ArrayList<Carte> main;
 	boolean aBelote;
 	protected boolean isIA;
 	
@@ -68,7 +68,7 @@ public class Joueur {
 	 * @param carte La carte dont on s'interroge sur la légalité
 	 * @return true si le coup est légal, false sinon.
 	 */
-	boolean isLegalMove(Carte carte) {
+	protected boolean isLegalMove(Carte carte) {
 		Manche manche = Table.mancheCourante;
 		Pli pli = manche.getPli(manche.getNbPlis());
 		
@@ -143,7 +143,7 @@ public class Joueur {
 	 * 
 	 * @param carte La carte jouée
 	 */
-	void joueCoup(Carte carte) {
+	protected void joueCoup(Carte carte) {
 			Manche manche = Table.mancheCourante;
 			
 			manche.getPli(manche.getNbPlis()).addCarte(carte);

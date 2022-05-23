@@ -1,9 +1,14 @@
-package game;
+package AI;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import assets.Couleur;
 import assets.Valeur;
+import game.Carte;
+import game.Joueur;
+import game.Manche;
+import game.Table;
 
 public class NeuralNetwork extends Joueur{
 
@@ -28,7 +33,7 @@ public class NeuralNetwork extends Joueur{
 
 	/*
 	 * Position output:
-	 * 0 à 31: les 32 cartes du jeu parmi lesquelles l'ia va faire son choix
+	 * 0 à31: les 32 cartes du jeu parmi lesquelles l'ia va faire son choix
 	 */
 	private double[] output;
 
@@ -190,7 +195,7 @@ public class NeuralNetwork extends Joueur{
 	 * joue le coup et met à jour les inputs
 	 * @param carte La carte jouée
 	 */
-	void joueCoup(Carte carte) {
+	protected void joueCoup(Carte carte) {
 		//calcul de la meilleure carte à jouer
 		int indice = 0;
 		double maxNum = output[0];

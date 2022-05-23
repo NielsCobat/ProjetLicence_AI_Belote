@@ -12,23 +12,23 @@ public class Table {
 
 	private final static int scoreToWin = 501;
 
-	static Joueur joueur1;
-	static Joueur joueur2;
-	static Joueur joueur3;
-	static Joueur joueur4;
+	public static Joueur joueur1;
+	public static Joueur joueur2;
+	public static Joueur joueur3;
+	public static Joueur joueur4;
 
-	static Equipe equipe1;
-	static Equipe equipe2;
+	public static Equipe equipe1;
+	public static Equipe equipe2;
 
-	static Joueur joueurCourant;
-	static Manche mancheCourante;
-	static Couleur atout;
+	public static Joueur joueurCourant;
+	public static Manche mancheCourante;
+	public static Couleur atout;
 
 	//static LinkedList<Carte> cartesEnMain; //Variable pas utilisée
 	//static LinkedList<Carte> cartesPosees; //Variable pas utilisée
-	static ArrayList<Carte> ensCartes = new ArrayList<Carte>();
-	static int idWinner;
-	static boolean gameOver = false;
+	public static ArrayList<Carte> ensCartes = new ArrayList<Carte>();
+	public static int idWinner;
+	public static boolean gameOver = false;
 	
 	static Scanner scannerString = new Scanner(System.in);
 	static Scanner scannerInt = new Scanner(System.in);
