@@ -28,7 +28,7 @@ public class NeuralNetwork extends Joueur{
 
 	/*
 	 * Position output:
-	 * 0 à31: les 32 cartes du jeu parmi lesquelles l'ia va faire son choix
+	 * 0 à 31: les 32 cartes du jeu parmi lesquelles l'ia va faire son choix
 	 */
 	private double[] output;
 
