@@ -252,7 +252,7 @@ public class Table {
 					boolean aPris = joueurCourant.veutPrendre(head);
 					if(aPris) {
 						joueurPreneur = joueurCourant.clone();
-						atout = joueurCourant.main.getLast().getCouleur(); //maj couleur atout
+						atout = joueurCourant.main.get(5).getCouleur(); //maj couleur atout
 						break;
 					}
 					else joueurCourant = joueurSuivant();

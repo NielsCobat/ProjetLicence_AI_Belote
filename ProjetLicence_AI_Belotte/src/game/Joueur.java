@@ -1,5 +1,6 @@
 package game;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
 import assets.Couleur;
@@ -11,21 +12,21 @@ public class Joueur {
 	int id;
 	//boolean maitre; //Variable pas utilisée
 	int idPartenaire;
-	LinkedList<Carte> main;
+	ArrayList<Carte> main;
 	boolean aBelote;
 	
 	public Joueur() {
 		nom = "";
 		id = 0;
 		idPartenaire = 0;
-		main = new LinkedList<Carte>();
+		main = new ArrayList<Carte>();
 	}
 
 	public Joueur(String nom, int id, int partenaire) {
 		this.nom = nom;
 		this.id = id;
 		this.idPartenaire = partenaire;
-		this.main = new LinkedList<Carte>(); // A la creation main forcement vide
+		this.main = new ArrayList<Carte>(); // A la creation main forcement vide
 	}
 
 	/**
@@ -194,16 +195,16 @@ public class Joueur {
 		String reponse = scanner.nextLine();
 		switch (reponse.toLowerCase()) {
 		case "carreau" :
-			if(this.main.getLast().getCouleur()!=Couleur.Carreau) return Couleur.Carreau;
+			if(this.main.get(5).getCouleur()!=Couleur.Carreau) return Couleur.Carreau;
 			break;
 		case "pique" :
-			if(this.main.getLast().getCouleur()!=Couleur.Pique) return Couleur.Pique;
+			if(this.main.get(5).getCouleur()!=Couleur.Pique) return Couleur.Pique;
 			break;
 		case "coeur" :
-			if(this.main.getLast().getCouleur()!=Couleur.Coeur) return Couleur.Coeur;
+			if(this.main.get(5).getCouleur()!=Couleur.Coeur) return Couleur.Coeur;
 			break;
 		case "trefle" :
-			if(this.main.getLast().getCouleur()!=Couleur.Trefle) return Couleur.Trefle;
+			if(this.main.get(5).getCouleur()!=Couleur.Trefle) return Couleur.Trefle;
 			break;
 		default :
 			break;
