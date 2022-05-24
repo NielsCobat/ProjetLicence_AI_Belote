@@ -39,7 +39,7 @@ public class NeuralNetwork extends Joueur{
 	private double[] output;
 
 	//hashMap de reference pour les positions des inputs et outputs
-	private HashMap<Carte, Integer> posCartesInput = new HashMap<Carte, Integer>();
+	public HashMap<Carte, Integer> posCartesInput = new HashMap<Carte, Integer>();
 	private HashMap<Integer,Carte> posCartesOutput = new HashMap<Integer,Carte>();
 
 	//variables utiles pour les fonctions
@@ -131,15 +131,15 @@ public class NeuralNetwork extends Joueur{
 		posCartesInput.put(new Carte(Couleur.Pique, Valeur.As, 11), 31);
 	}
 
-
 	/**
 	 * Initialise le neural network
 	 */
-	void initInput() {
-
+	public void initInput() {
+		initHashmap();
+		initHashmapOutput();
 		//on regarde la main du joueur et on update le init
 		for (Carte carte : this.main) {
-			input[posCartesInput.get(carte)] = 1;
+			getInput()[posCartesInput.get(carte)] = 1;
 		}
 
 
@@ -147,25 +147,25 @@ public class NeuralNetwork extends Joueur{
 		//solution intermédiaire pour savoir le jeu des autres joueurs
 		if(this.id != 1) {
 			for (Carte carte : Table.joueur1.main) {
-				input[compteurJoueur*64 +posCartesInput.get(carte)] = 1;
+				getInput()[compteurJoueur*64 +posCartesInput.get(carte)] = 1;
 				compteurJoueur++;
 			}
 		}
 		if(this.id != 2) {
 			for (Carte carte : Table.joueur2.main) {
-				input[compteurJoueur*64 +posCartesInput.get(carte)] = 1;
+				getInput()[compteurJoueur*64 +posCartesInput.get(carte)] = 1;
 				compteurJoueur++;
 			}
 		}
 		if(this.id != 3) {
 			for (Carte carte : Table.joueur3.main) {
-				input[compteurJoueur*64 +posCartesInput.get(carte)] = 1;
+				getInput()[compteurJoueur*64 +posCartesInput.get(carte)] = 1;
 				compteurJoueur++;
 			}
 		}
 		if(this.id != 4) {
 			for (Carte carte : Table.joueur4.main) {
-				input[compteurJoueur*64 +posCartesInput.get(carte)] = 1;
+				getInput()[compteurJoueur*64 +posCartesInput.get(carte)] = 1;
 				compteurJoueur++;
 			}
 		}
@@ -173,16 +173,16 @@ public class NeuralNetwork extends Joueur{
 		//init de l'atout
 		switch(Table.atout) {
 		case Carreau:
-			input[288] = 1;
+			getInput()[288] = 1;
 			break;
 		case Coeur:
-			input[289] = 1;
+			getInput()[289] = 1;
 			break;
 		case Trefle:
-			input[290] = 1;
+			getInput()[290] = 1;
 			break;
 		case Pique:
-			input[291] = 1;
+			getInput()[291] = 1;
 			break;
 		}
 
@@ -197,6 +197,15 @@ public class NeuralNetwork extends Joueur{
 	 */
 	@Override
 	protected void joueCoup(Carte carte) {
+		
+		//mises à jour inputs
+		setCouleurDemandee();
+		setCartesSurTable();
+		setMaitre();
+		
+		
+		//TODO ici que l'ia active tout son processus
+		
 		//calcul de la meilleure carte à jouer
 		int indice = 0;
 		double maxNum = output[0];
@@ -214,8 +223,8 @@ public class NeuralNetwork extends Joueur{
 
 
 		super.joueCoup(carte);
-		input[posCartesInput.get(carte)] = 0;
-		input[posCartesInput.get(carte) + 32] = 1;
+		getInput()[posCartesInput.get(carte)] = 0;
+		getInput()[posCartesInput.get(carte) + 32] = 1;
 	}
 
 	/**
@@ -225,7 +234,7 @@ public class NeuralNetwork extends Joueur{
 		Manche manche = Table.mancheCourante;
 		Carte[] cartesDuPli = manche.getPli(manche.getNbPlis()).getCartes();
 		for(int i =0; i < cartesDuPli.length; i++) {
-			input[posCartesInput.get(cartesDuPli[i]) + 256] = 1;
+			getInput()[posCartesInput.get(cartesDuPli[i]) + 256] = 1;
 		}
 	}
 
@@ -238,16 +247,16 @@ public class NeuralNetwork extends Joueur{
 
 		switch(couleurEnCours) {
 		case Carreau:
-			input[292] = 1;
+			getInput()[292] = 1;
 			break;
 		case Coeur:
-			input[293] = 1;
+			getInput()[293] = 1;
 			break;
 		case Trefle:
-			input[294] = 1;
+			getInput()[294] = 1;
 			break;
 		case Pique:
-			input[295] = 1;
+			getInput()[295] = 1;
 			break;
 		}
 	}
@@ -260,35 +269,33 @@ public class NeuralNetwork extends Joueur{
 		Manche manche = Table.mancheCourante;
 		int joueurGagnant = manche.getPli(manche.getNbPlis()).getIdJoueurGagnant();
 		if(this.idPartenaire == joueurGagnant ) {
-			input[296] =1;
+			getInput()[296] =1;
 		}
 	}
 
 	/*
 	 * Reset le pli
 	 */
-	void resetPli() {
+	public void resetPli() {
 		for(int i = 256; i < 288; i++) {
-			input[i] = 0;
+			getInput()[i] = 0;
 		}
 	}
+	
 
 	/*
 	 * Reset la manche
 	 */
-	void resetManche() {
+	public void resetManche() {
 		for(int i = 0; i < 297; i++) {
-			input[i] = 0;
+			getInput()[i] = 0;
 		}
 	}
-	
+
 	public double[] getInput() {
 		return input;
 	}
-
-	public HashMap<Carte, Integer> getPosCartesInput() {
-		return posCartesInput;
-	}
+	
 	
 
 }

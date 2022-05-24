@@ -3,6 +3,7 @@ package game;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import AI.NeuralNetwork;
 import assets.Couleur;
 
 public class Manche {
@@ -124,6 +125,20 @@ public class Manche {
 		this.belotte[0] = 0;
 		this.belotte[1] = 0;
 		//this.initPliSuivant(); // pas sûr que ça doive être ici
+		
+		//resetManche des IA
+		if(Table.joueur1 instanceof NeuralNetwork) {
+			((NeuralNetwork) Table.joueur1).resetManche();
+		}
+		if(Table.joueur2 instanceof NeuralNetwork) {
+			((NeuralNetwork) Table.joueur2).resetManche();
+		}
+		if(Table.joueur3 instanceof NeuralNetwork) {
+			((NeuralNetwork) Table.joueur3).resetManche();
+		}
+		if(Table.joueur4 instanceof NeuralNetwork) {
+			((NeuralNetwork) Table.joueur4).resetManche();
+		}
 	}
 
 	/**
@@ -166,11 +181,45 @@ public class Manche {
 		Table.joueur2.hasBelote(atout);
 		Table.joueur3.hasBelote(atout);
 		Table.joueur4.hasBelote(atout);
+		
+
+		//init des IA
+
+		if(Table.joueur1 instanceof NeuralNetwork) {
+			((NeuralNetwork) Table.joueur1).initInput();
+		}
+		if(Table.joueur2 instanceof NeuralNetwork) {
+			((NeuralNetwork) Table.joueur2).initInput();
+		}
+		if(Table.joueur3 instanceof NeuralNetwork) {
+			((NeuralNetwork) Table.joueur3).initInput();
+		}
+		if(Table.joueur4 instanceof NeuralNetwork) {
+			((NeuralNetwork) Table.joueur4).initInput();
+
+		}
+		
+		
 		//Une manche == 8 plis
 		for (int i=0 ; i<8 ; i++) {
+			
+			
 			System.out.println("Pli numéro " + (i+1));
 			System.out.println("L'équipe " + (equipePreneur+ 1 ) + " a pris.");
 			
+			//resetPli des IA
+			if(Table.joueur1 instanceof NeuralNetwork) {
+				((NeuralNetwork) Table.joueur1).resetPli();
+			}
+			if(Table.joueur2 instanceof NeuralNetwork) {
+				((NeuralNetwork) Table.joueur2).resetPli();
+			}
+			if(Table.joueur3 instanceof NeuralNetwork) {
+				((NeuralNetwork) Table.joueur3).resetPli();
+			}
+			if(Table.joueur4 instanceof NeuralNetwork) {
+				((NeuralNetwork) Table.joueur4).resetPli();
+			}
 			
 			/*try {
 				initPliSuivant();

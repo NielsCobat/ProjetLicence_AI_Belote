@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 //import java.util.LinkedList;
 import java.util.Scanner;
+
+import AI.NeuralNetwork;
+
 import java.util.Collections;
 import assets.Couleur;
 import assets.Valeur;
@@ -334,7 +337,6 @@ public class Table {
 					coupe();
 				}
 			}
-			
 			//lancement de la manche
 				//joueur a gauche du joueur distributeur commence a poser une carte
 				joueurCourant  = joueurSuivant();

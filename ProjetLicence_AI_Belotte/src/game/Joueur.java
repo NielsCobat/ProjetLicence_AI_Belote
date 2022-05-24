@@ -19,8 +19,6 @@ public class Joueur {
 	public ArrayList<Carte> main;
 	public ArrayList<Carte> mainFuture; //Aide à décider de la couleur de l'atout une fois que l'on connait la disposition des cartes dans le paquet.
 	boolean aBelote;
-	private double[] input; //variable de neuralnetwork
-	private HashMap<Carte, Integer> posCartesInput = new HashMap<Carte, Integer>();//variable de neuralnetwork
 
 	public Joueur() {
 		nom = "";
@@ -156,32 +154,32 @@ public class Joueur {
 		
 		//met à  jour les inputs des autres ia en jeu que l'on soit une ia ou un joueur réel
 		if(Table.joueur1 instanceof NeuralNetwork && this.id!=Table.joueur1.id) {
-			Table.joueur1.input[Table.joueur1.posCartesInput.get(carte) + 64*(this.id-1)] = 0;
-			Table.joueur1.input[Table.joueur1.posCartesInput.get(carte)  + 64*(this.id-1) + 32] = 1;
+			((NeuralNetwork) Table.joueur1).getInput()[((NeuralNetwork) Table.joueur1).posCartesInput.get(carte) + 64*(this.id-1)] = 0;
+			((NeuralNetwork) Table.joueur1).getInput()[((NeuralNetwork) Table.joueur1).posCartesInput.get(carte)  + 64*(this.id-1) + 32] = 1;
 		}
 		if(Table.joueur2 instanceof NeuralNetwork && this.id!=Table.joueur2.id) {
 			if(this.id ==1) {
-				Table.joueur2.input[Table.joueur2.posCartesInput.get(carte) + 64*(this.id)] = 0;
-				Table.joueur2.input[Table.joueur2.posCartesInput.get(carte)  + 64*(this.id) + 32] = 1;
+				((NeuralNetwork) Table.joueur2).getInput()[((NeuralNetwork) Table.joueur2).posCartesInput.get(carte) + 64*(this.id)] = 0;
+				((NeuralNetwork) Table.joueur2).getInput()[((NeuralNetwork) Table.joueur2).posCartesInput.get(carte)  + 64*(this.id) + 32] = 1;
 			}
 			else {
-				Table.joueur2.input[Table.joueur2.posCartesInput.get(carte) + 64*(this.id-1)] = 0;
-				Table.joueur2.input[Table.joueur2.posCartesInput.get(carte)  + 64*(this.id-1) + 32] = 1;
+				((NeuralNetwork) Table.joueur2).getInput()[((NeuralNetwork) Table.joueur2).posCartesInput.get(carte) + 64*(this.id-1)] = 0;
+				((NeuralNetwork) Table.joueur2).getInput()[((NeuralNetwork) Table.joueur2).posCartesInput.get(carte)  + 64*(this.id-1) + 32] = 1;
 			}
 		}
 		if(Table.joueur3 instanceof NeuralNetwork && this.id!=Table.joueur3.id) {
 			if(this.id == 1 || this.id == 2) {
-				Table.joueur3.input[Table.joueur3.posCartesInput.get(carte) + 64*(this.id)] = 0;
-				Table.joueur3.input[Table.joueur3.posCartesInput.get(carte)  + 64*(this.id) + 32] = 1;
+				((NeuralNetwork) Table.joueur3).getInput()[((NeuralNetwork) Table.joueur3).posCartesInput.get(carte) + 64*(this.id)] = 0;
+				((NeuralNetwork) Table.joueur3).getInput()[((NeuralNetwork) Table.joueur3).posCartesInput.get(carte)  + 64*(this.id) + 32] = 1;
 			}else {
 
-				Table.joueur3.input[Table.joueur3.posCartesInput.get(carte) + 64*(this.id-1)] = 0;
-				Table.joueur3.input[Table.joueur3.posCartesInput.get(carte)  + 64*(this.id-1) + 32] = 1;
+				((NeuralNetwork) Table.joueur3).getInput()[((NeuralNetwork) Table.joueur3).posCartesInput.get(carte) + 64*(this.id-1)] = 0;
+				((NeuralNetwork) Table.joueur3).getInput()[((NeuralNetwork) Table.joueur3).posCartesInput.get(carte)  + 64*(this.id-1) + 32] = 1;
 			}
 		}
 		if(Table.joueur4 instanceof NeuralNetwork && this.id!=Table.joueur4.id) {
-			Table.joueur4.input[Table.joueur4.posCartesInput.get(carte) + 64*(this.id)] = 0;
-			Table.joueur4.input[Table.joueur4.posCartesInput.get(carte)  + 64*(this.id) + 32] = 1;
+			((NeuralNetwork) Table.joueur4).getInput()[((NeuralNetwork) Table.joueur4).posCartesInput.get(carte) + 64*(this.id)] = 0;
+			((NeuralNetwork) Table.joueur4).getInput()[((NeuralNetwork) Table.joueur4).posCartesInput.get(carte)  + 64*(this.id) + 32] = 1;
 		}
 	}
 
@@ -251,7 +249,7 @@ public class Joueur {
 		return designeCouleur();
 	}
 
-
+    //TODO intégrer le decide couleur
 	/**
 	 * Permet à une IA de décider de la couleur à prendre
 	 * @return c La couleur à prendre
