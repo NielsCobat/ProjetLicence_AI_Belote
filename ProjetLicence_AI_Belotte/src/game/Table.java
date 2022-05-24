@@ -22,6 +22,7 @@ public class Table {
 
 	public static Joueur joueurCourant;
 	public static Manche mancheCourante;
+	public static int mancheCour = 1;
 	public static Couleur atout;
 
 	//static LinkedList<Carte> cartesEnMain; //Variable pas utilisée
@@ -168,6 +169,41 @@ public class Table {
 					joueurCourant.main.add(ensCartes.get(0));
 					ensCartes.remove(0);
 					//indiceCourantEnsCartes++;
+					j++;
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Simule la distribution du reste des cartes pour savoir qui à quelles cartes à partir de la deuxième manche.
+	 * Le joueur courant est le distributeur
+	 * @param peneur joueur qui se voit distribue deux cartes
+	 */
+	static void distribuerResteBis(Joueur preneur) {
+		joueur1.mainFuture.clear();
+		joueur2.mainFuture.clear();
+		joueur3.mainFuture.clear();
+		joueur4.mainFuture.clear();
+		joueur1.mainFuture.addAll(joueur1.main);
+		joueur2.mainFuture.addAll(joueur2.main);
+		joueur3.mainFuture.addAll(joueur3.main);
+		joueur4.mainFuture.addAll(joueur4.main);
+		for(int i=0 ; i<4 ; i++) {
+			//le distrubution commence avec le joueur suivant le joueur distributeur
+			joueurCourant = joueurSuivant();
+			//joueur courant est le joueur qui recoit 2 cartes
+			if(joueurCourant.id==preneur.id) {
+				int j=0;
+				while(j<2) {
+					joueurCourant.mainFuture.add(ensCartes.get(0));
+					j++;
+				}
+			}
+			else {
+				int j=0;
+				while(j<3) {
+					joueurCourant.mainFuture.add(ensCartes.get(0));
 					j++;
 				}
 			}

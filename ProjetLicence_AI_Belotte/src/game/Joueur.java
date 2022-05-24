@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
 import assets.Couleur;
+import assets.Valeur;
 
 
 public class Joueur {
@@ -13,6 +14,7 @@ public class Joueur {
 	//boolean maitre; //Variable pas utilisée
 	protected int idPartenaire;
 	public ArrayList<Carte> main;
+	public ArrayList<Carte> mainFuture; //Aide à décider de la couleur de l'atout une fois que l'on connait la disposition des cartes dans le paquet.
 	boolean aBelote;
 	protected boolean isIA;
 	
@@ -33,17 +35,17 @@ public class Joueur {
 	}
 
 	/**
-	 * 
 	 * Détermine si le joueur a la belote
+	 * @param atout La couleur de l'atout
 	 */
-	void hasBelote() {
+	void hasBelote(Couleur atout) {
 		boolean roi = false;
 		boolean dame = false;
-		String atout = Table.atout.name();
+		String a = atout.name();
 		for (Carte c : this.main) {
-			if (c.getCouleur().name().equals(atout) && c.getValeur().name().equals("Roi")) {
+			if (c.getCouleur().name().equals(a) && c.getValeur().name().equals("Roi")) {
 					roi = true;
-			} else if (c.getCouleur().name().equals(atout) && c.getValeur().name().equals("Dame")) {
+			} else if (c.getCouleur().name().equals(a) && c.getValeur().name().equals("Dame")) {
 					dame = true;
 			}
 		}
@@ -198,22 +200,183 @@ public class Joueur {
 		String reponse = scanner.nextLine();
 		switch (reponse.toLowerCase()) {
 		case "carreau" :
-			if(this.main.get(5).getCouleur()!=Couleur.Carreau) return Couleur.Carreau;
+			if(!this.main.get(5).getCouleur().name().equals(Couleur.Carreau.name())) return Couleur.Carreau;
 			break;
 		case "pique" :
-			if(this.main.get(5).getCouleur()!=Couleur.Pique) return Couleur.Pique;
+			if(!this.main.get(5).getCouleur().name().equals(Couleur.Pique.name())) return Couleur.Pique;
 			break;
 		case "coeur" :
-			if(this.main.get(5).getCouleur()!=Couleur.Coeur) return Couleur.Coeur;
+			if(!this.main.get(5).getCouleur().name().equals(Couleur.Coeur.name())) return Couleur.Coeur;
 			break;
 		case "trefle" :
-			if(this.main.get(5).getCouleur()!=Couleur.Trefle) return Couleur.Trefle;
+			if(!this.main.get(5).getCouleur().name().equals(Couleur.Trefle.name())) return Couleur.Trefle;
 			break;
 		default :
 			break;
 		}
 		System.out.println("Choisissez une autre couleur");
 		return designeCouleur();
+	}
+	
+	
+	/**
+	 * Permet à une IA de décider de la couleur à prendre
+	 * @return c La couleur à prendre
+	 */
+	Couleur decideCouleur() {
+		Couleur c = null;
+		int scorePique = 0, scoreCoeur = 0, scoreCarreau = 0, scoreTrefle = 0, scoreMax = 0;
+		boolean roiPique = false, roiCoeur = false, roiCarreau = false, roiTrefle = false; //Permet de ne pas à avoir à retraverser le jeu 4 fois
+		boolean damePique = false, dameCoeur = false, dameCarreau = false, dameTrefle = false;//pour vérifier que le joueur à la belote (une fois par couleur)
+		//Avoir une carte de la couleur ajoute 2 au score de la couleur (afin de faire peser le 7 et le 8).
+		//On ajoute le score de la carte à la couleur (en assumant que la carte est un atout).
+		//Avoir une belote dans une main ajoute 20 au score de la couleur.
+		
+		if (Table.mancheCour == 1) { // Durant la prmière manche, on connait uniquement ses propres cartes.
+			for (Carte carte : this.main) {
+				if (carte.getCouleur().name().equals(Couleur.Pique.name())) {
+					if (carte.getValeur().name().equals(Valeur.Valet.name())) scorePique += 18;
+					if (carte.getValeur().name().equals(Valeur.Neuf.name())) scorePique += 14;
+					if (carte.getValeur().name().equals(Valeur.Roi.name())) roiPique = true;
+					if (carte.getValeur().name().equals(Valeur.Dame.name())) damePique = true;
+					scorePique += carte.point + 2;
+				}
+				else if (carte.getCouleur().name().equals(Couleur.Coeur.name())) {
+					if (carte.getValeur().name().equals(Valeur.Valet.name())) scoreCoeur += 18;
+					if (carte.getValeur().name().equals(Valeur.Neuf.name())) scoreCoeur += 14;
+					if (carte.getValeur().name().equals(Valeur.Roi.name())) roiCoeur = true;
+					if (carte.getValeur().name().equals(Valeur.Dame.name())) dameCoeur = true;
+					scoreCoeur += carte.point + 2;
+				}
+				else if (carte.getCouleur().name().equals(Couleur.Carreau.name())) {
+					if (carte.getValeur().name().equals(Valeur.Valet.name())) scoreCarreau += 18;
+					if (carte.getValeur().name().equals(Valeur.Neuf.name())) scoreCarreau += 14;
+					if (carte.getValeur().name().equals(Valeur.Roi.name())) roiCarreau = true;
+					if (carte.getValeur().name().equals(Valeur.Dame.name())) dameCarreau = true;
+					scoreCarreau += carte.point + 2;
+				}
+				else { // La carte est un Trèfle
+					if (carte.getValeur().name().equals(Valeur.Valet.name())) scoreTrefle += 18;
+					if (carte.getValeur().name().equals(Valeur.Neuf.name())) scoreTrefle += 14;
+					if (carte.getValeur().name().equals(Valeur.Roi.name())) roiTrefle = true;
+					if (carte.getValeur().name().equals(Valeur.Dame.name())) dameTrefle = true;
+					scoreTrefle += carte.point + 2;
+				}
+			}
+			
+			if (roiPique && damePique) scorePique +=20;
+			if (roiCoeur && dameCoeur) scoreCoeur +=20;
+			if (roiCarreau && dameCarreau) scoreCarreau +=20;
+			if (roiTrefle && dameTrefle) scoreTrefle +=20;
+		}
+		
+		else { //Lorsqu'on n'est pas à la première manche, on connait les cartes des autres.
+			Table.distribuerResteBis(this);
+			ArrayList<Carte> mainFuturePartenaire;
+			if(this.idPartenaire == 1) mainFuturePartenaire = Table.joueur1.mainFuture;
+			else if(this.idPartenaire == 2) mainFuturePartenaire = Table.joueur2.mainFuture;
+			else if(this.idPartenaire == 3) mainFuturePartenaire = Table.joueur3.mainFuture;
+			else mainFuturePartenaire = Table.joueur4.mainFuture;
+			
+			for (Carte carte : this.mainFuture) {
+				if (carte.getCouleur().name().equals(Couleur.Pique.name())) {
+					if (carte.getValeur().name().equals(Valeur.Valet.name())) scorePique += 18;
+					if (carte.getValeur().name().equals(Valeur.Neuf.name())) scorePique += 14;
+					if (carte.getValeur().name().equals(Valeur.Roi.name())) roiPique = true;
+					if (carte.getValeur().name().equals(Valeur.Dame.name())) damePique = true;
+					scorePique += carte.point + 2;
+				}
+				else if (carte.getCouleur().name().equals(Couleur.Coeur.name())) {
+					if (carte.getValeur().name().equals(Valeur.Valet.name())) scoreCoeur += 18;
+					if (carte.getValeur().name().equals(Valeur.Neuf.name())) scoreCoeur += 14;
+					if (carte.getValeur().name().equals(Valeur.Roi.name())) roiCoeur = true;
+					if (carte.getValeur().name().equals(Valeur.Dame.name())) dameCoeur = true;
+					scoreCoeur += carte.point + 2;
+				}
+				else if (carte.getCouleur().name().equals(Couleur.Carreau.name())) {
+					if (carte.getValeur().name().equals(Valeur.Valet.name())) scoreCarreau += 18;
+					if (carte.getValeur().name().equals(Valeur.Neuf.name())) scoreCarreau += 14;
+					if (carte.getValeur().name().equals(Valeur.Roi.name())) roiCarreau = true;
+					if (carte.getValeur().name().equals(Valeur.Dame.name())) dameCarreau = true;
+					scoreCarreau += carte.point + 2;
+				}
+				else { // La carte est un Trèfle
+					if (carte.getValeur().name().equals(Valeur.Valet.name())) scoreTrefle += 18;
+					if (carte.getValeur().name().equals(Valeur.Neuf.name())) scoreTrefle += 14;
+					if (carte.getValeur().name().equals(Valeur.Roi.name())) roiTrefle = true;
+					if (carte.getValeur().name().equals(Valeur.Dame.name())) dameTrefle = true;
+					scoreTrefle += carte.point + 2;
+				}
+			}
+			
+			if (roiPique && damePique) scorePique +=20;
+			if (roiCoeur && dameCoeur) scoreCoeur +=20;
+			if (roiCarreau && dameCarreau) scoreCarreau +=20;
+			if (roiTrefle && dameTrefle) scoreTrefle +=20;
+			roiPique = false;
+			roiCoeur = false;
+			roiCarreau = false;
+			roiTrefle = false;
+			damePique = false;
+			dameCoeur = false;
+			dameCarreau = false;
+			dameTrefle = false;
+			
+			for (Carte carte : mainFuturePartenaire) {
+				if (carte.getCouleur().name().equals(Couleur.Pique.name())) {
+					if (carte.getValeur().name().equals(Valeur.Valet.name())) scorePique += 18;
+					if (carte.getValeur().name().equals(Valeur.Neuf.name())) scorePique += 14;
+					if (carte.getValeur().name().equals(Valeur.Roi.name())) roiPique = true;
+					if (carte.getValeur().name().equals(Valeur.Dame.name())) damePique = true;
+					scorePique += carte.point + 2;
+				}
+				else if (carte.getCouleur().name().equals(Couleur.Coeur.name())) {
+					if (carte.getValeur().name().equals(Valeur.Valet.name())) scoreCoeur += 18;
+					if (carte.getValeur().name().equals(Valeur.Neuf.name())) scoreCoeur += 14;
+					if (carte.getValeur().name().equals(Valeur.Roi.name())) roiCoeur = true;
+					if (carte.getValeur().name().equals(Valeur.Dame.name())) dameCoeur = true;
+					scoreCoeur += carte.point + 2;
+				}
+				else if (carte.getCouleur().name().equals(Couleur.Carreau.name())) {
+					if (carte.getValeur().name().equals(Valeur.Valet.name())) scoreCarreau += 18;
+					if (carte.getValeur().name().equals(Valeur.Neuf.name())) scoreCarreau += 14;
+					if (carte.getValeur().name().equals(Valeur.Roi.name())) roiCarreau = true;
+					if (carte.getValeur().name().equals(Valeur.Dame.name())) dameCarreau = true;
+					scoreCarreau += carte.point + 2;
+				}
+				else { // La carte est un Trèfle
+					if (carte.getValeur().name().equals(Valeur.Valet.name())) scoreTrefle += 18;
+					if (carte.getValeur().name().equals(Valeur.Neuf.name())) scoreTrefle += 14;
+					if (carte.getValeur().name().equals(Valeur.Roi.name())) roiTrefle = true;
+					if (carte.getValeur().name().equals(Valeur.Dame.name())) dameTrefle = true;
+					scoreTrefle += carte.point + 2;
+				}
+			}
+			
+			if (roiPique && damePique) scorePique +=20;
+			if (roiCoeur && dameCoeur) scoreCoeur +=20;
+			if (roiCarreau && dameCarreau) scoreCarreau +=20;
+			if (roiTrefle && dameTrefle) scoreTrefle +=20;
+		}
+		
+		if (scorePique > scoreMax) {
+			scoreMax = scorePique;
+			c = Couleur.Pique;
+		}
+		if (scoreCoeur > scoreMax) {
+			scoreMax = scoreCoeur;
+			c = Couleur.Coeur;
+		}
+		if (scoreCarreau > scoreMax) {
+			scoreMax = scoreCarreau;
+			c = Couleur.Carreau;
+		}
+		if (scoreTrefle > scoreMax) {
+			scoreMax = scoreTrefle;
+			c = Couleur.Trefle;
+		}
+		//En cas d'égalité des scores, on garde la première couleur vérifiée atteignant cette égalité.
+		return c;
 	}
 	
 	public void printMain() {

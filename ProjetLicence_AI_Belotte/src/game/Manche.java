@@ -95,10 +95,11 @@ public class Manche {
 			Table.ensCartes.addAll(pasPris);
 			Table.ensCartes.addAll(pris);
 		}
-		Table.joueur1.hasBelote();
-		Table.joueur2.hasBelote();
-		Table.joueur3.hasBelote();
-		Table.joueur4.hasBelote();
+		Table.joueur1.hasBelote(Table.atout);
+		Table.joueur2.hasBelote(Table.atout);
+		Table.joueur3.hasBelote(Table.atout);
+		Table.joueur4.hasBelote(Table.atout);
+		Table.mancheCour++;
 	}
 
 	/**
@@ -161,10 +162,10 @@ public class Manche {
 		Joueur jCourant = Table.joueurCourant;
 		Scanner sc = Table.scannerString;
 		String carteAJouer = "";
-		Table.joueur1.hasBelote();
-		Table.joueur2.hasBelote();
-		Table.joueur3.hasBelote();
-		Table.joueur4.hasBelote();
+		Table.joueur1.hasBelote(atout);
+		Table.joueur2.hasBelote(atout);
+		Table.joueur3.hasBelote(atout);
+		Table.joueur4.hasBelote(atout);
 		//Une manche == 8 plis
 		for (int i=0 ; i<8 ; i++) {
 			System.out.println("Pli numéro " + (i+1));
