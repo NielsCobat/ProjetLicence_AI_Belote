@@ -1,6 +1,7 @@
 package AI;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 
 import assets.Couleur;
@@ -52,7 +53,6 @@ public class NeuralNetwork extends Joueur{
 		this.main = new ArrayList<Carte>(); // A la creation main forcement vide
 		this.input = new double[296]; 
 		this.output = new double[31];
-		this.isIA = true;
 	}
 
 	/*
@@ -195,6 +195,7 @@ public class NeuralNetwork extends Joueur{
 	 * joue le coup et met à jour les inputs
 	 * @param carte La carte jouée
 	 */
+	@Override
 	protected void joueCoup(Carte carte) {
 		//calcul de la meilleure carte à jouer
 		int indice = 0;
@@ -216,8 +217,6 @@ public class NeuralNetwork extends Joueur{
 		input[posCartesInput.get(carte)] = 0;
 		input[posCartesInput.get(carte) + 32] = 1;
 	}
-
-	//TODO faire le joueCoup des autres joueurs
 
 	/**
 	 * Met à jour les cartes du pli dans les inputs
@@ -283,11 +282,13 @@ public class NeuralNetwork extends Joueur{
 		}
 	}
 	
-	/*
-	 * 
-	 */
-	void runIA() {
-		//TODO
+	public double[] getInput() {
+		return input;
 	}
+
+	public HashMap<Carte, Integer> getPosCartesInput() {
+		return posCartesInput;
+	}
+	
 
 }

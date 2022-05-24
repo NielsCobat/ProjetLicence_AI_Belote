@@ -1,6 +1,9 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import AI.NeuralNetwork;
 import java.util.LinkedList;
 import java.util.Scanner;
 import assets.Couleur;
@@ -16,14 +19,14 @@ public class Joueur {
 	public ArrayList<Carte> main;
 	public ArrayList<Carte> mainFuture; //Aide à décider de la couleur de l'atout une fois que l'on connait la disposition des cartes dans le paquet.
 	boolean aBelote;
-	protected boolean isIA;
-	
+	private double[] input; //variable de neuralnetwork
+	private HashMap<Carte, Integer> posCartesInput = new HashMap<Carte, Integer>();//variable de neuralnetwork
+
 	public Joueur() {
 		nom = "";
 		id = 0;
 		idPartenaire = 0;
 		main = new ArrayList<Carte>();
-		isIA= false;
 	}
 
 	public Joueur(String nom, int id, int partenaire) {
@@ -31,7 +34,6 @@ public class Joueur {
 		this.id = id;
 		this.idPartenaire = partenaire;
 		this.main = new ArrayList<Carte>(); // A la creation main forcement vide
-		this.isIA= false;
 	}
 
 	/**
@@ -44,20 +46,20 @@ public class Joueur {
 		String a = atout.name();
 		for (Carte c : this.main) {
 			if (c.getCouleur().name().equals(a) && c.getValeur().name().equals("Roi")) {
-					roi = true;
+				roi = true;
 			} else if (c.getCouleur().name().equals(a) && c.getValeur().name().equals("Dame")) {
-					dame = true;
+				dame = true;
 			}
 		}
 		aBelote = roi && dame;
 	}
-	
-//	/**
-//	 * Met aBelote à faux, utilisé en fin de manche après les calculs de points.
-//	 */
-//	public void setABelote() {
-//		aBelote = false;
-//	}
+
+	//	/**
+	//	 * Met aBelote à faux, utilisé en fin de manche après les calculs de points.
+	//	 */
+	//	public void setABelote() {
+	//		aBelote = false;
+	//	}
 
 	/**
 	 * Si le pli est vide on peut mettre n'importe quelle carte. Si on a la couleur
@@ -73,7 +75,7 @@ public class Joueur {
 	protected boolean isLegalMove(Carte carte) {
 		Manche manche = Table.mancheCourante;
 		Pli pli = manche.getPli(manche.getNbPlis());
-		
+
 		Couleur couleurDeLaCarte = carte.getCouleur();
 		Couleur atout = Table.atout;
 		Carte plusGrandAtoutDuPli = null;
@@ -85,7 +87,7 @@ public class Joueur {
 		if (pli.getNbCarte() == 0) {
 			return true;
 		} else {
-			
+
 			Couleur demande = pli.getCouleurDemandee();
 			for (Carte c : pli.getCartes()) { // On détermine le plus grand atout du pli.
 				if ((c != null) && c.getCouleur().name().equals(atout.name())) {
@@ -146,10 +148,41 @@ public class Joueur {
 	 * @param carte La carte jouée
 	 */
 	protected void joueCoup(Carte carte) {
-			Manche manche = Table.mancheCourante;
-			
-			manche.getPli(manche.getNbPlis()).addCarte(carte);
-			main.remove(carte);
+		Manche manche = Table.mancheCourante;
+
+		manche.getPli(manche.getNbPlis()).addCarte(carte);
+		main.remove(carte);
+
+		
+		//met à  jour les inputs des autres ia en jeu que l'on soit une ia ou un joueur réel
+		if(Table.joueur1 instanceof NeuralNetwork && this.id!=Table.joueur1.id) {
+			Table.joueur1.input[Table.joueur1.posCartesInput.get(carte) + 64*(this.id-1)] = 0;
+			Table.joueur1.input[Table.joueur1.posCartesInput.get(carte)  + 64*(this.id-1) + 32] = 1;
+		}
+		if(Table.joueur2 instanceof NeuralNetwork && this.id!=Table.joueur2.id) {
+			if(this.id ==1) {
+				Table.joueur2.input[Table.joueur2.posCartesInput.get(carte) + 64*(this.id)] = 0;
+				Table.joueur2.input[Table.joueur2.posCartesInput.get(carte)  + 64*(this.id) + 32] = 1;
+			}
+			else {
+				Table.joueur2.input[Table.joueur2.posCartesInput.get(carte) + 64*(this.id-1)] = 0;
+				Table.joueur2.input[Table.joueur2.posCartesInput.get(carte)  + 64*(this.id-1) + 32] = 1;
+			}
+		}
+		if(Table.joueur3 instanceof NeuralNetwork && this.id!=Table.joueur3.id) {
+			if(this.id == 1 || this.id == 2) {
+				Table.joueur3.input[Table.joueur3.posCartesInput.get(carte) + 64*(this.id)] = 0;
+				Table.joueur3.input[Table.joueur3.posCartesInput.get(carte)  + 64*(this.id) + 32] = 1;
+			}else {
+
+				Table.joueur3.input[Table.joueur3.posCartesInput.get(carte) + 64*(this.id-1)] = 0;
+				Table.joueur3.input[Table.joueur3.posCartesInput.get(carte)  + 64*(this.id-1) + 32] = 1;
+			}
+		}
+		if(Table.joueur4 instanceof NeuralNetwork && this.id!=Table.joueur4.id) {
+			Table.joueur4.input[Table.joueur4.posCartesInput.get(carte) + 64*(this.id)] = 0;
+			Table.joueur4.input[Table.joueur4.posCartesInput.get(carte)  + 64*(this.id) + 32] = 1;
+		}
 	}
 
 
@@ -160,7 +193,7 @@ public class Joueur {
 	void prend(Carte carte) {
 		this.main.add(carte);
 	}
-	
+
 	/**
 	 * Lance l'action de prendre ou passer, est geree avec scanner pour l'instant
 	 * @param carte retourner pour decider de l'atout
@@ -186,9 +219,9 @@ public class Joueur {
 			else System.out.println("L'entrée doit être valide ! ");
 		}
 		return false;
-		
+
 	}
-	
+
 	/**
 	 * Durant le deuxieme tour du choix de l'atout, si joueur prend alors designe couleur
 	 * differente de la couleur prise, geree avec un scanner pour l'instant
@@ -217,8 +250,8 @@ public class Joueur {
 		System.out.println("Choisissez une autre couleur");
 		return designeCouleur();
 	}
-	
-	
+
+
 	/**
 	 * Permet à une IA de décider de la couleur à prendre
 	 * @return c La couleur à prendre
@@ -231,7 +264,7 @@ public class Joueur {
 		//Avoir une carte de la couleur ajoute 2 au score de la couleur (afin de faire peser le 7 et le 8).
 		//On ajoute le score de la carte à la couleur (en assumant que la carte est un atout).
 		//Avoir une belote dans une main ajoute 20 au score de la couleur.
-		
+
 		if (Table.mancheCour == 1) { // Durant la prmière manche, on connait uniquement ses propres cartes.
 			for (Carte carte : this.main) {
 				if (carte.getCouleur().name().equals(Couleur.Pique.name())) {
@@ -263,13 +296,13 @@ public class Joueur {
 					scoreTrefle += carte.point + 2;
 				}
 			}
-			
+
 			if (roiPique && damePique) scorePique +=20;
 			if (roiCoeur && dameCoeur) scoreCoeur +=20;
 			if (roiCarreau && dameCarreau) scoreCarreau +=20;
 			if (roiTrefle && dameTrefle) scoreTrefle +=20;
 		}
-		
+
 		else { //Lorsqu'on n'est pas à la première manche, on connait les cartes des autres.
 			Table.distribuerResteBis(this);
 			ArrayList<Carte> mainFuturePartenaire;
@@ -277,7 +310,7 @@ public class Joueur {
 			else if(this.idPartenaire == 2) mainFuturePartenaire = Table.joueur2.mainFuture;
 			else if(this.idPartenaire == 3) mainFuturePartenaire = Table.joueur3.mainFuture;
 			else mainFuturePartenaire = Table.joueur4.mainFuture;
-			
+
 			for (Carte carte : this.mainFuture) {
 				if (carte.getCouleur().name().equals(Couleur.Pique.name())) {
 					if (carte.getValeur().name().equals(Valeur.Valet.name())) scorePique += 18;
@@ -308,7 +341,7 @@ public class Joueur {
 					scoreTrefle += carte.point + 2;
 				}
 			}
-			
+
 			if (roiPique && damePique) scorePique +=20;
 			if (roiCoeur && dameCoeur) scoreCoeur +=20;
 			if (roiCarreau && dameCarreau) scoreCarreau +=20;
@@ -321,7 +354,7 @@ public class Joueur {
 			dameCoeur = false;
 			dameCarreau = false;
 			dameTrefle = false;
-			
+
 			for (Carte carte : mainFuturePartenaire) {
 				if (carte.getCouleur().name().equals(Couleur.Pique.name())) {
 					if (carte.getValeur().name().equals(Valeur.Valet.name())) scorePique += 18;
@@ -352,13 +385,13 @@ public class Joueur {
 					scoreTrefle += carte.point + 2;
 				}
 			}
-			
+
 			if (roiPique && damePique) scorePique +=20;
 			if (roiCoeur && dameCoeur) scoreCoeur +=20;
 			if (roiCarreau && dameCarreau) scoreCarreau +=20;
 			if (roiTrefle && dameTrefle) scoreTrefle +=20;
 		}
-		
+
 		if (scorePique > scoreMax) {
 			scoreMax = scorePique;
 			c = Couleur.Pique;
@@ -378,19 +411,16 @@ public class Joueur {
 		//En cas d'égalité des scores, on garde la première couleur vérifiée atteignant cette égalité.
 		return c;
 	}
-	
+
 	public void printMain() {
 		for (Carte c : main) {
 			System.out.print(c.toString() + " | ");
 		}
 	}
-	
+
 	@Override
 	public Joueur clone() {
 		return new Joueur(this.nom,this.id,this.idPartenaire);
 	}
 
-	public boolean getIsIA() {
-		return isIA;
-	}
 }
