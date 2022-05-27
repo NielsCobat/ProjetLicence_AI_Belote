@@ -44,6 +44,9 @@ public class NeuralNetwork extends Joueur{
 
 	//variables utiles pour les fonctions
 	private int compteurJoueur = 1;
+	
+	Matrix weights_ih , weights_ho , bias_h , bias_o;    
+    double l_rate=0.01;
 
 	/*
 	 * Constructeur neural network
@@ -53,6 +56,11 @@ public class NeuralNetwork extends Joueur{
 		this.main = new ArrayList<Carte>(); // A la creation main forcement vide
 		this.input = new double[296]; 
 		this.output = new double[31];
+		//this.weights_ih = new Matrix(h,input.length);
+      //  this.weights_ho = new Matrix(output.length,h);
+        
+       // this.bias_h= new Matrix(h,1);
+        this.bias_o= new Matrix(output.length,1);
 	}
 
 	/*
@@ -189,6 +197,13 @@ public class NeuralNetwork extends Joueur{
 		///au debut pas de couleur demandée
 
 		//au debut personne n'est maitre donc le dernier input reste à 0
+	}
+	
+	/**
+	 * Initialise les hidden inputs et crée les calculs qui lie jusqu'aux outputs 
+	 */
+	void hiddenLayers() {
+		
 	}
 
 	/**
