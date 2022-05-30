@@ -45,7 +45,10 @@ public class NeuralNetwork extends Joueur{
 	//variables utiles pour les fonctions
 	private int compteurJoueur = 1;
 	
-	Matrix weights_ih , weights_ho , bias_h , bias_o;    
+	//réseau neuronal
+	double[] hidden;
+	Matrix weights_ih , weights_ho , bias_h , bias_o; 
+	//controle le "taux d'apprentissage" durant l'optimisation des poids
     double l_rate=0.01;
 
 	/*
@@ -56,10 +59,11 @@ public class NeuralNetwork extends Joueur{
 		this.main = new ArrayList<Carte>(); // A la creation main forcement vide
 		this.input = new double[296]; 
 		this.output = new double[31];
-		//this.weights_ih = new Matrix(h,input.length);
-      //  this.weights_ho = new Matrix(output.length,h);
+		this.hidden = new double[165];
+		this.weights_ih = new Matrix(hidden.length,input.length);
+        this.weights_ho = new Matrix(output.length,hidden.length);
         
-       // this.bias_h= new Matrix(h,1);
+        this.bias_h= new Matrix(hidden.length,1);
         this.bias_o= new Matrix(output.length,1);
 	}
 
@@ -200,11 +204,21 @@ public class NeuralNetwork extends Joueur{
 	}
 	
 	/**
-	 * Initialise les hidden inputs et crée les calculs qui lie jusqu'aux outputs 
+	 * forward propagation de tousle réseau neuronal, les outputs soont prêtes à être utilisées après
 	 */
-	void hiddenLayers() {
-		
-	}
+	double[] forwardPropagation()
+    {
+        Matrix input = Matrix.fromArray(this.input);
+        Matrix hidden = Matrix.multiply(weights_ih, input);
+        hidden.add(bias_h);
+        hidden.sigmoid();
+        
+        Matrix output = Matrix.multiply(weights_ho,hidden);
+        output.add(bias_o);
+        output.sigmoid();
+        
+        return output.toDouble();
+    }
 
 	/**
 	 * joue le coup et met à jour les inputs
@@ -218,8 +232,8 @@ public class NeuralNetwork extends Joueur{
 		setCartesSurTable();
 		setMaitre();
 		
-		
-		//TODO ici que l'ia active tout son processus
+		//forward propagation
+		this.output = forwardPropagation();
 		
 		//calcul de la meilleure carte à jouer
 		int indice = 0;

@@ -155,5 +155,17 @@ public class Matrix {
 		return temp;
 	}
 
+	/*
+	 * fonction n'appartenant à Suyash Sonawane
+	 */
+	public double[] toDouble() {
+		double[] temp= new double[rows];
+
+		for(int i=0;i<rows;i++)
+		{
+			temp[i] = data[i][1];
+		}
+		return temp;
+	}
 
 }
