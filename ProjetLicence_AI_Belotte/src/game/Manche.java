@@ -11,6 +11,10 @@ public class Manche {
 	private Pli[] plis;
 	private int idPremierJoueur, equipePreneur, nbPlis;
 	private int[] pointsEquipe, belotte;
+	
+	//variables pour l'entrainement
+	public Joueur j1, j2, j3, j4;
+	public ArrayList<Carte> ensCarte;
 
 	/**
 	 * Constructeur de la classe Manche
@@ -32,6 +36,30 @@ public class Manche {
 		this.pointsEquipe[1] = 0; // joueurs 2 et 4
 		this.nbPlis = 0;
 		this.belotte = new int[2];
+		this.j1 = null;
+		this.j2 = null;
+		this.j3 = null;
+		this.j4 = null;
+		this.ensCarte = null;
+	}
+	
+	public Manche(int idPremierJoueur, int joueurPreneur, Joueur j1, Joueur j2, Joueur j3, Joueur j4, ArrayList<Carte> ensCarte) throws Exception {
+		if ((this.idPremierJoueur > 4 || this.idPremierJoueur < 1) && (joueurPreneur > 4 || joueurPreneur < 1))
+			throw new Exception("game.Manche.Manche() : Un id de joueur n'est pas valide");
+
+		this.plis = new Pli[8];
+		this.idPremierJoueur = idPremierJoueur;
+		this.equipePreneur = (joueurPreneur + 1) % 2; // soit 0 = joueurs 1 et 3 ; 1 = joueurs 2 et 4
+		this.pointsEquipe = new int[2];
+		this.pointsEquipe[0] = 0; // joueurs 1 et 3
+		this.pointsEquipe[1] = 0; // joueurs 2 et 4
+		this.nbPlis = 0;
+		this.belotte = new int[2];
+		this.j1 = j1;
+		this.j2 = j2;
+		this.j3 = j3;
+		this.j4 = j4;
+		this.ensCarte = ensCarte;
 	}
 
 	/**
@@ -299,6 +327,10 @@ public class Manche {
 		}
 		//attribution des points remportes par chaque equipe
 		finManche();
+	}
+	
+	public void runMancheEntrainement() {
+		
 	}
 
 	/**

@@ -13,9 +13,9 @@ import assets.Valeur;
 public class Joueur {
 
 	String nom;
-	protected int id;
+	public int id;
 	//boolean maitre; //Variable pas utilisée
-	protected int idPartenaire;
+	public int idPartenaire;
 	public ArrayList<Carte> main;
 	public ArrayList<Carte> mainFuture; //Aide à décider de la couleur de l'atout une fois que l'on connait la disposition des cartes dans le paquet.
 	boolean aBelote;
