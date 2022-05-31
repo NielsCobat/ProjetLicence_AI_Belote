@@ -1,8 +1,5 @@
 package AI;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /*
  * Toutes les formules mathématiques nécéssaires au bon déroulement de l'entraînement de l'ia
  * Le code a été crée par Suyash Sonawane
@@ -26,17 +23,7 @@ public class Matrix {
 		}
 	}
 
-	public void add(double scaler)
-	{
-		for(int i=0;i<rows;i++)
-		{
-			for(int j=0;j<cols;j++)
-			{
-				this.data[i][j]+=scaler;
-			}
-
-		}
-	}public void add(Matrix m)
+	public void add(Matrix m)
 	{
 		if(cols!=m.cols || rows!=m.rows) {
 			System.out.println("Shape Mismatch");
@@ -50,28 +37,6 @@ public class Matrix {
 				this.data[i][j]+=m.data[i][j];
 			}
 		}
-	}
-
-	public static Matrix subtract(Matrix a, Matrix b) {
-		Matrix temp=new Matrix(a.rows,a.cols);
-		for(int i=0;i<a.rows;i++)
-		{
-			for(int j=0;j<a.cols;j++)
-			{
-				temp.data[i][j]=a.data[i][j]-b.data[i][j];
-			}
-		}
-		return temp;
-	}public static Matrix transpose(Matrix a) {
-		Matrix temp=new Matrix(a.cols,a.rows);
-		for(int i=0;i<a.rows;i++)
-		{
-			for(int j=0;j<a.cols;j++)
-			{
-				temp.data[j][i]=a.data[i][j];
-			}
-		}
-		return temp;
 	}
 
 	public static Matrix multiply(Matrix a, Matrix b) {
@@ -91,28 +56,6 @@ public class Matrix {
 		return temp;
 	}
 
-	public void multiply(Matrix a) {
-		for(int i=0;i<a.rows;i++)
-		{
-			for(int j=0;j<a.cols;j++)
-			{
-				this.data[i][j]*=a.data[i][j];
-			}
-		}
-
-	}
-
-	public void multiply(double a) {
-		for(int i=0;i<rows;i++)
-		{
-			for(int j=0;j<cols;j++)
-			{
-				this.data[i][j]*=a;
-			}
-		}
-
-	}
-
 	public void sigmoid() {
 		for(int i=0;i<rows;i++)
 		{
@@ -122,6 +65,9 @@ public class Matrix {
 
 	}
 
+	/*
+	 * Pour le back pourquoi pas
+	 */
 	public Matrix dsigmoid() {
 		Matrix temp=new Matrix(rows,cols);
 		for(int i=0;i<rows;i++)
@@ -140,19 +86,6 @@ public class Matrix {
 			temp.data[i][0]=x[i];
 		return temp;
 
-	}
-
-	public List<Double> toArray() {
-		List<Double> temp= new ArrayList<Double>()  ;
-
-		for(int i=0;i<rows;i++)
-		{
-			for(int j=0;j<cols;j++)
-			{
-				temp.add(data[i][j]);
-			}
-		}
-		return temp;
 	}
 
 	/*
