@@ -334,14 +334,14 @@ public class Manche {
 		return nbPlis;
 	}
 
-//	/**
-//	 * Getter du nombre de points d'une équipe
-//	 * 
-//	 * @param l'id de l'équipe souhaitée (0 ou 1)
-//	 * @return le score de cette équipe
-//	 */
-//	public int getPointsEquipe(int equipe) {
-//		return pointsEquipe[equipe];
-//	}
+	/**
+	 * Getter du nombre de points d'une équipe
+	 * 
+	 * @param l'id du joueur souhaitée (entre 1 et 4)
+	 * @return le score de cette équipe
+	 */
+	public int getPointsEquipe(int idJoueur) {
+		return pointsEquipe[(idJoueur + 1) % 2];
+	}
 
 }
