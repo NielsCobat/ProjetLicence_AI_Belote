@@ -89,7 +89,7 @@ public class Matrix {
 	}
 
 	/*
-	 * fonction n'appartenant à Suyash Sonawane
+	 * fonction n'appartenant pas à Suyash Sonawane
 	 */
 	public double[] toDouble() {
 		double[] temp= new double[rows];

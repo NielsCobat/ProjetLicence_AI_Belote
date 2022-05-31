@@ -47,9 +47,8 @@ public class NeuralNetwork extends Joueur{
 	private int compteurJoueur = 1;
 	
 	public static final int nbHiddenLayer = 5;
-	double[] hidden;
 	List<Matrix> allHidden;
-	Matrix weights_ih , weights_ho , bias_h , bias_o ; 
+	List<Matrix> allBias;
 	
 	/*
 	 * Constructeur neural network
@@ -60,18 +59,24 @@ public class NeuralNetwork extends Joueur{
 		
 		this.input = new double[296]; 
 		this.output = new double[31];
-		this.hidden = new double[95];
 		
-		this.weights_ih = new Matrix(hidden.length,input.length);
-		this.allHidden.add(weights_ih);
-		for(int i = 1; i < nbHiddenLayer ; i++) {
-			this.allHidden.add(new Matrix(hidden.length,hidden.length));
+		
+		
+		
+		//r sert aux calculs du nombre de neurones pour chaque hidden layer
+		int r = (input.length/output.length)^(1/(nbHiddenLayer+1));
+		
+		//initialisation de chaque matrices correspondant aux poids/synapses enrte neurones le tout rassemblés dans une liste
+		//idem pour biais
+		this.allHidden.add(new Matrix((output.length*(r)^(nbHiddenLayer)),input.length));
+		
+		for(int i = 0 ; i < nbHiddenLayer - 1 ; i++) {
+			this.allHidden.add(new Matrix((output.length*(r)^(nbHiddenLayer-(i+1))),(output.length*(r)^(nbHiddenLayer-i))));
+			this.allBias.add(new Matrix((output.length*(r)^(nbHiddenLayer-(i+1))),1));
 		}
-        this.weights_ho = new Matrix(output.length,hidden.length);
-        this.allHidden.add(weights_ho);
-        
-        this.bias_h= new Matrix(hidden.length,1);
-        this.bias_o= new Matrix(output.length,1);
+		
+        this.allHidden.add(new Matrix(output.length,output.length*(r)));
+        this.allBias.add(new Matrix(output.length,1));
 	}
 
 	/*
@@ -213,8 +218,9 @@ public class NeuralNetwork extends Joueur{
 	/**
 	 * forward propagation de tousle réseau neuronal, les outputs soont prêtes à être utilisées après
 	 */
+	//TODO
 	double[] forwardPropagation()
-    {
+    {return null;/*
         Matrix input = Matrix.fromArray(this.input);
         Matrix hidden = Matrix.multiply(weights_ih, input);
         hidden.add(bias_h);
@@ -224,7 +230,7 @@ public class NeuralNetwork extends Joueur{
         output.add(bias_o);
         output.sigmoid();
         
-        return output.toDouble();
+        return output.toDouble();*/
     }
 
 	/**
