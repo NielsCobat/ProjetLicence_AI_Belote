@@ -45,38 +45,41 @@ public class NeuralNetwork extends Joueur{
 
 	//variables utiles pour les fonctions
 	private int compteurJoueur = 1;
-	
+
+	//nbHiddenLayers doit être un minimum de 2
 	public static final int nbHiddenLayer = 5;
 	List<Matrix> allHidden;
+	List<Matrix> allWeightHidden;
 	List<Matrix> allBias;
-	
+
 	/*
 	 * Constructeur neural network
 	 */
 	public NeuralNetwork(String nom, int id, int partenaire) {
 		super(nom, id, partenaire);
 		this.main = new ArrayList<Carte>(); // A la creation main forcement vide
-		
+
 		this.input = new double[296]; 
 		this.output = new double[31];
-		
-		
-		
-		
+
+
+
+
 		//r sert aux calculs du nombre de neurones pour chaque hidden layer
 		int r = (input.length/output.length)^(1/(nbHiddenLayer+1));
-		
+
 		//initialisation de chaque matrices correspondant aux poids/synapses enrte neurones le tout rassemblés dans une liste
 		//idem pour biais
-		this.allHidden.add(new Matrix((output.length*(r)^(nbHiddenLayer)),input.length));
-		
+		this.allWeightHidden.add(new Matrix((output.length*(r)^(nbHiddenLayer)),input.length));
+
 		for(int i = 0 ; i < nbHiddenLayer - 1 ; i++) {
-			this.allHidden.add(new Matrix((output.length*(r)^(nbHiddenLayer-(i+1))),(output.length*(r)^(nbHiddenLayer-i))));
+			this.allHidden.add(new Matrix((output.length*(r)^(nbHiddenLayer-i)),1));
+			this.allWeightHidden.add(new Matrix((output.length*(r)^(nbHiddenLayer-(i+1))),(output.length*(r)^(nbHiddenLayer-i))));
 			this.allBias.add(new Matrix((output.length*(r)^(nbHiddenLayer-(i+1))),1));
 		}
-		
-        this.allHidden.add(new Matrix(output.length,output.length*(r)));
-        this.allBias.add(new Matrix(output.length,1));
+		this.allHidden.add(new Matrix(output.length*(r),1));
+		this.allWeightHidden.add(new Matrix(output.length,output.length*(r)));
+		this.allBias.add(new Matrix(output.length,1));
 	}
 
 	/*
@@ -214,40 +217,50 @@ public class NeuralNetwork extends Joueur{
 
 		//au debut personne n'est maitre donc le dernier input reste à 0
 	}
-	
+
 	/**
 	 * forward propagation de tousle réseau neuronal, les outputs soont prêtes à être utilisées après
 	 */
-	//TODO
-	double[] forwardPropagation()
-    {return null;/*
-    
-		for(int i = 0)
-        Matrix input = Matrix.fromArray(this.input);
-        Matrix hidden = Matrix.multiply(weights_ih, input);
-        hidden.add(bias_h);
-        hidden.sigmoid();
-        
-        Matrix output = Matrix.multiply(weights_ho,hidden);
-        output.add(bias_o);
-        output.sigmoid();
-        
-        return output.toDouble();*/
-    }
+	double[] forwardPropagation() {
+
+		Matrix input = Matrix.fromArray(this.input);
+
+		//calculs pour la première couche (en lien avec les inputs)
+		Matrix hidden = Matrix.multiply(allWeightHidden.get(0), input);
+		hidden.add(allBias.get(0));
+		hidden.sigmoid();
+
+		allHidden.set(0, hidden);
+
+		//calculs pour toutes les couches intermédiaires
+		for(int i = 1 ; i< nbHiddenLayer ; i++) {
+			Matrix hidden2 = Matrix.multiply(allWeightHidden.get(i), allHidden.get(i-1));
+			hidden2.add(allBias.get(i));
+			hidden2.sigmoid();
+
+			allHidden.set(i, hidden2);
+		}
+		//calculs pour la dernière couche des hiddenLayers(en lien avec les outputs)
+		Matrix output = Matrix.multiply(allWeightHidden.get(allWeightHidden.size()-1),allHidden.get(allHidden.size()-1));
+		output.add(allBias.get(allBias.size()-1));
+		output.sigmoid();
+
+		return output.toDouble();
+	}
 
 	/**
 	 * joue le coup et met à jour les inputs
 	 */
 	public void joueCoup() {
-		
+
 		//mises à jour inputs
 		setCouleurDemandee();
 		setCartesSurTable();
 		setMaitre();
-		
+
 		//forward propagation
 		this.output = forwardPropagation();
-		
+
 		//calcul de la meilleure carte à jouer
 		int indice = 0;
 		double maxNum = output[0];
@@ -323,7 +336,7 @@ public class NeuralNetwork extends Joueur{
 			getInput()[i] = 0;
 		}
 	}
-	
+
 
 	/*
 	 * Reset la manche
@@ -337,10 +350,10 @@ public class NeuralNetwork extends Joueur{
 	public double[] getInput() {
 		return input;
 	}
-	
+
 	public double[] getOutput() {
 		return output;
 	}
-	
+
 
 }
