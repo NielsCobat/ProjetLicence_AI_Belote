@@ -12,7 +12,10 @@ import game.Manche;
 
 public class Entrainement {
 	
-	private final static int NB_AI_PAR_GENERATION = 10, NB_GENERATION = 10, POURCENTAGE_REPROD_DEBUT = 50, POURCENTAGE_REPROD_FIN = 10;
+	public final static int NB_AI_PAR_GENERATION = 10, NB_GENERATION = 10, POURCENTAGE_REPROD_DEBUT = 50, POURCENTAGE_REPROD_FIN = 10;
+	
+	//controle le "taux d'apprentissage" durant l'optimisation des poids
+	public final static double LEARNING_RATE = 0.01;
 	
 	static ArrayList<Carte> ensCartes = new ArrayList<Carte>();
 	
@@ -70,7 +73,7 @@ public class Entrainement {
 		setEnsCartes();
 		
 		for (int id = 0; id < NB_AI_PAR_GENERATION; id++) { // initialisation des IA de bases
-			ais.add(new NeuralNetwork("", id, 0));
+			ais.add(new NeuralNetwork("", id, 3));
 			//TODO mettre des valeurs aléatoires
 		}
 		
@@ -82,7 +85,7 @@ public class Entrainement {
 		
 		for (int gen = 0; gen < NB_GENERATION; gen++) {
 			
-			int nbReproduction = ((POURCENTAGE_REPROD_FIN - POURCENTAGE_REPROD_DEBUT) / NB_GENERATION) * gen + POURCENTAGE_REPROD_DEBUT;
+			int nbReproduction = (int) (NB_AI_PAR_GENERATION * ((double) (((POURCENTAGE_REPROD_FIN - POURCENTAGE_REPROD_DEBUT) / NB_GENERATION) * gen + POURCENTAGE_REPROD_DEBUT) / 100));
 			
 			bests.clear();
 			
@@ -91,9 +94,12 @@ public class Entrainement {
 			for (int id = 0; id < NB_AI_PAR_GENERATION; id++) {
 				int idPJ = r.nextInt(4) + 1;
 				int idJP = r.nextInt(4) + 1;
-				manche = new Manche(idJP, idPJ); //TODO autre constructeur avec joueurs et ens cartes, mettre l'IA principale (ais.get(id)) en 1
+				manche = new Manche(idJP, idPJ, ais.get(id), ais.get(id).clone(), ais.get(id).clone(), ais.get(id).clone(), ensCartes);
+				manche.j2.idPartenaire = 4;
+				manche.j3.idPartenaire = 1;
+				manche.j4.idPartenaire = 2;
 				
-				//TODO exécution de la manche
+				manche.runMancheEntrainement();
 				
 				int indMin = getBestsMinInd();
 				int score = manche.getPointsEquipe(1);
@@ -116,12 +122,12 @@ public class Entrainement {
 				ais.add(bestsAIs.get(i));
 				//ais.get(ais.size() - 1).id = ais.size() - 1; //TODO
 				for (int j = 0; j < nbReproParBest; j++) {
-					ais.add(new NeuralNetwork("", ais.size(), 0)); //TODO idem initialisation
+					ais.add(new NeuralNetwork("", ais.size(), 3)); //TODO idem initialisation
 					//TODO ajouter légères modifications des valeurs dans l'IA
 				}
 			}
 			for (int i = 0; i < reste; i++) {
-				ais.add(new NeuralNetwork("", ais.size(), 0));
+				ais.add(new NeuralNetwork("", ais.size(), 3));
 				//TODO valeurs aléatoires pour l'IA
 			}
 			bestsAIs.clear();

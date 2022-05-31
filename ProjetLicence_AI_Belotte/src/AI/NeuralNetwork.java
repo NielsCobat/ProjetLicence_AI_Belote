@@ -49,8 +49,6 @@ public class NeuralNetwork extends Joueur{
 	double[] hidden;
 	Matrix[] allHidden;
 	Matrix weights_ih , weights_ho , bias_h , bias_o ,weights_hh1,weights_hh2, weights_hh3; 
-	//controle le "taux d'apprentissage" durant l'optimisation des poids
-    double l_rate=0.01;
 
 	/*
 	 * Constructeur neural network
