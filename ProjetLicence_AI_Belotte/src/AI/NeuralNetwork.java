@@ -47,7 +47,8 @@ public class NeuralNetwork extends Joueur{
 	
 	//réseau neuronal
 	double[] hidden;
-	Matrix weights_ih , weights_ho , bias_h , bias_o; 
+	Matrix[] allHidden;
+	Matrix weights_ih , weights_ho , bias_h , bias_o ,weights_hh1,weights_hh2, weights_hh3; 
 	//controle le "taux d'apprentissage" durant l'optimisation des poids
     double l_rate=0.01;
 
@@ -59,9 +60,14 @@ public class NeuralNetwork extends Joueur{
 		this.main = new ArrayList<Carte>(); // A la creation main forcement vide
 		this.input = new double[296]; 
 		this.output = new double[31];
-		this.hidden = new double[165];
+		this.hidden = new double[95];
 		this.weights_ih = new Matrix(hidden.length,input.length);
+		this.weights_hh1 = new Matrix(hidden.length,hidden.length);
+		this.weights_hh2 = new Matrix(hidden.length,hidden.length);
+		this.weights_hh3 = new Matrix(hidden.length,hidden.length);
         this.weights_ho = new Matrix(output.length,hidden.length);
+        
+        this.allHidden = new Matrix[]{weights_ih,weights_hh1,weights_hh2,weights_hh3,weights_ho};
         
         this.bias_h= new Matrix(hidden.length,1);
         this.bias_o= new Matrix(output.length,1);
