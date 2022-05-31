@@ -53,19 +53,19 @@ public class Manche {
 			System.out.print("Points de l'équipe 2 : " + this.pointsEquipe[1]);
 			if (this.belotte[1] == 20) System.out.print(" + " + this.belotte[1] + " points de Belote");
 			System.out.println();
-			
+
 			if (this.pointsEquipe[0] == 162) { //Équipe 2 capot
 				this.pointsEquipe[0] = 252;
 				System.out.println("Équipe 2 capot ! ");
 			}
-				
-			
+
+
 			else if (this.pointsEquipe[1] == 162) {//Équipe 1 capot
 				this.pointsEquipe[1] = 252;
 				System.out.println("Équipe 2 capot ! ");
 			}
-				
-			
+
+
 			else if (this.pointsEquipe[(this.equipePreneur)] < 82	  
 					&& this.belotte[(this.equipePreneur)] + this.belotte[(this.equipePreneur + 1) % 2] == 0 //Si une équipe prend et qu'il n'y a pas de Belote
 					|| (this.pointsEquipe[(this.equipePreneur + 1) % 2] + this.belotte[(this.equipePreneur + 1) % 2] >= 91  //Ou
@@ -74,12 +74,12 @@ public class Manche {
 				this.pointsEquipe[(this.equipePreneur + 1) % 2] = 162;
 				if (this.equipePreneur == 0) System.out.println("Équipe 1 dedans ! ");
 				else System.out.println("Équipe 2 dedans ! ");
-				
+
 			} 
 
 			Table.equipe1.addScore(this.pointsEquipe[0] + this.belotte[0]);
 			Table.equipe2.addScore(this.pointsEquipe[1] + this.belotte[1]);
-			
+
 			System.out.println("Score équipe 1 : " + Table.equipe1.score);
 			System.out.println("Score équipe 2 : " + Table.equipe2.score);
 			// On remet les cartes des plis dans le paquet, en commençant par les plis de l'équipe qui ne prend pas.
@@ -113,7 +113,7 @@ public class Manche {
 	public void reset(int joueurPreneur) throws Exception {
 		if (joueurPreneur > 4 || joueurPreneur < 1)
 			throw new Exception("game.Manche.reset() : Un id de joueur n'est pas valide");
-		
+
 		if (this.idPremierJoueur < 4)
 			this.idPremierJoueur++;
 		else
@@ -125,7 +125,7 @@ public class Manche {
 		this.belotte[0] = 0;
 		this.belotte[1] = 0;
 		//this.initPliSuivant(); // pas sûr que ça doive être ici
-		
+
 		//resetManche des IA
 		if(Table.joueur1 instanceof NeuralNetwork) {
 			((NeuralNetwork) Table.joueur1).resetManche();
@@ -151,27 +151,27 @@ public class Manche {
 		this.pointsEquipe[equipe] += score;
 	}
 
-//	/**
-//	 * Initialisation du pli suivant et incrémentation du score du pli précédent au
-//	 * score de la manche
-//	 * 
-//	 * @throws Exception si le pli précédent n'est pas terminé ou si le nombre de
-//	 *                   pli maximum a déjà été atteint
-//	 */
-//	public void initPliSuivant() throws Exception {
-//		if (this.nbPlis == 8)
-//			throw new Exception("game.Manche.initPliSuivant() : la manche contient déjà 8 plis");
-//		try {
-//			if (this.plis[this.nbPlis - 1].getNbCarte() < 4)
-//				throw new Exception("game.Manche.initPliSuivant() : le pli actuel n'est pas terminé");
-//			this.pointsEquipe[this.plis[this.nbPlis - 1].equipeGagnante()] += this.plis[this.nbPlis - 1].calculPoints();
-//			this.plis[this.nbPlis] = new Pli(this.plis[this.nbPlis - 1].getIdJoueurGagnant());
-//		} catch (Exception e) {
-//			this.plis[0] = new Pli(this.idPremierJoueur);
-//		}
-//		this.nbPlis++;
-//	}
-	
+	//	/**
+	//	 * Initialisation du pli suivant et incrémentation du score du pli précédent au
+	//	 * score de la manche
+	//	 * 
+	//	 * @throws Exception si le pli précédent n'est pas terminé ou si le nombre de
+	//	 *                   pli maximum a déjà été atteint
+	//	 */
+	//	public void initPliSuivant() throws Exception {
+	//		if (this.nbPlis == 8)
+	//			throw new Exception("game.Manche.initPliSuivant() : la manche contient déjà 8 plis");
+	//		try {
+	//			if (this.plis[this.nbPlis - 1].getNbCarte() < 4)
+	//				throw new Exception("game.Manche.initPliSuivant() : le pli actuel n'est pas terminé");
+	//			this.pointsEquipe[this.plis[this.nbPlis - 1].equipeGagnante()] += this.plis[this.nbPlis - 1].calculPoints();
+	//			this.plis[this.nbPlis] = new Pli(this.plis[this.nbPlis - 1].getIdJoueurGagnant());
+	//		} catch (Exception e) {
+	//			this.plis[0] = new Pli(this.idPremierJoueur);
+	//		}
+	//		this.nbPlis++;
+	//	}
+
 	public void runManche(Couleur atout) {
 		boolean half = false; //Pour savoir si la moitié de la belote a été utilisée.
 		Joueur jCourant = Table.joueurCourant;
@@ -181,7 +181,7 @@ public class Manche {
 		Table.joueur2.hasBelote(atout);
 		Table.joueur3.hasBelote(atout);
 		Table.joueur4.hasBelote(atout);
-		
+
 
 		//init des IA
 
@@ -198,15 +198,15 @@ public class Manche {
 			((NeuralNetwork) Table.joueur4).initInput();
 
 		}
-		
-		
+
+
 		//Une manche == 8 plis
 		for (int i=0 ; i<8 ; i++) {
-			
-			
+
+
 			System.out.println("Pli numéro " + (i+1));
 			System.out.println("L'équipe " + (equipePreneur+ 1 ) + " a pris.");
-			
+
 			//resetPli des IA
 			if(Table.joueur1 instanceof NeuralNetwork) {
 				((NeuralNetwork) Table.joueur1).resetPli();
@@ -220,25 +220,25 @@ public class Manche {
 			if(Table.joueur4 instanceof NeuralNetwork) {
 				((NeuralNetwork) Table.joueur4).resetPli();
 			}
-			
+
 			/*try {
 				initPliSuivant();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}*/
-			
+
 			//initialisation du i ème pli
-			
+
 			plis[i] = new Pli(idPremierJoueur); 
 			while (idPremierJoueur != Table.joueurCourant.id) {
 				jCourant = Table.joueurSuivant();
 				Table.joueurCourant = Table.joueurSuivant();
 			}
-			
+
 			//Tour de table
 			boolean aLaCarte;
 			boolean played;
-			
+
 			for(int j=0 ; j<4 ; j++) {
 				aLaCarte = false;
 				played = false;
@@ -252,11 +252,11 @@ public class Manche {
 					System.out.println("\nÉtat actuel du pli : " + plis[i].toString());
 					if (j > 0) System.out.println("Équipe maîtresse : " + (plis[i].equipeGagnante()));
 					carteAJouer = sc.nextLine();
-					
+
 					for(Carte carte : jCourant.main) {
 						if (carte.toString().toLowerCase().equals(carteAJouer.toLowerCase())) {
 							aLaCarte = true;
-							
+
 							if (jCourant.isLegalMove(carte)) {
 								if (jCourant.aBelote && ((carte.getValeur().name().equals("Dame") || (carte.getValeur().name().equals("Roi"))
 										&& carte.getCouleur().name().equals(atout.name())))) {
@@ -268,7 +268,11 @@ public class Manche {
 										System.out.println("Rebelote ! ");
 									}
 								}
-								jCourant.joueCoup(carte);
+								if(jCourant instanceof NeuralNetwork) {
+									((NeuralNetwork) jCourant).joueCoup();
+								}else {
+									jCourant.joueCoup(carte);
+								}
 								played = true;
 								jCourant = Table.joueurSuivant();
 								Table.joueurCourant = Table.joueurSuivant();
@@ -277,17 +281,17 @@ public class Manche {
 							break;
 						}
 					}
-					
+
 					if (!aLaCarte) System.out.println("Vous n'avez pas cette carte ! ");
 				}
-				
+
 			}
-			
+
 			//recuperation id equipe gagnante et id premier joueur du pli suivant	
 			int idGagnante = plis[i].equipeGagnante() - 1; 
 			idPremierJoueur = plis[i].getIdJoueurGagnant();
 			System.out.println("\n\nId du joueur gagnant est " + idPremierJoueur + "\n\n");
-			
+
 			//attribution des points du pli a l'equipe gagnante
 			pointsEquipe[idGagnante] += plis[i].calculPoints();
 			if (i == 7) pointsEquipe[idGagnante] += 10; // 10 de der
@@ -307,23 +311,23 @@ public class Manche {
 		return this.plis[noPli];
 	}
 
-//	/**
-//	 * Getter de l'id du premier joueur de la manche (joueur après le distribueur)
-//	 * 
-//	 * @return id du joueur en question
-//	 */
-//	public int getIdPremierJoueur() {
-//		return idPremierJoueur;
-//	}
+	//	/**
+	//	 * Getter de l'id du premier joueur de la manche (joueur après le distribueur)
+	//	 * 
+	//	 * @return id du joueur en question
+	//	 */
+	//	public int getIdPremierJoueur() {
+	//		return idPremierJoueur;
+	//	}
 
-//	/**
-//	 * Getter de l'équipe qui a pris à l'atout
-//	 * 
-//	 * @return 0 pour joueurs 1 3 et 1 pour joueurs 2 4
-//	 */
-//	public int getEquipePreneur() {
-//		return equipePreneur;
-//	}
+	//	/**
+	//	 * Getter de l'équipe qui a pris à l'atout
+	//	 * 
+	//	 * @return 0 pour joueurs 1 3 et 1 pour joueurs 2 4
+	//	 */
+	//	public int getEquipePreneur() {
+	//		return equipePreneur;
+	//	}
 
 	/**
 	 * Getter du nombre de plis joués dans la manche

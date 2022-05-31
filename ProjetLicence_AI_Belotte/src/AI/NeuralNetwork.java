@@ -3,6 +3,7 @@ package AI;
 import java.util.ArrayList;
 
 import java.util.HashMap;
+import java.util.List;
 
 import assets.Couleur;
 import assets.Valeur;
@@ -45,10 +46,10 @@ public class NeuralNetwork extends Joueur{
 	//variables utiles pour les fonctions
 	private int compteurJoueur = 1;
 	
-	//réseau neuronal
+	public static final int nbHiddenLayer = 5;
 	double[] hidden;
-	Matrix[] allHidden;
-	Matrix weights_ih , weights_ho , bias_h , bias_o ,weights_hh1,weights_hh2, weights_hh3; 
+	List<Matrix> allHidden;
+	Matrix weights_ih , weights_ho , bias_h , bias_o ; 
 	//controle le "taux d'apprentissage" durant l'optimisation des poids
     double l_rate=0.01;
 
@@ -58,16 +59,18 @@ public class NeuralNetwork extends Joueur{
 	public NeuralNetwork(String nom, int id, int partenaire) {
 		super(nom, id, partenaire);
 		this.main = new ArrayList<Carte>(); // A la creation main forcement vide
+		
 		this.input = new double[296]; 
 		this.output = new double[31];
 		this.hidden = new double[95];
+		
 		this.weights_ih = new Matrix(hidden.length,input.length);
-		this.weights_hh1 = new Matrix(hidden.length,hidden.length);
-		this.weights_hh2 = new Matrix(hidden.length,hidden.length);
-		this.weights_hh3 = new Matrix(hidden.length,hidden.length);
+		this.allHidden.add(weights_ih);
+		for(int i = 1; i < nbHiddenLayer ; i++) {
+			this.allHidden.add(new Matrix(hidden.length,hidden.length));
+		}
         this.weights_ho = new Matrix(output.length,hidden.length);
-        
-        this.allHidden = new Matrix[]{weights_ih,weights_hh1,weights_hh2,weights_hh3,weights_ho};
+        this.allHidden.add(weights_ho);
         
         this.bias_h= new Matrix(hidden.length,1);
         this.bias_o= new Matrix(output.length,1);
@@ -228,10 +231,8 @@ public class NeuralNetwork extends Joueur{
 
 	/**
 	 * joue le coup et met à jour les inputs
-	 * @param carte La carte jouée
 	 */
-	@Override
-	protected void joueCoup(Carte carte) {
+	public void joueCoup() {
 		
 		//mises à jour inputs
 		setCouleurDemandee();
@@ -257,9 +258,9 @@ public class NeuralNetwork extends Joueur{
 		}while((!isLegalMove(posCartesOutput.get(indice))) && (main.contains(posCartesOutput.get(indice))));
 
 
-		super.joueCoup(carte);
-		getInput()[posCartesInput.get(carte)] = 0;
-		getInput()[posCartesInput.get(carte) + 32] = 1;
+		super.joueCoup(posCartesOutput.get(indice));
+		getInput()[posCartesInput.get(posCartesOutput.get(indice))] = 0;
+		getInput()[posCartesInput.get(posCartesOutput.get(indice)) + 32] = 1;
 	}
 
 	/**
