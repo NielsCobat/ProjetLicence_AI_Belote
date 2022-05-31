@@ -244,6 +244,8 @@ public class NeuralNetwork extends Joueur{
 		Matrix output = Matrix.multiply(allWeightHidden.get(allWeightHidden.size()-1),allHidden.get(allHidden.size()-1));
 		output.add(allBias.get(allBias.size()-1));
 		output.sigmoid();
+		
+		allHidden.set(allHidden.size()-1, output);
 
 		return output.toDouble();
 	}
