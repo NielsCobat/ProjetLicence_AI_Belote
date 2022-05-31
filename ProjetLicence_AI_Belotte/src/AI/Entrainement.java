@@ -1,5 +1,10 @@
 package AI;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,18 +16,19 @@ import game.Carte;
 import game.Manche;
 
 public class Entrainement {
-	
-	public final static int NB_AI_PAR_GENERATION = 10, NB_GENERATION = 10, POURCENTAGE_REPROD_DEBUT = 50, POURCENTAGE_REPROD_FIN = 10;
-	
-	//controle le "taux d'apprentissage" durant l'optimisation des poids
+
+	public final static int NB_AI_PAR_GENERATION = 10, NB_GENERATION = 10, POURCENTAGE_REPROD_DEBUT = 50,
+			POURCENTAGE_REPROD_FIN = 10;
+
+	// controle le "taux d'apprentissage" durant l'optimisation des poids
 	public final static double LEARNING_RATE = 0.01;
-	
+
 	static ArrayList<Carte> ensCartes = new ArrayList<Carte>();
-	
+
 	static HashMap<Integer, Integer> bests = new HashMap<Integer, Integer>();
-	
+
 	static ArrayList<NeuralNetwork> ais = new ArrayList<NeuralNetwork>();
-	
+
 	static void setEnsCartes() {
 		ensCartes.add(new Carte(Couleur.Carreau, Valeur.Sept, 0));
 		ensCartes.add(new Carte(Couleur.Carreau, Valeur.Huit, 0));
@@ -57,7 +63,7 @@ public class Entrainement {
 		ensCartes.add(new Carte(Couleur.Pique, Valeur.Roi, 4));
 		ensCartes.add(new Carte(Couleur.Pique, Valeur.As, 11));
 	}
-	
+
 	static int getBestsMinInd() {
 		int res = -1;
 		int min = 1000000;
@@ -68,39 +74,54 @@ public class Entrainement {
 		return res;
 	}
 
+	static int getBestsMaxInd() {
+		int res = -1;
+		int min = -1;
+		for (int i = 0; i < bests.size(); i++) {
+			if (bests.get(i) > min)
+				res = i;
+		}
+		return res;
+	}
+
 	public static void main(String[] args) throws Exception {
-		
+
 		setEnsCartes();
-		
+
 		for (int id = 0; id < NB_AI_PAR_GENERATION; id++) { // initialisation des IA de bases
 			ais.add(new NeuralNetwork("", id, 3));
-			//TODO mettre des valeurs aléatoires
+			// TODO mettre des valeurs aléatoires
 		}
-		
+
 		Random r = new Random();
-		
+
 		ArrayList<NeuralNetwork> bestsAIs = new ArrayList<NeuralNetwork>();
+
+		Manche manche = null;
 		
-		Manche manche;
-		
+		NeuralNetwork bestOne = null;
+
 		for (int gen = 0; gen < NB_GENERATION; gen++) {
-			
-			int nbReproduction = (int) (NB_AI_PAR_GENERATION * ((double) (((POURCENTAGE_REPROD_FIN - POURCENTAGE_REPROD_DEBUT) / NB_GENERATION) * gen + POURCENTAGE_REPROD_DEBUT) / 100));
-			
-			bests.clear();
-			
+
+			System.out.print("Exécution de la génération n°" + gen + " ... ");
+
+			int nbReproduction = (int) (NB_AI_PAR_GENERATION
+					* ((double) (((POURCENTAGE_REPROD_FIN - POURCENTAGE_REPROD_DEBUT) / NB_GENERATION) * gen
+							+ POURCENTAGE_REPROD_DEBUT) / 100));
+
 			Collections.shuffle(ensCartes);
-			
+
 			for (int id = 0; id < NB_AI_PAR_GENERATION; id++) {
 				int idPJ = r.nextInt(4) + 1;
 				int idJP = r.nextInt(4) + 1;
-				manche = new Manche(idJP, idPJ, ais.get(id), ais.get(id).clone(), ais.get(id).clone(), ais.get(id).clone(), ensCartes);
+				manche = new Manche(idJP, idPJ, ais.get(id), ais.get(id).clone(), ais.get(id).clone(),
+						ais.get(id).clone(), ensCartes);
 				manche.j2.idPartenaire = 4;
 				manche.j3.idPartenaire = 1;
 				manche.j4.idPartenaire = 2;
-				
+
 				manche.runMancheEntrainement();
-				
+
 				int indMin = getBestsMinInd();
 				int score = manche.getPointsEquipe(1);
 				if (bests.size() >= nbReproduction) {
@@ -111,7 +132,7 @@ public class Entrainement {
 				} else
 					bests.put(id, score);
 			}
-			
+
 			for (int i : bests.keySet()) {
 				bestsAIs.add(ais.get(i));
 			}
@@ -120,19 +141,57 @@ public class Entrainement {
 			int reste = NB_AI_PAR_GENERATION % nbReproduction;
 			for (int i = 0; i < bestsAIs.size(); i++) {
 				ais.add(bestsAIs.get(i));
-				//ais.get(ais.size() - 1).id = ais.size() - 1; //TODO
+				// ais.get(ais.size() - 1).id = ais.size() - 1; //TODO
 				for (int j = 0; j < nbReproParBest; j++) {
-					ais.add(new NeuralNetwork("", ais.size(), 3)); //TODO idem initialisation
-					//TODO ajouter légères modifications des valeurs dans l'IA
+					ais.add(new NeuralNetwork("", ais.size(), 3)); // TODO idem initialisation
+					// TODO ajouter légères modifications des valeurs dans l'IA
 				}
 			}
 			for (int i = 0; i < reste; i++) {
 				ais.add(new NeuralNetwork("", ais.size(), 3));
-				//TODO valeurs aléatoires pour l'IA
+				// TODO valeurs aléatoires pour l'IA
 			}
+
+			int ind = getBestsMaxInd();
+			bestOne = ais.get(ind);
+			int bestOneScore = bests.get(ind);
+
+			System.out.println("Fin");
+			System.out.println(nbReproduction
+					+ " ont été conservés pour la génération suivante. Le score de la meilleure IA de la génération est : "
+					+ bestOneScore);
+
 			bestsAIs.clear();
-			
+			bests.clear();
+
 		}
+
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+		LocalDateTime now = LocalDateTime.now();
+
+		File sauvegardeBestOne = new File("results/" + dtf.format(now) + ".json");
+		try {
+			if (sauvegardeBestOne.createNewFile()) {
+				System.out.println("Fichier de sauvegarde créé: " + sauvegardeBestOne.getName());
+			} else {
+				System.out.println("Un fichier de ce nom existe déjà.");
+			}
+		} catch (IOException e) {
+			System.out.println("Une erreur a eu lieu.");
+			e.printStackTrace();
+		}
+		try {
+			FileWriter myWriter = new FileWriter(sauvegardeBestOne.getName());
+			myWriter.write(bestOne.nbHiddenLayer + "_" + bestOne.getInput().length + "_" + bestOne.getOutput().length
+					+ "_ //TODO nb neurones par couches cachées");
+			myWriter.write("//TODO fichier à compléter");
+			myWriter.close();
+			System.out.println("Fichier de sauvegarde complété avec succès.");
+		} catch (IOException e) {
+			System.out.println("Une erreur a eu lieu.");
+			e.printStackTrace();
+		}
+
 	}
 
 }

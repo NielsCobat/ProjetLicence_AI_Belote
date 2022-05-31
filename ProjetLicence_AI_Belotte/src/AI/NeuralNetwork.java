@@ -330,6 +330,9 @@ public class NeuralNetwork extends Joueur{
 		return input;
 	}
 	
+	public double[] getOutput() {
+		return output;
+	}
 	
 
 }
