@@ -221,6 +221,8 @@ public class NeuralNetwork extends Joueur{
 	//TODO
 	double[] forwardPropagation()
     {return null;/*
+    
+		for(int i = 0)
         Matrix input = Matrix.fromArray(this.input);
         Matrix hidden = Matrix.multiply(weights_ih, input);
         hidden.add(bias_h);
