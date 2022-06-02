@@ -413,7 +413,7 @@ public class Manche {
 
 		// init des IA
 
-		if (j1 instanceof NeuralNetwork) {
+		if (j1 instanceof NeuralNetwork && j2 instanceof NeuralNetwork && j3 instanceof NeuralNetwork && j4 instanceof NeuralNetwork) {
 			((NeuralNetwork) j1).initHashmap();
 			((NeuralNetwork) j1).initHashmapOutput();
 			// on regarde la main du joueur et on update le init
@@ -460,8 +460,6 @@ public class Manche {
 				break;
 			}
 
-		}
-		if (j2 instanceof NeuralNetwork) {
 			((NeuralNetwork) j2).initHashmap();
 			((NeuralNetwork) j2).initHashmapOutput();
 			// on regarde la main du joueur et on update le init
@@ -498,8 +496,6 @@ public class Manche {
 				break;
 			}
 
-		}
-		if (j3 instanceof NeuralNetwork) {
 			((NeuralNetwork) j3).initHashmap();
 			((NeuralNetwork) j3).initHashmapOutput();
 			// on regarde la main du joueur et on update le init
@@ -536,8 +532,6 @@ public class Manche {
 				break;
 			}
 
-		}
-		if (j4 instanceof NeuralNetwork) {
 			((NeuralNetwork) j4).initHashmap();
 			((NeuralNetwork) j4).initHashmapOutput();
 			// on regarde la main du joueur et on update le init
@@ -629,7 +623,7 @@ public class Manche {
 
 					if (joueurCourant instanceof NeuralNetwork) {
 						// joue coup
-						Carte carteAJouer = ((NeuralNetwork) joueurCourant).joueCoup();
+						Carte carteAJouer = ((NeuralNetwork) joueurCourant).joueCoup(this.getPli(this.getNbPlis()).getCouleurDemandee());
 
 						this.getPli(this.getNbPlis()).addCarte(carteAJouer);
 						joueurCourant.main.remove(carteAJouer);

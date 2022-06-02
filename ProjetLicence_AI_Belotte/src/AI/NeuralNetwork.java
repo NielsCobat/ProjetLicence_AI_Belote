@@ -299,6 +299,39 @@ public class NeuralNetwork extends Joueur {
 		getInput()[posCartesInput.get(posCartesOutput.get(indice)) + 32] = 1;
 		return posCartesOutput.get(indice);
 	}
+	
+	public Carte joueCoup(Couleur couleurDemandee) {
+
+		// mises à jour inputs
+		setCouleurDemandee(couleurDemandee);
+		setCartesSurTable();
+		setMaitre();
+
+		// forward propagation
+		this.output = forwardPropagation();
+
+		// calcul de la meilleure carte à jouer
+		int indice = 0;
+		double maxNum = output[0];
+
+		do {
+			for (int j = 0; j < 32; j++) {
+				if (output[j] > maxNum) {
+					maxNum = output[j];
+					indice = j;
+					// on met l'output à zero pour que si cet output n'est pas légal, qu'il ne soit
+					// pas re-selectionné à la boucle suivante
+					output[j] = 0;
+				}
+			}
+		} while ((!isLegalMove(posCartesOutput.get(indice))) && (main.contains(posCartesOutput.get(indice))));
+
+		// TODO remettre la ligne lorsque l'ia n'est plus en entrainement
+		// super.joueCoup(posCartesOutput.get(indice));
+		getInput()[posCartesInput.get(posCartesOutput.get(indice))] = 0;
+		getInput()[posCartesInput.get(posCartesOutput.get(indice)) + 32] = 1;
+		return posCartesOutput.get(indice);
+	}
 
 	/**
 	 * Met à jour les cartes du pli dans les inputs
@@ -317,6 +350,24 @@ public class NeuralNetwork extends Joueur {
 	void setCouleurDemandee() {
 		Manche manche = Table.mancheCourante;
 		Couleur couleurEnCours = manche.getPli(manche.getNbPlis()).getCouleurDemandee();
+
+		switch (couleurEnCours) {
+		case Carreau:
+			getInput()[292] = 1;
+			break;
+		case Coeur:
+			getInput()[293] = 1;
+			break;
+		case Trefle:
+			getInput()[294] = 1;
+			break;
+		case Pique:
+			getInput()[295] = 1;
+			break;
+		}
+	}
+	
+	void setCouleurDemandee(Couleur couleurEnCours) {
 
 		switch (couleurEnCours) {
 		case Carreau:
