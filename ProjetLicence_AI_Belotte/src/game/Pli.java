@@ -63,12 +63,14 @@ public class Pli {
 		return res;
 	}
 
-	public void addCarte(Carte c) {
+	public void addCarte(Carte c, Couleur atout) {
 		if (this.nbCarte == 0)
 			this.couleurDemandee = c.getCouleur();
 		try {
 			this.cartes[nbCarte] = c;
 			this.nbCarte++;
+			int temp = this.indiceMeilleureCarte(atout);
+			this.idJoueurGagnant = (this.idPremierJoueur - 1 + temp) % 4;
 		} catch (Exception e) {
 			System.out.println("game.Pli.addCarte() : maximum de carte pour ce pli déjà atteint");
 		}

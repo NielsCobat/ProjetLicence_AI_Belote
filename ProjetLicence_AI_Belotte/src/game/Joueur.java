@@ -148,7 +148,7 @@ public class Joueur {
 	protected void joueCoup(Carte carte) {
 		Manche manche = Table.mancheCourante;
 
-		manche.getPli(manche.getNbPlis()).addCarte(carte);
+		manche.getPli(manche.getNbPlis()).addCarte(carte, Table.atout);
 		main.remove(carte);
 
 		
