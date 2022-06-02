@@ -418,37 +418,45 @@ public class Manche {
 			((NeuralNetwork) j1).initHashmapOutput();
 			// on regarde la main du joueur et on update le init
 			for (Carte carte : j1.main) {
-				((NeuralNetwork) j1).getInput()[((NeuralNetwork) j1).posCartesInput.get(carte)] = 1;
 				for (Carte c2 : ((NeuralNetwork) j1).posCartesInput.keySet()) {
 	                if (carte.equal(c2))
-	                    this.input[posCartesInput.get(c2)] = 1;
+	                	((NeuralNetwork) j1).getInput()[((NeuralNetwork) j1).posCartesInput.get(c2)] = 1;
 	            }
 			}
 
 			for (Carte carte : j2.main) {
-				((NeuralNetwork) j2).getInput()[1 * 64 + ((NeuralNetwork) j2).posCartesInput.get(carte)] = 1;
+				for (Carte c2 : ((NeuralNetwork) j2).posCartesInput.keySet()) {
+	                if (carte.equal(c2))
+	                	((NeuralNetwork) j2).getInput()[ 64 + ((NeuralNetwork) j2).posCartesInput.get(c2)] = 1;
+	            }
 			}
 
 			for (Carte carte : j3.main) {
-				((NeuralNetwork) j3).getInput()[2 * 64 + ((NeuralNetwork) j3).posCartesInput.get(carte)] = 1;
+				for (Carte c2 : ((NeuralNetwork) j3).posCartesInput.keySet()) {
+	                if (carte.equal(c2))
+	                	((NeuralNetwork) j3).getInput()[2* 64 + ((NeuralNetwork) j3).posCartesInput.get(c2)] = 1;
+	            }
 			}
 			for (Carte carte : j4.main) {
-				((NeuralNetwork) j4).getInput()[3 * 64 + ((NeuralNetwork) j4).posCartesInput.get(carte)] = 1;
+				for (Carte c2 : ((NeuralNetwork) j4).posCartesInput.keySet()) {
+	                if (carte.equal(c2))
+	                	((NeuralNetwork) j4).getInput()[3* 64 + ((NeuralNetwork) j4).posCartesInput.get(c2)] = 1;
+	            }
 			}
 
 			// init de l'atout
-			switch (Table.atout) {
+			switch (atout) {
 			case Carreau:
-				getInput()[288] = 1;
+				((NeuralNetwork) j1).getInput()[288] = 1;
 				break;
 			case Coeur:
-				getInput()[289] = 1;
+				((NeuralNetwork) j1).getInput()[289] = 1;
 				break;
 			case Trefle:
-				getInput()[290] = 1;
+				((NeuralNetwork) j1).getInput()[290] = 1;
 				break;
 			case Pique:
-				getInput()[291] = 1;
+				((NeuralNetwork) j1).getInput()[291] = 1;
 				break;
 			}
 
@@ -457,51 +465,36 @@ public class Manche {
 			((NeuralNetwork) j2).initHashmap();
 			((NeuralNetwork) j2).initHashmapOutput();
 			// on regarde la main du joueur et on update le init
-			for (Carte carte : this.main) {
-				getInput()[posCartesInput.get(carte)] = 1;
+			for (Carte carte :((NeuralNetwork) j2).main) {
+				((NeuralNetwork) j2).getInput()[((NeuralNetwork) j2).posCartesInput.get(carte)] = 1;
 			}
 
 			// TODO grace à la fonction qui calcule l'ordre des cartes et donc le jeu des
 			// autres joueurs onupdate le init de la même manière
 			// solution intermédiaire pour savoir le jeu des autres joueurs
-			if (this.id != 1) {
-				for (Carte carte : Table.joueur1.main) {
-					getInput()[compteurJoueur * 64 + posCartesInput.get(carte)] = 1;
-					compteurJoueur++;
+				for (Carte carte : ((NeuralNetwork) j1).main) {
+					((NeuralNetwork) j1).getInput()[1 * 64 + ((NeuralNetwork) j1).posCartesInput.get(carte)] = 1;
 				}
-			}
-			if (this.id != 2) {
-				for (Carte carte : Table.joueur2.main) {
-					getInput()[compteurJoueur * 64 + posCartesInput.get(carte)] = 1;
-					compteurJoueur++;
+				for (Carte carte : ((NeuralNetwork) j3).main) {
+					((NeuralNetwork) j3).getInput()[2 * 64 + ((NeuralNetwork) j3).posCartesInput.get(carte)] = 1;
 				}
-			}
-			if (this.id != 3) {
-				for (Carte carte : Table.joueur3.main) {
-					getInput()[compteurJoueur * 64 + posCartesInput.get(carte)] = 1;
-					compteurJoueur++;
+				for (Carte carte : ((NeuralNetwork) j4).main) {
+					((NeuralNetwork) j4).getInput()[3 * 64 + ((NeuralNetwork) j4).posCartesInput.get(carte)] = 1;
 				}
-			}
-			if (this.id != 4) {
-				for (Carte carte : Table.joueur4.main) {
-					getInput()[compteurJoueur * 64 + posCartesInput.get(carte)] = 1;
-					compteurJoueur++;
-				}
-			}
 
 			// init de l'atout
-			switch (Table.atout) {
+			switch (atout) {
 			case Carreau:
-				getInput()[288] = 1;
+				((NeuralNetwork) j2).getInput()[288] = 1;
 				break;
 			case Coeur:
-				getInput()[289] = 1;
+				((NeuralNetwork) j2).getInput()[289] = 1;
 				break;
 			case Trefle:
-				getInput()[290] = 1;
+				((NeuralNetwork) j2).getInput()[290] = 1;
 				break;
 			case Pique:
-				getInput()[291] = 1;
+				((NeuralNetwork) j2).getInput()[291] = 1;
 				break;
 			}
 
@@ -510,51 +503,36 @@ public class Manche {
 			((NeuralNetwork) j3).initHashmap();
 			((NeuralNetwork) j3).initHashmapOutput();
 			// on regarde la main du joueur et on update le init
-			for (Carte carte : this.main) {
-				getInput()[posCartesInput.get(carte)] = 1;
+			for (Carte carte : ((NeuralNetwork) j3).main) {
+				((NeuralNetwork) j3).getInput()[((NeuralNetwork) j3).posCartesInput.get(carte)] = 1;
 			}
 
 			// TODO grace à la fonction qui calcule l'ordre des cartes et donc le jeu des
 			// autres joueurs onupdate le init de la même manière
 			// solution intermédiaire pour savoir le jeu des autres joueurs
-			if (this.id != 1) {
-				for (Carte carte : Table.joueur1.main) {
-					getInput()[compteurJoueur * 64 + posCartesInput.get(carte)] = 1;
-					compteurJoueur++;
+				for (Carte carte : ((NeuralNetwork) j1).main) {
+					((NeuralNetwork) j1).getInput()[1 * 64 + ((NeuralNetwork) j1).posCartesInput.get(carte)] = 1;
 				}
-			}
-			if (this.id != 2) {
-				for (Carte carte : Table.joueur2.main) {
-					getInput()[compteurJoueur * 64 + posCartesInput.get(carte)] = 1;
-					compteurJoueur++;
+				for (Carte carte : ((NeuralNetwork) j2).main) {
+					((NeuralNetwork) j2).getInput()[2 * 64 + ((NeuralNetwork) j2).posCartesInput.get(carte)] = 1;
 				}
-			}
-			if (this.id != 3) {
-				for (Carte carte : Table.joueur3.main) {
-					getInput()[compteurJoueur * 64 + posCartesInput.get(carte)] = 1;
-					compteurJoueur++;
+				for (Carte carte : ((NeuralNetwork) j4).main) {
+					((NeuralNetwork) j4).getInput()[3 * 64 + ((NeuralNetwork) j4).posCartesInput.get(carte)] = 1;
 				}
-			}
-			if (this.id != 4) {
-				for (Carte carte : Table.joueur4.main) {
-					getInput()[compteurJoueur * 64 + posCartesInput.get(carte)] = 1;
-					compteurJoueur++;
-				}
-			}
 
 			// init de l'atout
-			switch (Table.atout) {
+			switch (atout) {
 			case Carreau:
-				getInput()[288] = 1;
+				((NeuralNetwork) j3).getInput()[288] = 1;
 				break;
 			case Coeur:
-				getInput()[289] = 1;
+				((NeuralNetwork) j3).getInput()[289] = 1;
 				break;
 			case Trefle:
-				getInput()[290] = 1;
+				((NeuralNetwork) j3).getInput()[290] = 1;
 				break;
 			case Pique:
-				getInput()[291] = 1;
+				((NeuralNetwork) j3).getInput()[291] = 1;
 				break;
 			}
 
@@ -563,51 +541,36 @@ public class Manche {
 			((NeuralNetwork) j4).initHashmap();
 			((NeuralNetwork) j4).initHashmapOutput();
 			// on regarde la main du joueur et on update le init
-			for (Carte carte : this.main) {
-				getInput()[posCartesInput.get(carte)] = 1;
+			for (Carte carte : ((NeuralNetwork) j4).main) {
+				((NeuralNetwork) j4).getInput()[((NeuralNetwork) j4).posCartesInput.get(carte)] = 1;
 			}
 
 			// TODO grace à la fonction qui calcule l'ordre des cartes et donc le jeu des
 			// autres joueurs onupdate le init de la même manière
 			// solution intermédiaire pour savoir le jeu des autres joueurs
-			if (this.id != 1) {
-				for (Carte carte : Table.joueur1.main) {
-					getInput()[compteurJoueur * 64 + posCartesInput.get(carte)] = 1;
-					compteurJoueur++;
+				for (Carte carte : ((NeuralNetwork) j1).main) {
+					((NeuralNetwork) j1).getInput()[1 * 64 + ((NeuralNetwork) j1).posCartesInput.get(carte)] = 1;
 				}
-			}
-			if (this.id != 2) {
-				for (Carte carte : Table.joueur2.main) {
-					getInput()[compteurJoueur * 64 + posCartesInput.get(carte)] = 1;
-					compteurJoueur++;
+				for (Carte carte :((NeuralNetwork) j2).main) {
+					((NeuralNetwork) j2).getInput()[2 * 64 + ((NeuralNetwork) j2).posCartesInput.get(carte)] = 1;
 				}
-			}
-			if (this.id != 3) {
-				for (Carte carte : Table.joueur3.main) {
-					getInput()[compteurJoueur * 64 + posCartesInput.get(carte)] = 1;
-					compteurJoueur++;
+				for (Carte carte : ((NeuralNetwork) j3).main) {
+					((NeuralNetwork) j3).getInput()[3 * 64 + ((NeuralNetwork) j3).posCartesInput.get(carte)] = 1;
 				}
-			}
-			if (this.id != 4) {
-				for (Carte carte : Table.joueur4.main) {
-					getInput()[compteurJoueur * 64 + posCartesInput.get(carte)] = 1;
-					compteurJoueur++;
-				}
-			}
 
 			// init de l'atout
-			switch (Table.atout) {
+			switch (atout) {
 			case Carreau:
-				getInput()[288] = 1;
+				((NeuralNetwork) j4).getInput()[288] = 1;
 				break;
 			case Coeur:
-				getInput()[289] = 1;
+				((NeuralNetwork) j4).getInput()[289] = 1;
 				break;
 			case Trefle:
-				getInput()[290] = 1;
+				((NeuralNetwork) j4).getInput()[290] = 1;
 				break;
 			case Pique:
-				getInput()[291] = 1;
+				((NeuralNetwork) j4).getInput()[291] = 1;
 				break;
 			}
 
