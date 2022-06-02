@@ -253,7 +253,7 @@ public class NeuralNetwork extends Joueur{
 	/**
 	 * joue le coup et met à jour les inputs
 	 */
-	public void joueCoup() {
+	public Carte joueCoup() {
 
 		//mises à jour inputs
 		setCouleurDemandee();
@@ -282,6 +282,7 @@ public class NeuralNetwork extends Joueur{
 		super.joueCoup(posCartesOutput.get(indice));
 		getInput()[posCartesInput.get(posCartesOutput.get(indice))] = 0;
 		getInput()[posCartesInput.get(posCartesOutput.get(indice)) + 32] = 1;
+		return posCartesOutput.get(indice);
 	}
 
 	/**
