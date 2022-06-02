@@ -57,7 +57,7 @@ public class NeuralNetwork extends Joueur {
 		super(nom, id, partenaire);
 		this.main = new ArrayList<Carte>(); // A la creation main forcement vide
 
-		this.input = new double[296];
+		this.input = new double[297];
 		this.output = new double[31];
 
 		// r sert aux calculs du nombre de neurones pour chaque hidden layer
