@@ -336,6 +336,9 @@ public class Manche {
 		finManche();
 	}
 
+	/*
+	 * run manche pour l'entrainement de l'ia sans table
+	 */
 	public void runMancheEntrainement(Couleur atout) throws Exception {
 
 		boolean half = false; //Pour savoir si la moitié de la belote a été utilisée.
@@ -494,7 +497,50 @@ public class Manche {
 			nbPlis++;
 		}
 		//attribution des points remportes par chaque equipe
-		finManche();
+		finMancheEntrainement();
+	}
+	
+	/**
+	 * Gestion de la fin d'une manche pour runMancheEntrainement(points etc)
+	 */
+	public void finMancheEntrainement() {
+		if (this.nbPlis == 8) {
+
+			// calcul des points dans la classe Partie à la fin
+
+			if (j1.aBelote || j3.aBelote)
+				this.belotte[0] = 20;
+			else if (j2.aBelote || j4.aBelote)
+				this.belotte[1] = 20;
+
+
+			else if (this.pointsEquipe[(this.equipePreneur)] < 82	  
+					&& this.belotte[(this.equipePreneur)] + this.belotte[(this.equipePreneur + 1) % 2] == 0 //Si une équipe prend et qu'il n'y a pas de Belote
+					|| (this.pointsEquipe[(this.equipePreneur + 1) % 2] + this.belotte[(this.equipePreneur + 1) % 2] >= 91  //Ou
+					&& this.belotte[(this.equipePreneur)] + this.belotte[(this.equipePreneur + 1) % 2] == 20 )) { //Si une équipe prend et qu'il y a une Belote	
+				this.pointsEquipe[this.equipePreneur] = 0;
+				this.pointsEquipe[(this.equipePreneur + 1) % 2] = 162;
+			} 
+
+			// On remet les cartes des plis dans le paquet, en commençant par les plis de l'équipe qui ne prend pas.
+			ArrayList<Carte> pasPris = new ArrayList<Carte>();
+			ArrayList<Carte> pris = new ArrayList<Carte>();
+			for (int i = 0; i < plis.length; i++){ 
+				if (plis[i].equipeGagnante() != equipePreneur) //L'équipe qui n'a pas pris retourne son tas de plis et compte les cartes une à une
+					for(int j = plis[i].getCartes().length - 1; j >= 0; j--) 
+						pasPris.add(plis[i].getCartes()[j]);
+				else
+					for(int j = 0; j < plis[i].getCartes().length; j++)
+						pris.add(0, plis[i].getCartes()[j]);
+			}
+			ensCarte.addAll(pasPris);
+			ensCarte.addAll(pris);
+		}
+		j1.hasBelote(Table.atout);
+		j2.hasBelote(Table.atout);
+		j3.hasBelote(Table.atout);
+		j4.hasBelote(Table.atout);
+		//Table.mancheCour++;
 	}
 
 	/**
