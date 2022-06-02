@@ -84,6 +84,7 @@ public class Entrainement {
 		return res;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws Exception {
 		// TODO aléatoire de l'atout
 		setEnsCartes();
@@ -134,7 +135,7 @@ public class Entrainement {
 				int idPJ = r.nextInt(4) + 1;
 				int idJP = r.nextInt(4) + 1;
 				manche = new Manche(idJP, idPJ, ais.get(id), ais.get(id).clone(), ais.get(id).clone(),
-						ais.get(id).clone(), getEnsCartes());
+						ais.get(id).clone(), (ArrayList<Carte>) getEnsCartes().clone());
 				manche.j2.idPartenaire = 4;
 				manche.j3.idPartenaire = 1;
 				manche.j4.idPartenaire = 2;
