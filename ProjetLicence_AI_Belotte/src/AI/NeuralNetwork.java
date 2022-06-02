@@ -300,11 +300,12 @@ public class NeuralNetwork extends Joueur {
 		return posCartesOutput.get(indice);
 	}
 	
-	public Carte joueCoup(Couleur couleurDemandee) {
+	public Carte joueCoup(Couleur couleurDemandee, Carte[] pli) {
 
 		// mises à jour inputs
-		setCouleurDemandee(couleurDemandee);
-		setCartesSurTable();
+		if (couleurDemandee != null)
+			setCouleurDemandee(couleurDemandee);
+		setCartesSurTable(pli);
 		setMaitre();
 
 		// forward propagation
@@ -339,6 +340,12 @@ public class NeuralNetwork extends Joueur {
 	void setCartesSurTable() {
 		Manche manche = Table.mancheCourante;
 		Carte[] cartesDuPli = manche.getPli(manche.getNbPlis()).getCartes();
+		for (int i = 0; i < cartesDuPli.length; i++) {
+			getInput()[posCartesInput.get(cartesDuPli[i]) + 256] = 1;
+		}
+	}
+	
+	void setCartesSurTable(Carte[] cartesDuPli) {
 		for (int i = 0; i < cartesDuPli.length; i++) {
 			getInput()[posCartesInput.get(cartesDuPli[i]) + 256] = 1;
 		}
