@@ -278,8 +278,8 @@ public class NeuralNetwork extends Joueur{
 			}
 		}while((!isLegalMove(posCartesOutput.get(indice))) && (main.contains(posCartesOutput.get(indice))));
 
-
-		super.joueCoup(posCartesOutput.get(indice));
+		//TODO  remettre la ligne lorsque l'ia n'est plus en entrainement
+		//super.joueCoup(posCartesOutput.get(indice));
 		getInput()[posCartesInput.get(posCartesOutput.get(indice))] = 0;
 		getInput()[posCartesInput.get(posCartesOutput.get(indice)) + 32] = 1;
 		return posCartesOutput.get(indice);
