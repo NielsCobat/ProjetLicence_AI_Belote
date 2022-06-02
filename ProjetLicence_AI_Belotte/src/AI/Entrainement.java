@@ -85,25 +85,7 @@ public class Entrainement {
 	}
 
 	public static void main(String[] args) throws Exception {
-		//TODO aléatoire de l'atout
-		Couleur atout;
-		int atoutCourant = (int) (Math.random() * (4 - 1 + 1) + 1); // selectionne un int entre 1 et 4
-		switch (atoutCourant) {
-		case 1:
-			atout = Couleur.Trefle;
-			break;
-		case 2:
-			atout = Couleur.Carreau;
-			break;
-		case 3:
-			atout = Couleur.Coeur;
-			break;
-		case 4:
-			atout = Couleur.Pique;
-			break;
-		default:
-			throw new Exception("atout non compatible");
-		}
+		// TODO aléatoire de l'atout
 		setEnsCartes();
 
 		for (int id = 0; id < NB_AI_PAR_GENERATION; id++) { // initialisation des IA de bases
@@ -116,16 +98,35 @@ public class Entrainement {
 		ArrayList<NeuralNetwork> bestsAIs = new ArrayList<NeuralNetwork>();
 
 		Manche manche = null;
-		
+
 		NeuralNetwork bestOne = null;
 
-		for (int gen = 0; gen < NB_GENERATION; gen++) {
+		for (int gen = 1; gen <= NB_GENERATION; gen++) {
 
 			System.out.print("Exécution de la génération n°" + gen + " ... ");
 
 			int nbReproduction = (int) (NB_AI_PAR_GENERATION
-					* ((double) (((POURCENTAGE_REPROD_FIN - POURCENTAGE_REPROD_DEBUT) / NB_GENERATION) * gen
+					* ((double) (((POURCENTAGE_REPROD_FIN - POURCENTAGE_REPROD_DEBUT) / NB_GENERATION) * (gen - 1)
 							+ POURCENTAGE_REPROD_DEBUT) / 100));
+
+			Couleur atout;
+			int atoutCourant = (int) (Math.random() * (4 - 1 + 1) + 1); // selectionne un int entre 1 et 4
+			switch (atoutCourant) {
+			case 1:
+				atout = Couleur.Trefle;
+				break;
+			case 2:
+				atout = Couleur.Carreau;
+				break;
+			case 3:
+				atout = Couleur.Coeur;
+				break;
+			case 4:
+				atout = Couleur.Pique;
+				break;
+			default:
+				throw new Exception("atout non compatible");
+			}
 
 			Collections.shuffle(getEnsCartes());
 
@@ -192,11 +193,11 @@ public class Entrainement {
 			sauvegardeBestOne.getParentFile().mkdir();
 			if (sauvegardeBestOne.createNewFile()) {
 				System.out.println("Fichier de sauvegarde créé: " + sauvegardeBestOne.getName());
-				
+
 				try {
 					FileWriter myWriter = new FileWriter("results/" + sauvegardeBestOne.getName());
-					myWriter.write(NeuralNetwork.nbHiddenLayer + "_" + bestOne.getInput().length + "_" + bestOne.getOutput().length
-							+ "_ //TODO nb neurones par couches cachées");
+					myWriter.write(NeuralNetwork.nbHiddenLayer + "_" + bestOne.getInput().length + "_"
+							+ bestOne.getOutput().length + "_ //TODO nb neurones par couches cachées");
 					myWriter.write("//TODO fichier à compléter");
 					myWriter.close();
 					System.out.println("Fichier de sauvegarde complété avec succès.");
@@ -204,7 +205,7 @@ public class Entrainement {
 					System.out.println("Une erreur a eu lieu.");
 					e.printStackTrace();
 				}
-				
+
 			} else {
 				System.out.println("Un fichier de ce nom existe déjà.");
 			}

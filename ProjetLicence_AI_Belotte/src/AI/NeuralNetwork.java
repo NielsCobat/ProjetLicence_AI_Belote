@@ -48,9 +48,9 @@ public class NeuralNetwork extends Joueur{
 
 	//nbHiddenLayers doit être un minimum de 2
 	public static final int nbHiddenLayer = 5;
-	List<Matrix> allHidden;
-	List<Matrix> allWeightHidden;
-	List<Matrix> allBias;
+	ArrayList<Matrix> allHidden = new ArrayList<Matrix>();
+	ArrayList<Matrix> allWeightHidden = new ArrayList<Matrix>();
+	ArrayList<Matrix> allBias = new ArrayList<Matrix>();
 
 	/*
 	 * Constructeur neural network
@@ -166,7 +166,10 @@ public class NeuralNetwork extends Joueur{
 		initHashmapOutput();
 		//on regarde la main du joueur et on update le init
 		for (Carte carte : this.main) {
-			getInput()[posCartesInput.get(carte)] = 1;
+			for (Carte c2 : this.posCartesInput.keySet()) {
+				if (carte.equal(c2))
+					this.input[posCartesInput.get(c2)] = 1;
+			}
 		}
 
 
