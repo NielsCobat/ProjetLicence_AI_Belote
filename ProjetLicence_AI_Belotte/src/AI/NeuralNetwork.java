@@ -254,8 +254,8 @@ public class NeuralNetwork extends Joueur {
 			allHidden.set(i, hidden2);
 		}
 		// calculs pour la dernière couche des hiddenLayers(en lien avec les outputs)
-		Matrix output = Matrix.multiply(allWeightHidden.get(allWeightHidden.size() - 1),
-				allHidden.get(allHidden.size() - 1));
+		Matrix output = Matrix.multiply(allWeightHidden.get(nbHiddenLayer-1),
+				allHidden.get(nbHiddenLayer-1));
 		output.add(allBias.get(allBias.size() - 1));
 		output.sigmoid();
 
