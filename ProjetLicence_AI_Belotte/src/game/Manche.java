@@ -751,7 +751,7 @@ public class Manche {
 			}
 
 			this.pointsEquipe[0] += this.belotte[0];
-			this.pointsEquipe[2] += this.belotte[1];
+			this.pointsEquipe[1] += this.belotte[1];
 		}
 	}
 
