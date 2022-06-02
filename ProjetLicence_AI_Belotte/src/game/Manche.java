@@ -521,26 +521,7 @@ public class Manche {
 				this.pointsEquipe[this.equipePreneur] = 0;
 				this.pointsEquipe[(this.equipePreneur + 1) % 2] = 162;
 			} 
-
-			// On remet les cartes des plis dans le paquet, en commençant par les plis de l'équipe qui ne prend pas.
-			ArrayList<Carte> pasPris = new ArrayList<Carte>();
-			ArrayList<Carte> pris = new ArrayList<Carte>();
-			for (int i = 0; i < plis.length; i++){ 
-				if (plis[i].equipeGagnante() != equipePreneur) //L'équipe qui n'a pas pris retourne son tas de plis et compte les cartes une à une
-					for(int j = plis[i].getCartes().length - 1; j >= 0; j--) 
-						pasPris.add(plis[i].getCartes()[j]);
-				else
-					for(int j = 0; j < plis[i].getCartes().length; j++)
-						pris.add(0, plis[i].getCartes()[j]);
-			}
-			ensCarte.addAll(pasPris);
-			ensCarte.addAll(pris);
 		}
-		j1.hasBelote(Table.atout);
-		j2.hasBelote(Table.atout);
-		j3.hasBelote(Table.atout);
-		j4.hasBelote(Table.atout);
-		//Table.mancheCour++;
 	}
 
 	/**
@@ -569,7 +550,7 @@ public class Manche {
 	//	 */
 	//	public int getEquipePreneur() {
 	//		return equipePreneur;
-	//	}
+	// }
 
 	/**
 	 * Getter du nombre de plis joués dans la manche
