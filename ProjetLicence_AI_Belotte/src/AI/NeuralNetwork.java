@@ -85,7 +85,7 @@ public class NeuralNetwork extends Joueur{
 	/*
 	 * Remplit le hashMap output
 	 */
-	void initHashmapOutput() {
+	public void initHashmapOutput() {
 		posCartesOutput.put(0, new Carte(Couleur.Carreau, Valeur.Sept, 0));
 		posCartesOutput.put(1,new Carte(Couleur.Carreau, Valeur.Huit, 0));
 		posCartesOutput.put(2,new Carte(Couleur.Carreau, Valeur.Neuf, 0));
@@ -123,7 +123,7 @@ public class NeuralNetwork extends Joueur{
 	/*
 	 * Remplit le hashMap input
 	 */
-	void initHashmap() {
+	public void initHashmap() {
 		posCartesInput.put(new Carte(Couleur.Carreau, Valeur.Sept, 0), 0);
 		posCartesInput.put(new Carte(Couleur.Carreau, Valeur.Huit, 0), 1);
 		posCartesInput.put(new Carte(Couleur.Carreau, Valeur.Neuf, 0), 2);
