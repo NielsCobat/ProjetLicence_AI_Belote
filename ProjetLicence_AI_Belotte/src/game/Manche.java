@@ -285,6 +285,7 @@ public class Manche {
 					jCourant.printMain();
 					System.out.println("\nÉtat actuel du pli : " + plis[i].toString());
 					if (j > 0) System.out.println("Équipe maîtresse : " + (plis[i].equipeGagnante()));
+					//TODO adapter a l'ia
 					carteAJouer = sc.nextLine();
 
 					for(Carte carte : jCourant.main) {
@@ -338,16 +339,8 @@ public class Manche {
 	public void runMancheEntrainement(Couleur atout) throws Exception {
 
 		boolean half = false; //Pour savoir si la moitié de la belote a été utilisée.
-		j1 = new NeuralNetwork("", 1, 3);
-		j2 = new NeuralNetwork("", 2, 4);
-		j3 = new NeuralNetwork("", 3, 1);
-		j4 = new NeuralNetwork("", 4, 2);
-		e1 = new Equipe(1, j1, j3, 0);
-		e2 = new Equipe(2, j2, j4, 0);
-		e1.score = 0;
-		e2.score = 0;
 		Joueur joueurCourant;
-		int idJoueurCourant = (int) (Math.random() * (4 - 1 + 1) + 1); // selectionne un int entre 1 et 4
+		int idJoueurCourant = this.idPremierJoueur;
 		switch (idJoueurCourant) {
 		case 1:
 			joueurCourant = j1;
@@ -364,25 +357,23 @@ public class Manche {
 		default:
 			throw new Exception("identifiant du joueur non compatible");
 		}
-		ArrayList<Carte> ensCartes = new ArrayList<Carte>();
-		Entrainement.setEnsCartes();
 
 		//distribution directe sans choix de l'atout
 		for(int i=0; i<8;i++) {
-			j1.main.add(ensCartes.get(0));
-			ensCartes.remove(0);
+			j1.main.add(this.ensCarte.get(0));
+			this.ensCarte.remove(0);
 		}
 		for(int i=0; i<8;i++) {
-			j2.main.add(ensCartes.get(0));
-			ensCartes.remove(0);
+			j2.main.add(this.ensCarte.get(0));
+			this.ensCarte.remove(0);
 		}
 		for(int i=0; i<8;i++) {
-			j3.main.add(ensCartes.get(0));
-			ensCartes.remove(0);
+			j3.main.add(this.ensCarte.get(0));
+			this.ensCarte.remove(0);
 		}
 		for(int i=0; i<8;i++) {
-			j4.main.add(ensCartes.get(0));
-			ensCartes.remove(0);
+			j4.main.add(this.ensCarte.get(0));
+			this.ensCarte.remove(0);
 		}
 
 		//Scanner sc = Table.scannerString;

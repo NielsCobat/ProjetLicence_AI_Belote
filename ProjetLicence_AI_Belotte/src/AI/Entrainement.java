@@ -30,38 +30,38 @@ public class Entrainement {
 	static ArrayList<NeuralNetwork> ais = new ArrayList<NeuralNetwork>();
 
 	public static void setEnsCartes() {
-		ensCartes.add(new Carte(Couleur.Carreau, Valeur.Sept, 0));
-		ensCartes.add(new Carte(Couleur.Carreau, Valeur.Huit, 0));
-		ensCartes.add(new Carte(Couleur.Carreau, Valeur.Neuf, 0));
-		ensCartes.add(new Carte(Couleur.Carreau, Valeur.Dix, 10));
-		ensCartes.add(new Carte(Couleur.Carreau, Valeur.Valet, 2));
-		ensCartes.add(new Carte(Couleur.Carreau, Valeur.Dame, 3));
-		ensCartes.add(new Carte(Couleur.Carreau, Valeur.Roi, 4));
-		ensCartes.add(new Carte(Couleur.Carreau, Valeur.As, 11));
-		ensCartes.add(new Carte(Couleur.Coeur, Valeur.Sept, 0));
-		ensCartes.add(new Carte(Couleur.Coeur, Valeur.Huit, 0));
-		ensCartes.add(new Carte(Couleur.Coeur, Valeur.Neuf, 0));
-		ensCartes.add(new Carte(Couleur.Coeur, Valeur.Dix, 10));
-		ensCartes.add(new Carte(Couleur.Coeur, Valeur.Valet, 2));
-		ensCartes.add(new Carte(Couleur.Coeur, Valeur.Dame, 3));
-		ensCartes.add(new Carte(Couleur.Coeur, Valeur.Roi, 4));
-		ensCartes.add(new Carte(Couleur.Coeur, Valeur.As, 11));
-		ensCartes.add(new Carte(Couleur.Trefle, Valeur.Sept, 0));
-		ensCartes.add(new Carte(Couleur.Trefle, Valeur.Huit, 0));
-		ensCartes.add(new Carte(Couleur.Trefle, Valeur.Neuf, 0));
-		ensCartes.add(new Carte(Couleur.Trefle, Valeur.Dix, 10));
-		ensCartes.add(new Carte(Couleur.Trefle, Valeur.Valet, 2));
-		ensCartes.add(new Carte(Couleur.Trefle, Valeur.Dame, 3));
-		ensCartes.add(new Carte(Couleur.Trefle, Valeur.Roi, 4));
-		ensCartes.add(new Carte(Couleur.Trefle, Valeur.As, 11));
-		ensCartes.add(new Carte(Couleur.Pique, Valeur.Sept, 0));
-		ensCartes.add(new Carte(Couleur.Pique, Valeur.Huit, 0));
-		ensCartes.add(new Carte(Couleur.Pique, Valeur.Neuf, 0));
-		ensCartes.add(new Carte(Couleur.Pique, Valeur.Dix, 10));
-		ensCartes.add(new Carte(Couleur.Pique, Valeur.Valet, 2));
-		ensCartes.add(new Carte(Couleur.Pique, Valeur.Dame, 3));
-		ensCartes.add(new Carte(Couleur.Pique, Valeur.Roi, 4));
-		ensCartes.add(new Carte(Couleur.Pique, Valeur.As, 11));
+		getEnsCartes().add(new Carte(Couleur.Carreau, Valeur.Sept, 0));
+		getEnsCartes().add(new Carte(Couleur.Carreau, Valeur.Huit, 0));
+		getEnsCartes().add(new Carte(Couleur.Carreau, Valeur.Neuf, 0));
+		getEnsCartes().add(new Carte(Couleur.Carreau, Valeur.Dix, 10));
+		getEnsCartes().add(new Carte(Couleur.Carreau, Valeur.Valet, 2));
+		getEnsCartes().add(new Carte(Couleur.Carreau, Valeur.Dame, 3));
+		getEnsCartes().add(new Carte(Couleur.Carreau, Valeur.Roi, 4));
+		getEnsCartes().add(new Carte(Couleur.Carreau, Valeur.As, 11));
+		getEnsCartes().add(new Carte(Couleur.Coeur, Valeur.Sept, 0));
+		getEnsCartes().add(new Carte(Couleur.Coeur, Valeur.Huit, 0));
+		getEnsCartes().add(new Carte(Couleur.Coeur, Valeur.Neuf, 0));
+		getEnsCartes().add(new Carte(Couleur.Coeur, Valeur.Dix, 10));
+		getEnsCartes().add(new Carte(Couleur.Coeur, Valeur.Valet, 2));
+		getEnsCartes().add(new Carte(Couleur.Coeur, Valeur.Dame, 3));
+		getEnsCartes().add(new Carte(Couleur.Coeur, Valeur.Roi, 4));
+		getEnsCartes().add(new Carte(Couleur.Coeur, Valeur.As, 11));
+		getEnsCartes().add(new Carte(Couleur.Trefle, Valeur.Sept, 0));
+		getEnsCartes().add(new Carte(Couleur.Trefle, Valeur.Huit, 0));
+		getEnsCartes().add(new Carte(Couleur.Trefle, Valeur.Neuf, 0));
+		getEnsCartes().add(new Carte(Couleur.Trefle, Valeur.Dix, 10));
+		getEnsCartes().add(new Carte(Couleur.Trefle, Valeur.Valet, 2));
+		getEnsCartes().add(new Carte(Couleur.Trefle, Valeur.Dame, 3));
+		getEnsCartes().add(new Carte(Couleur.Trefle, Valeur.Roi, 4));
+		getEnsCartes().add(new Carte(Couleur.Trefle, Valeur.As, 11));
+		getEnsCartes().add(new Carte(Couleur.Pique, Valeur.Sept, 0));
+		getEnsCartes().add(new Carte(Couleur.Pique, Valeur.Huit, 0));
+		getEnsCartes().add(new Carte(Couleur.Pique, Valeur.Neuf, 0));
+		getEnsCartes().add(new Carte(Couleur.Pique, Valeur.Dix, 10));
+		getEnsCartes().add(new Carte(Couleur.Pique, Valeur.Valet, 2));
+		getEnsCartes().add(new Carte(Couleur.Pique, Valeur.Dame, 3));
+		getEnsCartes().add(new Carte(Couleur.Pique, Valeur.Roi, 4));
+		getEnsCartes().add(new Carte(Couleur.Pique, Valeur.As, 11));
 	}
 
 	static int getBestsMinInd() {
@@ -127,13 +127,13 @@ public class Entrainement {
 					* ((double) (((POURCENTAGE_REPROD_FIN - POURCENTAGE_REPROD_DEBUT) / NB_GENERATION) * gen
 							+ POURCENTAGE_REPROD_DEBUT) / 100));
 
-			Collections.shuffle(ensCartes);
+			Collections.shuffle(getEnsCartes());
 
 			for (int id = 0; id < NB_AI_PAR_GENERATION; id++) {
 				int idPJ = r.nextInt(4) + 1;
 				int idJP = r.nextInt(4) + 1;
 				manche = new Manche(idJP, idPJ, ais.get(id), ais.get(id).clone(), ais.get(id).clone(),
-						ais.get(id).clone(), ensCartes);
+						ais.get(id).clone(), getEnsCartes());
 				manche.j2.idPartenaire = 4;
 				manche.j3.idPartenaire = 1;
 				manche.j4.idPartenaire = 2;
@@ -210,6 +210,10 @@ public class Entrainement {
 			e.printStackTrace();
 		}
 
+	}
+
+	public static ArrayList<Carte> getEnsCartes() {
+		return ensCartes;
 	}
 
 }
