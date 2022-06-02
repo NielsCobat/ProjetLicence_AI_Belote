@@ -169,24 +169,27 @@ public class Entrainement {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 		LocalDateTime now = LocalDateTime.now();
 
-		File sauvegardeBestOne = new File("results/" + dtf.format(now) + ".json");
+		File sauvegardeBestOne = new File("results/" + dtf.format(now) + ".txt");
 		try {
+			sauvegardeBestOne.getParentFile().mkdir();
 			if (sauvegardeBestOne.createNewFile()) {
 				System.out.println("Fichier de sauvegarde créé: " + sauvegardeBestOne.getName());
+				
+				try {
+					FileWriter myWriter = new FileWriter("results/" + sauvegardeBestOne.getName());
+					myWriter.write(NeuralNetwork.nbHiddenLayer + "_" + bestOne.getInput().length + "_" + bestOne.getOutput().length
+							+ "_ //TODO nb neurones par couches cachées");
+					myWriter.write("//TODO fichier à compléter");
+					myWriter.close();
+					System.out.println("Fichier de sauvegarde complété avec succès.");
+				} catch (IOException e) {
+					System.out.println("Une erreur a eu lieu.");
+					e.printStackTrace();
+				}
+				
 			} else {
 				System.out.println("Un fichier de ce nom existe déjà.");
 			}
-		} catch (IOException e) {
-			System.out.println("Une erreur a eu lieu.");
-			e.printStackTrace();
-		}
-		try {
-			FileWriter myWriter = new FileWriter(sauvegardeBestOne.getName());
-			myWriter.write(bestOne.nbHiddenLayer + "_" + bestOne.getInput().length + "_" + bestOne.getOutput().length
-					+ "_ //TODO nb neurones par couches cachées");
-			myWriter.write("//TODO fichier à compléter");
-			myWriter.close();
-			System.out.println("Fichier de sauvegarde complété avec succès.");
 		} catch (IOException e) {
 			System.out.println("Une erreur a eu lieu.");
 			e.printStackTrace();
