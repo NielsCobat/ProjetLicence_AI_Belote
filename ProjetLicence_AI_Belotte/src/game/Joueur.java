@@ -18,7 +18,7 @@ public class Joueur {
 	public int idPartenaire;
 	public ArrayList<Carte> main;
 	public ArrayList<Carte> mainFuture; //Aide à décider de la couleur de l'atout une fois que l'on connait la disposition des cartes dans le paquet.
-	boolean aBelote;
+	public boolean aBelote;
 
 	public Joueur() {
 		nom = "";

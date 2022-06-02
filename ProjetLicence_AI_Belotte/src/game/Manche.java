@@ -367,20 +367,24 @@ public class Manche {
 	public void runMancheEntrainement(Couleur atout) throws Exception {
 
 		boolean half = false; // Pour savoir si la moitié de la belote a été utilisée.
-		Joueur joueurCourant;
+		NeuralNetwork joueurCourant = new NeuralNetwork("", 1, 3);
 		int idJoueurCourant = this.idPremierJoueur;
 		switch (idJoueurCourant) {
 		case 1:
-			joueurCourant = j1;
+			if (joueurCourant instanceof NeuralNetwork && j1 instanceof NeuralNetwork)
+				joueurCourant = (NeuralNetwork) j1;
 			break;
 		case 2:
-			joueurCourant = j2;
+			if (joueurCourant instanceof NeuralNetwork && j2 instanceof NeuralNetwork)
+				joueurCourant = (NeuralNetwork) j2;
 			break;
 		case 3:
-			joueurCourant = j3;
+			if (joueurCourant instanceof NeuralNetwork && j3 instanceof NeuralNetwork)
+				joueurCourant = (NeuralNetwork) j3;
 			break;
 		case 4:
-			joueurCourant = j4;
+			if (joueurCourant instanceof NeuralNetwork && j4 instanceof NeuralNetwork)
+				joueurCourant = (NeuralNetwork) j4;
 			break;
 		default:
 			throw new Exception("identifiant du joueur non compatible");
@@ -601,16 +605,20 @@ public class Manche {
 			if (idPremierJoueur != joueurCourant.id) {
 				switch (idPremierJoueur) {
 				case 1:
-					joueurCourant = j1;
+					if (joueurCourant instanceof NeuralNetwork && j1 instanceof NeuralNetwork)
+						joueurCourant = (NeuralNetwork) j1;
 					break;
 				case 2:
-					joueurCourant = j2;
+					if (joueurCourant instanceof NeuralNetwork && j2 instanceof NeuralNetwork)
+						joueurCourant = (NeuralNetwork) j2;
 					break;
 				case 3:
-					joueurCourant = j3;
+					if (joueurCourant instanceof NeuralNetwork && j3 instanceof NeuralNetwork)
+						joueurCourant = (NeuralNetwork) j3;
 					break;
 				case 4:
-					joueurCourant = j4;
+					if (joueurCourant instanceof NeuralNetwork && j4 instanceof NeuralNetwork)
+						joueurCourant = (NeuralNetwork) j4;
 					break;
 				}
 			}
@@ -690,16 +698,16 @@ public class Manche {
 
 					switch (joueurCourant.id) {
 					case 1:
-						joueurCourant = j2;
+						joueurCourant = (NeuralNetwork) j2;
 						break;
 					case 2:
-						joueurCourant = j3;
+						joueurCourant = (NeuralNetwork) j3;
 						break;
 					case 3:
-						joueurCourant = j4;
+						joueurCourant = (NeuralNetwork) j4;
 						break;
 					case 4:
-						joueurCourant = j1;
+						joueurCourant = (NeuralNetwork) j1;
 						break;
 					}
 				}
