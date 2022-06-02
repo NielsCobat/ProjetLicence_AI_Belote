@@ -29,7 +29,7 @@ public class Entrainement {
 
 	static ArrayList<NeuralNetwork> ais = new ArrayList<NeuralNetwork>();
 
-	static void setEnsCartes() {
+	public static void setEnsCartes() {
 		ensCartes.add(new Carte(Couleur.Carreau, Valeur.Sept, 0));
 		ensCartes.add(new Carte(Couleur.Carreau, Valeur.Huit, 0));
 		ensCartes.add(new Carte(Couleur.Carreau, Valeur.Neuf, 0));
@@ -85,7 +85,25 @@ public class Entrainement {
 	}
 
 	public static void main(String[] args) throws Exception {
-
+		//TODO aléatoire de l'atout
+		Couleur atout;
+		int atoutCourant = (int) (Math.random() * (4 - 1 + 1) + 1); // selectionne un int entre 1 et 4
+		switch (atoutCourant) {
+		case 1:
+			atout = Couleur.Trefle;
+			break;
+		case 2:
+			atout = Couleur.Carreau;
+			break;
+		case 3:
+			atout = Couleur.Coeur;
+			break;
+		case 4:
+			atout = Couleur.Pique;
+			break;
+		default:
+			throw new Exception("atout non compatible");
+		}
 		setEnsCartes();
 
 		for (int id = 0; id < NB_AI_PAR_GENERATION; id++) { // initialisation des IA de bases
@@ -120,7 +138,7 @@ public class Entrainement {
 				manche.j3.idPartenaire = 1;
 				manche.j4.idPartenaire = 2;
 
-				manche.runMancheEntrainement();
+				manche.runMancheEntrainement(atout);
 
 				int indMin = getBestsMinInd();
 				int score = manche.getPointsEquipe(1);

@@ -3,6 +3,7 @@ package game;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import AI.Entrainement;
 import AI.NeuralNetwork;
 import assets.Couleur;
 
@@ -11,9 +12,10 @@ public class Manche {
 	private Pli[] plis;
 	private int idPremierJoueur, equipePreneur, nbPlis;
 	private int[] pointsEquipe, belotte;
-	
+
 	//variables pour l'entrainement
 	public Joueur j1, j2, j3, j4;
+	public Equipe e1, e2;
 	public ArrayList<Carte> ensCarte;
 
 	/**
@@ -40,9 +42,11 @@ public class Manche {
 		this.j2 = null;
 		this.j3 = null;
 		this.j4 = null;
+		this.e1 = null;
+		this.e2 = null;
 		this.ensCarte = null;
 	}
-	
+
 	public Manche(int idPremierJoueur, int joueurPreneur, Joueur j1, Joueur j2, Joueur j3, Joueur j4, ArrayList<Carte> ensCarte) throws Exception {
 		if ((this.idPremierJoueur > 4 || this.idPremierJoueur < 1) && (joueurPreneur > 4 || joueurPreneur < 1))
 			throw new Exception("game.Manche.Manche() : Un id de joueur n'est pas valide");
@@ -59,6 +63,8 @@ public class Manche {
 		this.j2 = j2;
 		this.j3 = j3;
 		this.j4 = j4;
+		this.e1 = null;
+		this.e2 = null;
 		this.ensCarte = ensCarte;
 	}
 
@@ -328,9 +334,176 @@ public class Manche {
 		//attribution des points remportes par chaque equipe
 		finManche();
 	}
-	
-	public void runMancheEntrainement() {
-		
+
+	public void runMancheEntrainement(Couleur atout) throws Exception {
+
+		boolean half = false; //Pour savoir si la moitié de la belote a été utilisée.
+		j1 = new NeuralNetwork("", 1, 3);
+		j2 = new NeuralNetwork("", 2, 4);
+		j3 = new NeuralNetwork("", 3, 1);
+		j4 = new NeuralNetwork("", 4, 2);
+		e1 = new Equipe(1, j1, j3, 0);
+		e2 = new Equipe(2, j2, j4, 0);
+		e1.score = 0;
+		e2.score = 0;
+		Joueur joueurCourant;
+		int idJoueurCourant = (int) (Math.random() * (4 - 1 + 1) + 1); // selectionne un int entre 1 et 4
+		switch (idJoueurCourant) {
+		case 1:
+			joueurCourant = j1;
+			break;
+		case 2:
+			joueurCourant = j2;
+			break;
+		case 3:
+			joueurCourant = j3;
+			break;
+		case 4:
+			joueurCourant = j4;
+			break;
+		default:
+			throw new Exception("identifiant du joueur non compatible");
+		}
+		ArrayList<Carte> ensCartes = new ArrayList<Carte>();
+		Entrainement.setEnsCartes();
+
+		//distribution directe sans choix de l'atout
+		for(int i=0; i<8;i++) {
+			j1.main.add(ensCartes.get(0));
+			ensCartes.remove(0);
+		}
+		for(int i=0; i<8;i++) {
+			j2.main.add(ensCartes.get(0));
+			ensCartes.remove(0);
+		}
+		for(int i=0; i<8;i++) {
+			j3.main.add(ensCartes.get(0));
+			ensCartes.remove(0);
+		}
+		for(int i=0; i<8;i++) {
+			j4.main.add(ensCartes.get(0));
+			ensCartes.remove(0);
+		}
+
+		//Scanner sc = Table.scannerString;
+		//String carteAJouer = "";
+		j1.hasBelote(atout);
+		j2.hasBelote(atout);
+		j3.hasBelote(atout);
+		j4.hasBelote(atout);
+
+
+		//init des IA
+
+		if(j1 instanceof NeuralNetwork) {
+			((NeuralNetwork) j1).initInput();
+		}
+		if(j2 instanceof NeuralNetwork) {
+			((NeuralNetwork) j2).initInput();
+		}
+		if(j3 instanceof NeuralNetwork) {
+			((NeuralNetwork) j3).initInput();
+		}
+		if(j4 instanceof NeuralNetwork) {
+			((NeuralNetwork) j4).initInput();
+
+		}
+
+
+		//Une manche == 8 plis
+		for (int i=0 ; i<8 ; i++) {
+
+
+			//System.out.println("Pli numéro " + (i+1));
+			//System.out.println("L'équipe " + (equipePreneur+ 1 ) + " a pris.");
+
+			//resetPli des IA
+			if(j1 instanceof NeuralNetwork) {
+				((NeuralNetwork) j1).resetPli();
+			}
+			if(j2 instanceof NeuralNetwork) {
+				((NeuralNetwork) j2).resetPli();
+			}
+			if(j3 instanceof NeuralNetwork) {
+				((NeuralNetwork) j3).resetPli();
+			}
+			if(j4 instanceof NeuralNetwork) {
+				((NeuralNetwork) j4).resetPli();
+			}
+
+			/*try {
+				initPliSuivant();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}*/
+
+			//initialisation du i ème pli
+
+			plis[i] = new Pli(idPremierJoueur); 
+			if(idPremierJoueur != joueurCourant.id) {
+				switch(idPremierJoueur) {
+				case 1: joueurCourant = j1;
+				break;
+				case 2: joueurCourant = j2;
+				break;
+				case 3: joueurCourant = j3;
+				break;
+				case 4: joueurCourant = j4;
+				break;
+				}
+			}
+
+			//Tour de table
+			boolean played;
+
+			for(int j=0 ; j<4 ; j++) {
+				played = false;
+				while (!played) {
+
+					if(joueurCourant instanceof NeuralNetwork) {
+						//joue coup
+						Carte carteAJouer = ((NeuralNetwork) joueurCourant).joueCoup();
+						
+						//met à jour si belote
+						if (joueurCourant.aBelote && ((carteAJouer.getValeur().name().equals("Dame") || (carteAJouer.getValeur().name().equals("Roi"))
+								&& carteAJouer.getCouleur().name().equals(atout.name())))) {
+							if(!half) {
+								half = !half;
+							}
+						}
+						
+					}
+					else {
+						System.out.println("Erreur: joueurCourant doit être une ia");
+					}
+					
+					played = true;
+					
+					switch(joueurCourant.id) {
+					case 1: joueurCourant = j2;
+					break;
+					case 2: joueurCourant = j3;
+					break;
+					case 3: joueurCourant = j4;
+					break;
+					case 4: joueurCourant = j1;
+					break;
+					}
+				}
+
+			}
+
+			//recuperation id equipe gagnante et id premier joueur du pli suivant	
+			int idGagnante = plis[i].equipeGagnante() - 1; 
+			idPremierJoueur = plis[i].getIdJoueurGagnant();
+
+			//attribution des points du pli a l'equipe gagnante
+			pointsEquipe[idGagnante] += plis[i].calculPoints();
+			if (i == 7) pointsEquipe[idGagnante] += 10; // 10 de der
+			nbPlis++;
+		}
+		//attribution des points remportes par chaque equipe
+		finManche();
 	}
 
 	/**
