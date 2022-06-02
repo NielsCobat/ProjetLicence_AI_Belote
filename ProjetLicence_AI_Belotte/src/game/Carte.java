@@ -107,6 +107,10 @@ public class Carte {
 		return 1;
 	}
 	
+	public boolean equal(Carte c2) {
+		return this.couleur.name().equals(c2.couleur.name()) && this.valeur.name().equals(c2.valeur.name());
+	}
+	
 	public Couleur getCouleur() {
 		return this.couleur;
 	}
