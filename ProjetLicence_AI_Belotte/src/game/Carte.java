@@ -68,6 +68,45 @@ public class Carte {
 		return 1;
 	}
 	
+	int compareTo(Carte c2, Couleur atout) {
+		// -1  this ne l'emporte pas face à c
+		//1  this l'emporte face à c
+		if (c2 != null) {
+			if(this.couleur.name().equals(atout.name())) {
+			if(c2.couleur.name().equals(atout.name())) {
+				for(int i = 0 ; i < ordreAtout.length ; i++) {
+					if(ordreAtout[i].name().equals(this.valeur.name())) {
+						return -1;
+					}
+					else if(ordreAtout[i].name().equals(c2.valeur.name())) {
+						return 1;
+					}
+				}
+			}
+			else{
+				return 1;
+			}
+		}
+		else { //this n'est pas un atout
+			if(c2.couleur.name().equals(atout.name())) { //c2 est un atout
+				return -1;
+			}
+			else if (c2.couleur.name().equals(this.getCouleur().name())) { //c2 et this sont de la même couleur
+				for(int i = 0 ; i < ordreNonAtout.length ; i++) {
+					if(ordreNonAtout[i].name().equals(this.valeur.name())) {
+						return -1;
+					}
+					else if(ordreNonAtout[i].name().equals(c2.valeur.name())) {
+						return 1;
+					}
+				}
+			}
+		}
+		}
+		
+		return 1;
+	}
+	
 	public Couleur getCouleur() {
 		return this.couleur;
 	}
