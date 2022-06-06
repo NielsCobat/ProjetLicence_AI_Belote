@@ -94,7 +94,7 @@ public class Matrix {
 		double[] temp = new double[rows];
 
 		for (int i = 0; i < rows; i++) {
-			temp[i] = data[i][1];
+			temp[i] = data[i][0];
 		}
 		return temp;
 	}

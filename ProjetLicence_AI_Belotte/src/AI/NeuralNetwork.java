@@ -58,7 +58,7 @@ public class NeuralNetwork extends Joueur {
 		this.main = new ArrayList<Carte>(); // A la creation main forcement vide
 
 		this.input = new double[297];
-		this.output = new double[31];
+		this.output = new double[32];
 
 		// r sert aux calculs du nombre de neurones pour chaque hidden layer
 		int r = (input.length / output.length) ^ (1 / (nbHiddenLayer + 1));
@@ -67,12 +67,13 @@ public class NeuralNetwork extends Joueur {
 		// neurones le tout rassemblés dans une liste
 		// idem pour biais
 		this.allWeightHidden.add(new Matrix((output.length * (r) ^ (nbHiddenLayer)), input.length));
+		this.allBias.add(new Matrix((output.length * (r) ^ (nbHiddenLayer)), 1));
 
 		for (int i = 0; i < nbHiddenLayer - 1; i++) {
 			this.allHidden.add(new Matrix((output.length * (r) ^ (nbHiddenLayer - i)), 1));
-			this.allWeightHidden.add(new Matrix((output.length * (r) ^ (nbHiddenLayer - (i + 1))),
-					(output.length * (r) ^ (nbHiddenLayer - i))));
-			this.allBias.add(new Matrix((output.length * (r) ^ (nbHiddenLayer - (i + 1))), 1));
+			this.allWeightHidden.add(new Matrix((output.length * (r) ^ (nbHiddenLayer - i)),
+					(output.length * (r) ^ (nbHiddenLayer - (i+1)))));
+			this.allBias.add(new Matrix((output.length * (r) ^ (nbHiddenLayer - (i) )), 1));
 		}
 		this.allHidden.add(new Matrix(output.length * (r), 1));
 		this.allWeightHidden.add(new Matrix(output.length, output.length * (r)));
@@ -241,25 +242,27 @@ public class NeuralNetwork extends Joueur {
 		// calculs pour la première couche (en lien avec les inputs)
 		Matrix hidden = Matrix.multiply(allWeightHidden.get(0), input);
 		hidden.add(allBias.get(0));
+		//System.out.println("shape mismatch input");
 		hidden.sigmoid();
 
 		allHidden.set(0, hidden);
 
 		// calculs pour toutes les couches intermédiaires
 		for (int i = 1; i < nbHiddenLayer; i++) {
-			Matrix hidden2 = Matrix.multiply(allWeightHidden.get(i), allHidden.get(i - 1));
+			Matrix hidden2 = Matrix.multiply(allWeightHidden.get(i), allHidden.get(i-1));
 			hidden2.add(allBias.get(i));
+			//System.out.println("shape mismatch hidden");
 			hidden2.sigmoid();
 
 			allHidden.set(i, hidden2);
 		}
 		// calculs pour la dernière couche des hiddenLayers(en lien avec les outputs)
-		Matrix output = Matrix.multiply(allWeightHidden.get(nbHiddenLayer-1),
-				allHidden.get(nbHiddenLayer-1));
-		output.add(allBias.get(allBias.size() - 1));
+		Matrix output = Matrix.multiply(allWeightHidden.get(nbHiddenLayer), allHidden.get(nbHiddenLayer-1));
+		output.add(allBias.get(nbHiddenLayer));
+		//System.out.println("shape mismatch output");
 		output.sigmoid();
 
-		allHidden.set(allHidden.size() - 1, output);
+		allHidden.set(allHidden.size() - 1, output); 
 
 		return output.toDouble();
 	}
@@ -300,7 +303,7 @@ public class NeuralNetwork extends Joueur {
 		return posCartesOutput.get(indice);
 	}
 	
-	public Carte joueCoup(Couleur couleurDemandee, Carte[] pli, int joueurGagnant) {
+	public Carte joueCoup(Couleur couleurDemandee, Carte[] pli, int joueurGagnant, Manche manche, Couleur atout) {
 
 		// mises à jour inputs
 		if (couleurDemandee != null)
@@ -325,7 +328,7 @@ public class NeuralNetwork extends Joueur {
 					output[j] = 0;
 				}
 			}
-		} while ((!isLegalMove(posCartesOutput.get(indice))) && (main.contains(posCartesOutput.get(indice))));
+		} while ((!isLegalMove(posCartesOutput.get(indice), manche, atout)) && (main.contains(posCartesOutput.get(indice))));
 
 		// TODO remettre la ligne lorsque l'ia n'est plus en entrainement
 		// super.joueCoup(posCartesOutput.get(indice));

@@ -634,7 +634,8 @@ public class Manche {
 						// joue coup
 						Carte carteAJouer = ((NeuralNetwork) joueurCourant).joueCoup(
 								this.getPli(this.getNbPlis()).getCouleurDemandee(),
-								this.getPli(this.getNbPlis()).getCartes(), this.getPli(this.getNbPlis()).getIdJoueurGagnant());
+								this.getPli(this.getNbPlis()).getCartes(), this.getPli(this.getNbPlis()).getIdJoueurGagnant(),
+								this, atout);
 
 						this.getPli(this.getNbPlis()).addCarte(carteAJouer, atout);
 						joueurCourant.main.remove(carteAJouer);
