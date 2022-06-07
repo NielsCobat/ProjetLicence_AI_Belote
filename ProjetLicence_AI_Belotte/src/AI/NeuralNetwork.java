@@ -319,7 +319,7 @@ public class NeuralNetwork extends Joueur {
 		double maxNum = output[0];
 
 		do {
-			for (int j = 0; j < 32; j++) {
+			for (int j = 0; j < output.length; j++) {
 				if (output[j] > maxNum) {
 					maxNum = output[j];
 					indice = j;
@@ -328,7 +328,7 @@ public class NeuralNetwork extends Joueur {
 					output[j] = 0;
 				}
 			}
-		} while ((!isLegalMove(posCartesOutput.get(indice), manche, atout)) && (main.contains(posCartesOutput.get(indice))));
+		} while ((!isLegalMove(posCartesOutput.get(indice), manche, atout)) || (!main.contains(posCartesOutput.get(indice))));
 
 		// TODO remettre la ligne lorsque l'ia n'est plus en entrainement
 		// super.joueCoup(posCartesOutput.get(indice));
