@@ -83,7 +83,7 @@ public class NeuralNetwork extends Joueur {
 	/*
 	 * Remplit le hashMap output
 	 */
-	public static void initHashmapOutput() {
+	public void initHashmapOutput() {
 		posCartesOutput.put(0, new Carte(Couleur.Carreau, Valeur.Sept, 0));
 		posCartesOutput.put(1, new Carte(Couleur.Carreau, Valeur.Huit, 0));
 		posCartesOutput.put(2, new Carte(Couleur.Carreau, Valeur.Neuf, 0));
@@ -121,7 +121,7 @@ public class NeuralNetwork extends Joueur {
 	/*
 	 * Remplit le hashMap input
 	 */
-	public static void initHashmap() {
+	public void initHashmap() {
 		posCartesInput.put(new Carte(Couleur.Carreau, Valeur.Sept, 0), 0);
 		posCartesInput.put(new Carte(Couleur.Carreau, Valeur.Huit, 0), 1);
 		posCartesInput.put(new Carte(Couleur.Carreau, Valeur.Neuf, 0), 2);
@@ -321,10 +321,11 @@ public class NeuralNetwork extends Joueur {
 		initHashmapOutput();
 
 		int stop = 0;
+		this.printMain();
 		do {
 
 			for (int j = 0; j < output.length; j++) {
-				if (output[j] > maxNum) {
+				if (output[j] >= maxNum) {
 					maxNum = output[j];
 					indice = j;
 					// on met l'output à zero pour que si cet output n'est pas légal, qu'il ne soit
@@ -335,9 +336,9 @@ public class NeuralNetwork extends Joueur {
 			}
 
 			System.out.println("output : " + output[indice]);
+			System.out.println(indice + "  " + maxNum);
 			maxNum = output[0];
 			stop++;
-			System.out.println(indice + "  " + maxNum);
 			System.out.println(posCartesOutput.get(indice));
 
 			maxNum = output[0];
