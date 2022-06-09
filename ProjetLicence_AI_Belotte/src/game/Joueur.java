@@ -236,32 +236,32 @@ public class Joueur {
 		
 		//met à  jour les inputs des autres ia en jeu que l'on soit une ia ou un joueur réel
 		if(Table.joueur1 instanceof NeuralNetwork && this.id!=Table.joueur1.id) {
-			((NeuralNetwork) Table.joueur1).getInput()[((NeuralNetwork) Table.joueur1).posCartesInput.get(carte) + 64*(this.id-1)] = 0;
-			((NeuralNetwork) Table.joueur1).getInput()[((NeuralNetwork) Table.joueur1).posCartesInput.get(carte)  + 64*(this.id-1) + 32] = 1;
+			((NeuralNetwork) Table.joueur1).getInput()[NeuralNetwork.posCartesInput.get(carte) + 64*(this.id-1)] = 0;
+			((NeuralNetwork) Table.joueur1).getInput()[NeuralNetwork.posCartesInput.get(carte)  + 64*(this.id-1) + 32] = 1;
 		}
 		if(Table.joueur2 instanceof NeuralNetwork && this.id!=Table.joueur2.id) {
 			if(this.id ==1) {
-				((NeuralNetwork) Table.joueur2).getInput()[((NeuralNetwork) Table.joueur2).posCartesInput.get(carte) + 64*(this.id)] = 0;
-				((NeuralNetwork) Table.joueur2).getInput()[((NeuralNetwork) Table.joueur2).posCartesInput.get(carte)  + 64*(this.id) + 32] = 1;
+				((NeuralNetwork) Table.joueur2).getInput()[NeuralNetwork.posCartesInput.get(carte) + 64*(this.id)] = 0;
+				((NeuralNetwork) Table.joueur2).getInput()[NeuralNetwork.posCartesInput.get(carte)  + 64*(this.id) + 32] = 1;
 			}
 			else {
-				((NeuralNetwork) Table.joueur2).getInput()[((NeuralNetwork) Table.joueur2).posCartesInput.get(carte) + 64*(this.id-1)] = 0;
-				((NeuralNetwork) Table.joueur2).getInput()[((NeuralNetwork) Table.joueur2).posCartesInput.get(carte)  + 64*(this.id-1) + 32] = 1;
+				((NeuralNetwork) Table.joueur2).getInput()[NeuralNetwork.posCartesInput.get(carte) + 64*(this.id-1)] = 0;
+				((NeuralNetwork) Table.joueur2).getInput()[NeuralNetwork.posCartesInput.get(carte)  + 64*(this.id-1) + 32] = 1;
 			}
 		}
 		if(Table.joueur3 instanceof NeuralNetwork && this.id!=Table.joueur3.id) {
 			if(this.id == 1 || this.id == 2) {
-				((NeuralNetwork) Table.joueur3).getInput()[((NeuralNetwork) Table.joueur3).posCartesInput.get(carte) + 64*(this.id)] = 0;
-				((NeuralNetwork) Table.joueur3).getInput()[((NeuralNetwork) Table.joueur3).posCartesInput.get(carte)  + 64*(this.id) + 32] = 1;
+				((NeuralNetwork) Table.joueur3).getInput()[NeuralNetwork.posCartesInput.get(carte) + 64*(this.id)] = 0;
+				((NeuralNetwork) Table.joueur3).getInput()[NeuralNetwork.posCartesInput.get(carte)  + 64*(this.id) + 32] = 1;
 			}else {
 
-				((NeuralNetwork) Table.joueur3).getInput()[((NeuralNetwork) Table.joueur3).posCartesInput.get(carte) + 64*(this.id-1)] = 0;
-				((NeuralNetwork) Table.joueur3).getInput()[((NeuralNetwork) Table.joueur3).posCartesInput.get(carte)  + 64*(this.id-1) + 32] = 1;
+				((NeuralNetwork) Table.joueur3).getInput()[NeuralNetwork.posCartesInput.get(carte) + 64*(this.id-1)] = 0;
+				((NeuralNetwork) Table.joueur3).getInput()[NeuralNetwork.posCartesInput.get(carte)  + 64*(this.id-1) + 32] = 1;
 			}
 		}
 		if(Table.joueur4 instanceof NeuralNetwork && this.id!=Table.joueur4.id) {
-			((NeuralNetwork) Table.joueur4).getInput()[((NeuralNetwork) Table.joueur4).posCartesInput.get(carte) + 64*(this.id)] = 0;
-			((NeuralNetwork) Table.joueur4).getInput()[((NeuralNetwork) Table.joueur4).posCartesInput.get(carte)  + 64*(this.id) + 32] = 1;
+			((NeuralNetwork) Table.joueur4).getInput()[NeuralNetwork.posCartesInput.get(carte) + 64*(this.id)] = 0;
+			((NeuralNetwork) Table.joueur4).getInput()[NeuralNetwork.posCartesInput.get(carte)  + 64*(this.id) + 32] = 1;
 		}
 	}
 
