@@ -24,6 +24,7 @@ public class Table {
 	public static Equipe equipe2;
 
 	public static Joueur joueurCourant;
+	public static Joueur distributeur;
 	public static Manche mancheCourante;
 	public static int mancheCour = 1;
 	public static Couleur atout;
@@ -31,6 +32,8 @@ public class Table {
 	//static LinkedList<Carte> cartesEnMain; //Variable pas utilisée
 	//static LinkedList<Carte> cartesPosees; //Variable pas utilisée
 	public static ArrayList<Carte> ensCartes = new ArrayList<Carte>();
+	public static ArrayList<Carte> ensCartesAvantCoupe = new ArrayList<Carte>();
+	public static ArrayList<Carte> ensTemp = new ArrayList<Carte>();//ens pour le comptage
 	public static int idWinner;
 	public static boolean gameOver = false;
 	
@@ -109,6 +112,26 @@ public class Table {
 	}
 
 	/**
+	 * Demande au joueur courant à quelle carte il souhaite couper
+	 * Coupe
+	 * Le joueur courant devient le joueur suivant
+	 */
+	static void coupeBis(int index) {
+		//on divise le paquet de cartes
+		 ArrayList<Carte> head = new ArrayList<Carte>();
+		 for (int i = 0; i< index; i++) {
+			 head.add(ensTemp.get(i));
+		 }
+		 ArrayList<Carte> tail = new ArrayList<Carte>();
+		 for (int i = index; i< ensTemp.size(); i++) {
+			 tail.add(ensTemp.get(i));
+		 }
+		 //on permute les deux paquets de cartes
+		 tail.addAll(head);
+		 ensTemp = tail;
+	}
+	
+	/**
 	 * Distribue les 5 premieres cartes aux joueurs ( 3 + 2 )
 	 * Le joueur courant devient le joueur suivant le distributeur
 	 * @return la carte au dessus du paquet pour choix de l'atout
@@ -144,6 +167,36 @@ public class Table {
 		return ensCartes.get(0);
 	}
 
+	/**
+	 * Simule une distribution pour le comptage de cartes.
+	 */
+	static void distribuerBis() {
+		//int indiceCourantEnsCartes = 0;
+		for(int i=0 ; i<=7 ; i++) {
+			//commence distribution par le joueur suivant
+			joueurCourant = joueurSuivant();
+			//distribue les 3 premieres cartes a tout le monde
+			if(i<=3) {
+				int j=0;
+				while(j<3) {
+					joueurCourant.mainFuture.add(ensTemp.get(0));
+					ensTemp.remove(0);
+					j++;
+				}
+			}
+			//distribue les 2 cartes a tout le monde
+			else {
+				int j=0;
+				while(j<2) {
+					joueurCourant.mainFuture.add(ensTemp.get(0));
+					ensTemp.remove(0);
+					j++;
+				}
+			}
+		}
+		//joueur qui commence a parler est le joueur apres celui qui distribue
+		//joueurCourant = joueurSuivant();
+	}
 
 	/**
 	 * Distribue le reste des cartes une fois que l'atout est choisi
@@ -184,14 +237,6 @@ public class Table {
 	 * @param peneur joueur qui se voit distribue deux cartes
 	 */
 	static void distribuerResteBis(Joueur preneur) {
-		joueur1.mainFuture.clear();
-		joueur2.mainFuture.clear();
-		joueur3.mainFuture.clear();
-		joueur4.mainFuture.clear();
-		joueur1.mainFuture.addAll(joueur1.main);
-		joueur2.mainFuture.addAll(joueur2.main);
-		joueur3.mainFuture.addAll(joueur3.main);
-		joueur4.mainFuture.addAll(joueur4.main);
 		for(int i=0 ; i<4 ; i++) {
 			//le distrubution commence avec le joueur suivant le joueur distributeur
 			joueurCourant = joueurSuivant();
@@ -199,14 +244,16 @@ public class Table {
 			if(joueurCourant.id==preneur.id) {
 				int j=0;
 				while(j<2) {
-					joueurCourant.mainFuture.add(ensCartes.get(0));
+					joueurCourant.mainFuture.add(ensTemp.get(0));
+					ensTemp.remove(0);
 					j++;
 				}
 			}
 			else {
 				int j=0;
 				while(j<3) {
-					joueurCourant.mainFuture.add(ensCartes.get(0));
+					joueurCourant.mainFuture.add(ensTemp.get(0));
+					ensTemp.remove(0);
 					j++;
 				}
 			}
@@ -277,7 +324,7 @@ public class Table {
 		//boucle principale du jeu
 		while (!gameOver) {
 			//garder en memoire le joueur qui distribue
-			Joueur distributeur = joueurCourant.clone();
+			distributeur = joueurCourant.clone();
 			Joueur joueurPreneur = null; //pas terrible mais doit etre initialisée
 
 			//Tant que l'atout n'est pas choisi on fait deux tours de table et on redistribue
@@ -288,6 +335,10 @@ public class Table {
 				for(int i=0; i<4 ; i++) {
 					System.out.println("Score équipe 1 : " + equipe1.getScore()  + ". Score équipe 2 : " + equipe2.getScore());
 					System.out.println("Tour 1\nCarte à prendre : " + head.toString());
+					if(mancheCour != 1) {
+						joueurCourant.compteCartes();
+						joueurCourant.printMainsFutures();
+					}
 					boolean aPris = joueurCourant.veutPrendre(head);
 					if(aPris) {
 						joueurPreneur = joueurCourant.clone();
@@ -300,7 +351,12 @@ public class Table {
 				//si l'atout n'est pas encore decide alors deuxieme tour de table (deux)
 				if(atout==null) {
 					for(int i=0; i<4 ; i++) {
+						System.out.println("Score équipe 1 : " + equipe1.getScore()  + ". Score équipe 2 : " + equipe2.getScore());
 						System.out.println("Tour 2\nCarte à prendre : " + head.toString());
+						if(mancheCour != 1) {
+							joueurCourant.compteCartes();
+							joueurCourant.printMainsFutures();
+						}
 						boolean aPris = joueurCourant.veutPrendre(head);
 						if(aPris) {
 							joueurPreneur = joueurCourant.clone();
@@ -334,7 +390,10 @@ public class Table {
 					joueur2.main.clear();
 					joueur3.main.clear();
 					joueur4.main.clear();
+					ensCartesAvantCoupe = (ArrayList<Carte>) ensCartes;//peut-être remettre le .clone().
+					System.out.println("ensCartesAvantCoupe : " + ensCartesAvantCoupe.toString());
 					coupe();
+					System.out.println("ensCartes : " + ensCartes.toString());
 				}
 			}
 			//lancement de la manche
@@ -363,7 +422,13 @@ public class Table {
 				gameOver = true;
 				idWinner=2; //je mets l'id d'un seul membre comme le modulo donne forcement l'equipe des deux joueurs
 			}
-			if (!gameOver) coupe();
+			if (!gameOver) {
+				ensCartesAvantCoupe = (ArrayList<Carte>) ensCartes;//peut-être remettre le .clone().
+				System.out.println("ensCartesAvantCoupe : " + ensCartesAvantCoupe.toString());
+				joueurCourant = distributeur; //Le distributeur de la manche qui vient de finir doit couper pour la prochaine manche;
+				coupe();
+				System.out.println("ensCartes : " + ensCartes.toString());
+			}
 		}
 		System.out.println("Equipe " + idWinner + " gagne la partie");
 		scannerString.close();
