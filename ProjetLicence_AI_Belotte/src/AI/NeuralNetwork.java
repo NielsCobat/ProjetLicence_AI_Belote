@@ -38,8 +38,8 @@ public class NeuralNetwork extends Joueur {
 	private double[] output;
 
 	// hashMap de reference pour les positions des inputs et outputs
-	public HashMap<Carte, Integer> posCartesInput = new HashMap<Carte, Integer>();
-	private HashMap<Integer, Carte> posCartesOutput = new HashMap<Integer, Carte>();
+	public static HashMap<Carte, Integer> posCartesInput = new HashMap<Carte, Integer>();
+	private static HashMap<Integer, Carte> posCartesOutput = new HashMap<Integer, Carte>();
 
 	// variables utiles pour les fonctions
 	private int compteurJoueur = 1;
@@ -83,7 +83,7 @@ public class NeuralNetwork extends Joueur {
 	/*
 	 * Remplit le hashMap output
 	 */
-	public void initHashmapOutput() {
+	public static void initHashmapOutput() {
 		posCartesOutput.put(0, new Carte(Couleur.Carreau, Valeur.Sept, 0));
 		posCartesOutput.put(1, new Carte(Couleur.Carreau, Valeur.Huit, 0));
 		posCartesOutput.put(2, new Carte(Couleur.Carreau, Valeur.Neuf, 0));
@@ -121,7 +121,7 @@ public class NeuralNetwork extends Joueur {
 	/*
 	 * Remplit le hashMap input
 	 */
-	public void initHashmap() {
+	public static void initHashmap() {
 		posCartesInput.put(new Carte(Couleur.Carreau, Valeur.Sept, 0), 0);
 		posCartesInput.put(new Carte(Couleur.Carreau, Valeur.Huit, 0), 1);
 		posCartesInput.put(new Carte(Couleur.Carreau, Valeur.Neuf, 0), 2);
@@ -164,7 +164,7 @@ public class NeuralNetwork extends Joueur {
 		initHashmapOutput();
 		// on regarde la main du joueur et on update le init
 		for (Carte carte : this.main) {
-			for (Carte c2 : this.posCartesInput.keySet()) {
+			for (Carte c2 : posCartesInput.keySet()) {
 				if (carte.equal(c2))
 					this.input[posCartesInput.get(c2)] = 1;
 			}
@@ -175,7 +175,7 @@ public class NeuralNetwork extends Joueur {
 		// solution intermédiaire pour savoir le jeu des autres joueurs
 		if (this.id != 1) {
 			for (Carte carte : Table.joueur1.main) {
-				for (Carte c2 : this.posCartesInput.keySet()) {
+				for (Carte c2 : posCartesInput.keySet()) {
 					if (carte.equal(c2))
 						getInput()[compteurJoueur * 64 + posCartesInput.get(carte)] = 1;
 				}
@@ -184,7 +184,7 @@ public class NeuralNetwork extends Joueur {
 		}
 		if (this.id != 2) {
 			for (Carte carte : Table.joueur2.main) {
-				for (Carte c2 : this.posCartesInput.keySet()) {
+				for (Carte c2 : posCartesInput.keySet()) {
 					if (carte.equal(c2))
 						getInput()[compteurJoueur * 64 + posCartesInput.get(carte)] = 1;
 				}
@@ -193,7 +193,7 @@ public class NeuralNetwork extends Joueur {
 		}
 		if (this.id != 3) {
 			for (Carte carte : Table.joueur3.main) {
-				for (Carte c2 : this.posCartesInput.keySet()) {
+				for (Carte c2 : posCartesInput.keySet()) {
 					if (carte.equal(c2))
 						getInput()[compteurJoueur * 64 + posCartesInput.get(carte)] = 1;
 				}
@@ -202,7 +202,7 @@ public class NeuralNetwork extends Joueur {
 		}
 		if (this.id != 4) {
 			for (Carte carte : Table.joueur4.main) {
-				for (Carte c2 : this.posCartesInput.keySet()) {
+				for (Carte c2 : posCartesInput.keySet()) {
 					if (carte.equal(c2))
 						getInput()[compteurJoueur * 64 + posCartesInput.get(carte)] = 1;
 				}
@@ -321,6 +321,7 @@ public class NeuralNetwork extends Joueur {
 		initHashmapOutput();
 
 		do {
+			
 			for (int j = 0; j < output.length; j++) {
 				if (output[j] > maxNum) {
 					maxNum = output[j];
@@ -328,10 +329,15 @@ public class NeuralNetwork extends Joueur {
 					// on met l'output à zero pour que si cet output n'est pas légal, qu'il ne soit
 					// pas re-selectionné à la boucle suivante
 					output[j] = 0;
+					
 				}
 			}
+			
+			System.out.println("output : "+output[indice]);
 			System.out.println(indice +"  "+ maxNum);
 			System.out.println(posCartesOutput.get(indice));
+			
+			maxNum = output[0];
 		} while ((!isLegalMove(posCartesOutput.get(indice), manche, atout)) || (!main.contains(posCartesOutput.get(indice))));
 
 		// TODO remettre la ligne lorsque l'ia n'est plus en entrainement
@@ -354,7 +360,7 @@ public class NeuralNetwork extends Joueur {
 	
 	void setCartesSurTable(Carte[] cartesDuPli) {
 		for (int i = 0; i < cartesDuPli.length; i++) {
-			for (Carte c2 : this.posCartesInput.keySet()) {
+			for (Carte c2 : posCartesInput.keySet()) {
                 if (cartesDuPli[i].equal(c2))
                 	getInput()[posCartesInput.get(cartesDuPli[i]) + 256] = 1;
             }
