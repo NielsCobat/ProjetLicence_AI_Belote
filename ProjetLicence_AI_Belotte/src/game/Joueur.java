@@ -32,6 +32,7 @@ public class Joueur {
 		this.id = id;
 		this.idPartenaire = partenaire;
 		this.main = new ArrayList<Carte>(); // A la creation main forcement vide
+		this.mainFuture = new ArrayList<Carte>();
 	}
 
 	/**
@@ -490,11 +491,66 @@ public class Joueur {
 		//En cas d'égalité des scores, on garde la première couleur vérifiée atteignant cette égalité.
 		return c;
 	}
+	
+	
+	/**
+	 * Détermine les cartes de tous les joueurs dans le cas ou this prend.
+	 */
+	public void compteCartes() {
+		Table.joueur1.mainFuture.clear();
+		Table.joueur2.mainFuture.clear();
+		Table.joueur3.mainFuture.clear();
+		Table.joueur4.mainFuture.clear();
+		int decalageJoueur = 0;
+		int tailleCoupe = 0;
+		for (byte i = 1; i <= 4; i++) {
+			if(this.id == (((Table.distributeur.id - 1) + i) % 4) + 1 ) {
+				decalageJoueur = i - 1;
+				break;
+			}
+		}
+		tailleCoupe = Table.ensCartesAvantCoupe.indexOf(this.main.get(0)) - (3*decalageJoueur);
+		
+		while(Table.joueurCourant.id != Table.distributeur.id) Table.joueurCourant = Table.joueurSuivant();
+		
+		Table.ensTemp = (ArrayList<Carte>) Table.ensCartesAvantCoupe;
+		Table.coupeBis(tailleCoupe);
+		Table.distribuerBis();
+		this.mainFuture.add(Table.ensTemp.get(0));//donner la carte du milieu au joueur preneur
+		Table.ensTemp.remove(0);
+		Table.distribuerResteBis(this);
+		
+		while(Table.joueurCourant.id != this.id) Table.joueurCourant = Table.joueurSuivant();
+		
+	}
 
 	public void printMain() {
 		for (Carte c : main) {
 			System.out.print(c.toString() + " | ");
 		}
+	}
+
+	public void printMainsFutures() {
+		System.out.println("Le joueur 1 aura : ");
+		for (Carte c : Table.joueur1.mainFuture) {
+			System.out.print(c.toString() + " | ");
+		}
+		System.out.println();
+		System.out.println("Le joueur 2 aura : ");
+		for (Carte c : Table.joueur2.mainFuture) {
+			System.out.print(c.toString() + " | ");
+		}
+		System.out.println();
+		System.out.println("Le joueur 3 aura : ");
+		for (Carte c : Table.joueur3.mainFuture) {
+			System.out.print(c.toString() + " | ");
+		}
+		System.out.println();
+		System.out.println("Le joueur 4 aura : ");
+		for (Carte c : Table.joueur4.mainFuture) {
+			System.out.print(c.toString() + " | ");
+		}
+		System.out.println();
 	}
 
 	@Override

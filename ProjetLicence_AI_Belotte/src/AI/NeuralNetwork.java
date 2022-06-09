@@ -72,8 +72,8 @@ public class NeuralNetwork extends Joueur {
 		for (int i = 0; i < nbHiddenLayer - 1; i++) {
 			this.allHidden.add(new Matrix((output.length * (r) ^ (nbHiddenLayer - i)), 1));
 			this.allWeightHidden.add(new Matrix((output.length * (r) ^ (nbHiddenLayer - i)),
-					(output.length * (r) ^ (nbHiddenLayer - (i+1)))));
-			this.allBias.add(new Matrix((output.length * (r) ^ (nbHiddenLayer - (i) )), 1));
+					(output.length * (r) ^ (nbHiddenLayer - (i + 1)))));
+			this.allBias.add(new Matrix((output.length * (r) ^ (nbHiddenLayer - (i))), 1));
 		}
 		this.allHidden.add(new Matrix(output.length * (r), 1));
 		this.allWeightHidden.add(new Matrix(output.length, output.length * (r)));
@@ -242,27 +242,27 @@ public class NeuralNetwork extends Joueur {
 		// calculs pour la première couche (en lien avec les inputs)
 		Matrix hidden = Matrix.multiply(allWeightHidden.get(0), input);
 		hidden.add(allBias.get(0));
-		//System.out.println("shape mismatch input");
+		// System.out.println("shape mismatch input");
 		hidden.sigmoid();
 
 		allHidden.set(0, hidden);
 
 		// calculs pour toutes les couches intermédiaires
 		for (int i = 1; i < nbHiddenLayer; i++) {
-			Matrix hidden2 = Matrix.multiply(allWeightHidden.get(i), allHidden.get(i-1));
+			Matrix hidden2 = Matrix.multiply(allWeightHidden.get(i), allHidden.get(i - 1));
 			hidden2.add(allBias.get(i));
-			//System.out.println("shape mismatch hidden");
+			// System.out.println("shape mismatch hidden");
 			hidden2.sigmoid();
 
 			allHidden.set(i, hidden2);
 		}
 		// calculs pour la dernière couche des hiddenLayers(en lien avec les outputs)
-		Matrix output = Matrix.multiply(allWeightHidden.get(nbHiddenLayer), allHidden.get(nbHiddenLayer-1));
+		Matrix output = Matrix.multiply(allWeightHidden.get(nbHiddenLayer), allHidden.get(nbHiddenLayer - 1));
 		output.add(allBias.get(nbHiddenLayer));
-		//System.out.println("shape mismatch output");
+		// System.out.println("shape mismatch output");
 		output.sigmoid();
 
-		allHidden.set(allHidden.size() - 1, output); 
+		allHidden.set(allHidden.size() - 1, output);
 
 		return output.toDouble();
 	}
@@ -302,7 +302,7 @@ public class NeuralNetwork extends Joueur {
 		getInput()[posCartesInput.get(posCartesOutput.get(indice)) + 32] = 1;
 		return posCartesOutput.get(indice);
 	}
-	
+
 	public Carte joueCoup(Couleur couleurDemandee, Carte[] pli, int joueurGagnant, Manche manche, Couleur atout) {
 
 		// mises à jour inputs
@@ -320,8 +320,9 @@ public class NeuralNetwork extends Joueur {
 		initHashmap();
 		initHashmapOutput();
 
+		int stop = 0;
 		do {
-			
+
 			for (int j = 0; j < output.length; j++) {
 				if (output[j] > maxNum) {
 					maxNum = output[j];
@@ -329,16 +330,19 @@ public class NeuralNetwork extends Joueur {
 					// on met l'output à zero pour que si cet output n'est pas légal, qu'il ne soit
 					// pas re-selectionné à la boucle suivante
 					output[j] = 0;
-					
+
 				}
 			}
-			
-			System.out.println("output : "+output[indice]);
-			System.out.println(indice +"  "+ maxNum);
-			System.out.println(posCartesOutput.get(indice));
-			
+
+			System.out.println("output : " + output[indice]);
 			maxNum = output[0];
-		} while ((!isLegalMove(posCartesOutput.get(indice), manche, atout)) || (!main.contains(posCartesOutput.get(indice))));
+			stop++;
+			System.out.println(indice + "  " + maxNum);
+			System.out.println(posCartesOutput.get(indice));
+
+			maxNum = output[0];
+		} while (!(main.contains(posCartesOutput.get(indice))
+				&& isLegalMove(posCartesOutput.get(indice), manche, atout)) && stop <= 32);
 
 		// TODO remettre la ligne lorsque l'ia n'est plus en entrainement
 		// super.joueCoup(posCartesOutput.get(indice));
@@ -357,13 +361,13 @@ public class NeuralNetwork extends Joueur {
 			getInput()[posCartesInput.get(cartesDuPli[i]) + 256] = 1;
 		}
 	}
-	
+
 	void setCartesSurTable(Carte[] cartesDuPli) {
 		for (int i = 0; i < cartesDuPli.length; i++) {
 			for (Carte c2 : posCartesInput.keySet()) {
-                if (cartesDuPli[i].equal(c2))
-                	getInput()[posCartesInput.get(cartesDuPli[i]) + 256] = 1;
-            }
+				if (cartesDuPli[i].equal(c2))
+					getInput()[posCartesInput.get(cartesDuPli[i]) + 256] = 1;
+			}
 		}
 	}
 
@@ -389,7 +393,7 @@ public class NeuralNetwork extends Joueur {
 			break;
 		}
 	}
-	
+
 	void setCouleurDemandee(Couleur couleurEnCours) {
 
 		switch (couleurEnCours) {
@@ -419,7 +423,7 @@ public class NeuralNetwork extends Joueur {
 		} else
 			getInput()[296] = 0;
 	}
-	
+
 	void setMaitre(int joueurGagnant) {
 		if (this.idPartenaire == joueurGagnant) {
 			getInput()[296] = 1;
