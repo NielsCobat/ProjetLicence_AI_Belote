@@ -316,7 +316,7 @@ public class NeuralNetwork extends Joueur {
 
 		// calcul de la meilleure carte à jouer
 		int indice = 0;
-		double maxNum = output[0];
+		double maxNum = output[indice];
 		initHashmap();
 		initHashmapOutput();
 
@@ -346,6 +346,8 @@ public class NeuralNetwork extends Joueur {
 
 		// TODO remettre la ligne lorsque l'ia n'est plus en entrainement
 		// super.joueCoup(posCartesOutput.get(indice));
+		System.out.println(posCartesOutput.get(indice));
+		System.out.println(posCartesInput.get(posCartesOutput.get(indice)));
 		getInput()[posCartesInput.get(posCartesOutput.get(indice))] = 0;
 		getInput()[posCartesInput.get(posCartesOutput.get(indice)) + 32] = 1;
 		return posCartesOutput.get(indice);
