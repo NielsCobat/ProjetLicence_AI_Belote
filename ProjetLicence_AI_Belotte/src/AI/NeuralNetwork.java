@@ -38,8 +38,8 @@ public class NeuralNetwork extends Joueur {
 	private double[] output;
 
 	// hashMap de reference pour les positions des inputs et outputs
-	public HashMap<Carte, Integer> posCartesInput = new HashMap<Carte, Integer>();
-	private HashMap<Integer, Carte> posCartesOutput = new HashMap<Integer, Carte>();
+	public static HashMap<Carte, Integer> posCartesInput = new HashMap<Carte, Integer>();
+	private static HashMap<Integer, Carte> posCartesOutput = new HashMap<Integer, Carte>();
 
 	// variables utiles pour les fonctions
 	private int compteurJoueur = 1;
@@ -320,6 +320,7 @@ public class NeuralNetwork extends Joueur {
 		initHashmap();
 		initHashmapOutput();
 
+		int stop = 0;
 		do {
 			for (int j = 0; j < output.length; j++) {
 				if (output[j] > maxNum) {
@@ -330,9 +331,11 @@ public class NeuralNetwork extends Joueur {
 					output[j] = 0;
 				}
 			}
+			maxNum = output[0];
+			stop++;
 			System.out.println(indice +"  "+ maxNum);
 			System.out.println(posCartesOutput.get(indice));
-		} while ((!isLegalMove(posCartesOutput.get(indice), manche, atout)) || (!main.contains(posCartesOutput.get(indice))));
+		} while (!(main.contains(posCartesOutput.get(indice)) && isLegalMove(posCartesOutput.get(indice), manche, atout)) && stop <= 32);
 
 		// TODO remettre la ligne lorsque l'ia n'est plus en entrainement
 		// super.joueCoup(posCartesOutput.get(indice));

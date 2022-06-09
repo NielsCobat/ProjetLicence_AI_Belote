@@ -423,29 +423,29 @@ public class Manche {
 			((NeuralNetwork) j1).initHashmapOutput();
 			// on regarde la main du joueur et on update le init
 			for (Carte carte : j1.main) {
-				for (Carte c2 : ((NeuralNetwork) j1).posCartesInput.keySet()) {
+				for (Carte c2 : NeuralNetwork.posCartesInput.keySet()) {
 					if (carte.equal(c2))
-						((NeuralNetwork) j1).getInput()[((NeuralNetwork) j1).posCartesInput.get(c2)] = 1;
+						((NeuralNetwork) j1).getInput()[NeuralNetwork.posCartesInput.get(c2)] = 1;
 				}
 			}
 
 			for (Carte carte : j2.main) {
-				for (Carte c2 : ((NeuralNetwork) j2).posCartesInput.keySet()) {
+				for (Carte c2 : NeuralNetwork.posCartesInput.keySet()) {
 					if (carte.equal(c2))
-						((NeuralNetwork) j2).getInput()[64 + ((NeuralNetwork) j2).posCartesInput.get(c2)] = 1;
+						((NeuralNetwork) j2).getInput()[64 + NeuralNetwork.posCartesInput.get(c2)] = 1;
 				}
 			}
 
 			for (Carte carte : j3.main) {
-				for (Carte c2 : ((NeuralNetwork) j3).posCartesInput.keySet()) {
+				for (Carte c2 : NeuralNetwork.posCartesInput.keySet()) {
 					if (carte.equal(c2))
-						((NeuralNetwork) j3).getInput()[2 * 64 + ((NeuralNetwork) j3).posCartesInput.get(c2)] = 1;
+						((NeuralNetwork) j3).getInput()[2 * 64 + NeuralNetwork.posCartesInput.get(c2)] = 1;
 				}
 			}
 			for (Carte carte : j4.main) {
-				for (Carte c2 : ((NeuralNetwork) j4).posCartesInput.keySet()) {
+				for (Carte c2 : NeuralNetwork.posCartesInput.keySet()) {
 					if (carte.equal(c2))
-						((NeuralNetwork) j4).getInput()[3 * 64 + ((NeuralNetwork) j4).posCartesInput.get(c2)] = 1;
+						((NeuralNetwork) j4).getInput()[3 * 64 + NeuralNetwork.posCartesInput.get(c2)] = 1;
 				}
 			}
 
@@ -469,20 +469,20 @@ public class Manche {
 			((NeuralNetwork) j2).initHashmapOutput();
 			// on regarde la main du joueur et on update le init
 			for (Carte carte : ((NeuralNetwork) j2).main) {
-				((NeuralNetwork) j2).getInput()[((NeuralNetwork) j2).posCartesInput.get(carte)] = 1;
+				((NeuralNetwork) j2).getInput()[NeuralNetwork.posCartesInput.get(carte)] = 1;
 			}
 
 			// TODO grace à la fonction qui calcule l'ordre des cartes et donc le jeu des
 			// autres joueurs onupdate le init de la même manière
 			// solution intermédiaire pour savoir le jeu des autres joueurs
 			for (Carte carte : ((NeuralNetwork) j1).main) {
-				((NeuralNetwork) j1).getInput()[1 * 64 + ((NeuralNetwork) j1).posCartesInput.get(carte)] = 1;
+				((NeuralNetwork) j1).getInput()[1 * 64 + NeuralNetwork.posCartesInput.get(carte)] = 1;
 			}
 			for (Carte carte : ((NeuralNetwork) j3).main) {
-				((NeuralNetwork) j3).getInput()[2 * 64 + ((NeuralNetwork) j3).posCartesInput.get(carte)] = 1;
+				((NeuralNetwork) j3).getInput()[2 * 64 + NeuralNetwork.posCartesInput.get(carte)] = 1;
 			}
 			for (Carte carte : ((NeuralNetwork) j4).main) {
-				((NeuralNetwork) j4).getInput()[3 * 64 + ((NeuralNetwork) j4).posCartesInput.get(carte)] = 1;
+				((NeuralNetwork) j4).getInput()[3 * 64 + NeuralNetwork.posCartesInput.get(carte)] = 1;
 			}
 
 			// init de l'atout
@@ -505,20 +505,20 @@ public class Manche {
 			((NeuralNetwork) j3).initHashmapOutput();
 			// on regarde la main du joueur et on update le init
 			for (Carte carte : ((NeuralNetwork) j3).main) {
-				((NeuralNetwork) j3).getInput()[((NeuralNetwork) j3).posCartesInput.get(carte)] = 1;
+				((NeuralNetwork) j3).getInput()[NeuralNetwork.posCartesInput.get(carte)] = 1;
 			}
 
 			// TODO grace à la fonction qui calcule l'ordre des cartes et donc le jeu des
 			// autres joueurs onupdate le init de la même manière
 			// solution intermédiaire pour savoir le jeu des autres joueurs
 			for (Carte carte : ((NeuralNetwork) j1).main) {
-				((NeuralNetwork) j1).getInput()[1 * 64 + ((NeuralNetwork) j1).posCartesInput.get(carte)] = 1;
+				((NeuralNetwork) j1).getInput()[1 * 64 + NeuralNetwork.posCartesInput.get(carte)] = 1;
 			}
 			for (Carte carte : ((NeuralNetwork) j2).main) {
-				((NeuralNetwork) j2).getInput()[2 * 64 + ((NeuralNetwork) j2).posCartesInput.get(carte)] = 1;
+				((NeuralNetwork) j2).getInput()[2 * 64 + NeuralNetwork.posCartesInput.get(carte)] = 1;
 			}
 			for (Carte carte : ((NeuralNetwork) j4).main) {
-				((NeuralNetwork) j4).getInput()[3 * 64 + ((NeuralNetwork) j4).posCartesInput.get(carte)] = 1;
+				((NeuralNetwork) j4).getInput()[3 * 64 + NeuralNetwork.posCartesInput.get(carte)] = 1;
 			}
 
 			// init de l'atout
@@ -541,20 +541,20 @@ public class Manche {
 			((NeuralNetwork) j4).initHashmapOutput();
 			// on regarde la main du joueur et on update le init
 			for (Carte carte : ((NeuralNetwork) j4).main) {
-				((NeuralNetwork) j4).getInput()[((NeuralNetwork) j4).posCartesInput.get(carte)] = 1;
+				((NeuralNetwork) j4).getInput()[NeuralNetwork.posCartesInput.get(carte)] = 1;
 			}
 
 			// TODO grace à la fonction qui calcule l'ordre des cartes et donc le jeu des
 			// autres joueurs onupdate le init de la même manière
 			// solution intermédiaire pour savoir le jeu des autres joueurs
 			for (Carte carte : ((NeuralNetwork) j1).main) {
-				((NeuralNetwork) j1).getInput()[1 * 64 + ((NeuralNetwork) j1).posCartesInput.get(carte)] = 1;
+				((NeuralNetwork) j1).getInput()[1 * 64 + NeuralNetwork.posCartesInput.get(carte)] = 1;
 			}
 			for (Carte carte : ((NeuralNetwork) j2).main) {
-				((NeuralNetwork) j2).getInput()[2 * 64 + ((NeuralNetwork) j2).posCartesInput.get(carte)] = 1;
+				((NeuralNetwork) j2).getInput()[2 * 64 + NeuralNetwork.posCartesInput.get(carte)] = 1;
 			}
 			for (Carte carte : ((NeuralNetwork) j3).main) {
-				((NeuralNetwork) j3).getInput()[3 * 64 + ((NeuralNetwork) j3).posCartesInput.get(carte)] = 1;
+				((NeuralNetwork) j3).getInput()[3 * 64 + NeuralNetwork.posCartesInput.get(carte)] = 1;
 			}
 
 			// init de l'atout
@@ -643,42 +643,42 @@ public class Manche {
 						// met à jour les inputs des autres ia en jeu que l'on soit une ia ou un joueur
 						// réel
 						if (j1 instanceof NeuralNetwork && joueurCourant.id != j1.id) {
-							((NeuralNetwork) j1).getInput()[((NeuralNetwork) j1).posCartesInput.get(carteAJouer)
+							((NeuralNetwork) j1).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
 									+ 64 * (joueurCourant.id - 1)] = 0;
-							((NeuralNetwork) j1).getInput()[((NeuralNetwork) j1).posCartesInput.get(carteAJouer)
+							((NeuralNetwork) j1).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
 									+ 64 * (joueurCourant.id - 1) + 32] = 1;
 						}
 						if (j2 instanceof NeuralNetwork && joueurCourant.id != j2.id) {
 							if (joueurCourant.id == 1) {
-								((NeuralNetwork) j2).getInput()[((NeuralNetwork) j2).posCartesInput.get(carteAJouer)
+								((NeuralNetwork) j2).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
 										+ 64 * (joueurCourant.id)] = 0;
-								((NeuralNetwork) j2).getInput()[((NeuralNetwork) j2).posCartesInput.get(carteAJouer)
+								((NeuralNetwork) j2).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
 										+ 64 * (joueurCourant.id) + 32] = 1;
 							} else {
-								((NeuralNetwork) j2).getInput()[((NeuralNetwork) j2).posCartesInput.get(carteAJouer)
+								((NeuralNetwork) j2).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
 										+ 64 * (joueurCourant.id - 1)] = 0;
-								((NeuralNetwork) j2).getInput()[((NeuralNetwork) j2).posCartesInput.get(carteAJouer)
+								((NeuralNetwork) j2).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
 										+ 64 * (joueurCourant.id - 1) + 32] = 1;
 							}
 						}
 						if (j3 instanceof NeuralNetwork && joueurCourant.id != j3.id) {
 							if (joueurCourant.id == 1 || joueurCourant.id == 2) {
-								((NeuralNetwork) j3).getInput()[((NeuralNetwork) j3).posCartesInput.get(carteAJouer)
+								((NeuralNetwork) j3).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
 										+ 64 * (joueurCourant.id)] = 0;
-								((NeuralNetwork) j3).getInput()[((NeuralNetwork) j3).posCartesInput.get(carteAJouer)
+								((NeuralNetwork) j3).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
 										+ 64 * (joueurCourant.id) + 32] = 1;
 							} else {
 
-								((NeuralNetwork) j3).getInput()[((NeuralNetwork) j3).posCartesInput.get(carteAJouer)
+								((NeuralNetwork) j3).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
 										+ 64 * (joueurCourant.id - 1)] = 0;
-								((NeuralNetwork) j3).getInput()[((NeuralNetwork) j3).posCartesInput.get(carteAJouer)
+								((NeuralNetwork) j3).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
 										+ 64 * (joueurCourant.id - 1) + 32] = 1;
 							}
 						}
 						if (j4 instanceof NeuralNetwork && joueurCourant.id != j4.id) {
-							((NeuralNetwork) j4).getInput()[((NeuralNetwork) j4).posCartesInput.get(carteAJouer)
+							((NeuralNetwork) j4).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
 									+ 64 * (joueurCourant.id)] = 0;
-							((NeuralNetwork) j4).getInput()[((NeuralNetwork) j4).posCartesInput.get(carteAJouer)
+							((NeuralNetwork) j4).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
 									+ 64 * (joueurCourant.id) + 32] = 1;
 						}
 
