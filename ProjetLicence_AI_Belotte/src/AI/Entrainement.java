@@ -30,6 +30,7 @@ public class Entrainement {
 	static ArrayList<NeuralNetwork> ais = new ArrayList<NeuralNetwork>();
 
 	public static void setEnsCartes() {
+		getEnsCartes().clear();
 		getEnsCartes().add(new Carte(Couleur.Carreau, Valeur.Sept, 0));
 		getEnsCartes().add(new Carte(Couleur.Carreau, Valeur.Huit, 0));
 		getEnsCartes().add(new Carte(Couleur.Carreau, Valeur.Neuf, 0));
@@ -68,18 +69,22 @@ public class Entrainement {
 		int res = -1;
 		int min = 1000000;
 		for (int i : bests.keySet()) {
-			if (bests.get(i) < min)
+			if (bests.get(i) < min) {
 				res = i;
+				min = bests.get(i);
+			}
 		}
 		return res;
 	}
 
 	static int getBestsMaxInd() {
 		int res = -1;
-		int min = -1;
+		int max = -1;
 		for (int i : bests.keySet()) {
-			if (bests.get(i) > min)
+			if (bests.get(i) > max) {
 				res = i;
+				max = bests.get(i);
+			}
 		}
 		return res;
 	}
@@ -165,7 +170,7 @@ public class Entrainement {
 				for (int j = 0; j < nbReproParBest; j++) {
 					NeuralNetwork toAdd = ais.get(ais.size() - 1).clone();
 					// TODO ajouter légères modifications des valeurs dans l'IA
-					
+
 					for (Matrix m : toAdd.allBias) {
 						for (int k = 0; i < m.rows; i++) {
 							for (int l = 0; j < m.cols; j++) {
@@ -187,7 +192,7 @@ public class Entrainement {
 							}
 						}
 					}
-					
+
 					ais.add(toAdd);
 				}
 			}
