@@ -369,7 +369,7 @@ public class Manche {
 	public void runMancheEntrainement(Couleur atout) throws Exception {
 
 		boolean half = false; // Pour savoir si la moitié de la belote a été utilisée.
-		Joueur joueurCourant = new NeuralNetwork("", 1, 3);
+		NeuralNetwork joueurCourant = new NeuralNetwork("", 1, 3);
 		int idJoueurCourant = this.idPremierJoueur;
 
 		switch (idJoueurCourant) {
@@ -727,16 +727,16 @@ public class Manche {
 
 					switch (joueurCourant.id) {
 					case 1:
-						joueurCourant = j2;
+						joueurCourant = (NeuralNetwork) j2;
 						break;
 					case 2:
-						joueurCourant = j3;
+						joueurCourant = (NeuralNetwork) j3;
 						break;
 					case 3:
-						joueurCourant = j4;
+						joueurCourant = (NeuralNetwork) j4;
 						break;
 					case 4:
-						joueurCourant = j1;
+						joueurCourant = (NeuralNetwork) j1;
 						break;
 					}
 				}
