@@ -21,7 +21,7 @@ public class Entrainement {
 			POURCENTAGE_REPROD_FIN = 10;
 
 	// controle le "taux d'apprentissage" durant l'optimisation des poids
-	public final static double LEARNING_RATE = 0.01;
+	public final static double LEARNING_RATE = 0.1;
 
 	static ArrayList<Carte> ensCartes = new ArrayList<Carte>();
 
@@ -86,12 +86,11 @@ public class Entrainement {
 
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws Exception {
-		// TODO aléatoire de l'atout
 		setEnsCartes();
 
 		for (int id = 0; id < NB_AI_PAR_GENERATION; id++) { // initialisation des IA de bases
-			ais.add(new NeuralNetwork("", id, 3));
-			// TODO mettre des valeurs aléatoires
+			ais.add(new NeuralNetwork("", id, 3)); // valeurs aléatoires déjà en places dans le constructeur de base de
+													// Matrix.java
 		}
 
 		Random r = new Random();
@@ -111,7 +110,7 @@ public class Entrainement {
 							+ POURCENTAGE_REPROD_DEBUT) / 100));
 
 			Couleur atout;
-			int atoutCourant = (int) (Math.random() * (4 - 1 + 1) + 1); // selectionne un int entre 1 et 4
+			int atoutCourant = r.nextInt(4) + 1; // selectionne un int entre 1 et 4
 			switch (atoutCourant) {
 			case 1:
 				atout = Couleur.Trefle;
@@ -134,8 +133,9 @@ public class Entrainement {
 			for (int id = 0; id < NB_AI_PAR_GENERATION; id++) {
 				int idPJ = r.nextInt(4) + 1;
 				int idJP = r.nextInt(4) + 1;
-				manche = new Manche(idJP, idPJ,(NeuralNetwork)ais.get(id), (NeuralNetwork)ais.get(id).clone(), (NeuralNetwork)ais.get(id).clone(),
-						(NeuralNetwork)ais.get(id).clone(), (ArrayList<Carte>) getEnsCartes().clone());
+				manche = new Manche(idJP, idPJ, (NeuralNetwork) ais.get(id), (NeuralNetwork) ais.get(id).clone(),
+						(NeuralNetwork) ais.get(id).clone(), (NeuralNetwork) ais.get(id).clone(),
+						(ArrayList<Carte>) getEnsCartes().clone());
 				manche.j2.idPartenaire = 4;
 				manche.j3.idPartenaire = 1;
 				manche.j4.idPartenaire = 2;
@@ -157,19 +157,42 @@ public class Entrainement {
 				bestsAIs.add(ais.get(i));
 			}
 			ais.clear();
-			int nbReproParBest = NB_AI_PAR_GENERATION / nbReproduction;
+			int nbReproParBest = NB_AI_PAR_GENERATION / nbReproduction - 1;
 			int reste = NB_AI_PAR_GENERATION % nbReproduction;
 			for (int i = 0; i < bestsAIs.size(); i++) {
 				ais.add(bestsAIs.get(i));
-				// ais.get(ais.size() - 1).id = ais.size() - 1; //TODO
+				ais.get(ais.size() - 1).id = ais.size() - 1;
 				for (int j = 0; j < nbReproParBest; j++) {
-					ais.add(new NeuralNetwork("", ais.size(), 3)); // TODO idem initialisation
+					NeuralNetwork toAdd = ais.get(ais.size() - 1).clone();
 					// TODO ajouter légères modifications des valeurs dans l'IA
+					
+					for (Matrix m : toAdd.allBias) {
+						for (int k = 0; i < m.rows; i++) {
+							for (int l = 0; j < m.cols; j++) {
+								m.data[k][l] *= r.nextDouble() * LEARNING_RATE + 0.5;
+							}
+						}
+					}
+					for (Matrix m : toAdd.allHidden) {
+						for (int k = 0; i < m.rows; i++) {
+							for (int l = 0; j < m.cols; j++) {
+								m.data[k][l] *= r.nextDouble() * LEARNING_RATE + 0.5;
+							}
+						}
+					}
+					for (Matrix m : toAdd.allWeightHidden) {
+						for (int k = 0; i < m.rows; i++) {
+							for (int l = 0; j < m.cols; j++) {
+								m.data[k][l] *= r.nextDouble() * LEARNING_RATE + 0.5;
+							}
+						}
+					}
+					
+					ais.add(toAdd);
 				}
 			}
 			for (int i = 0; i < reste; i++) {
 				ais.add(new NeuralNetwork("", ais.size(), 3));
-				// TODO valeurs aléatoires pour l'IA
 			}
 
 			int ind = getBestsMaxInd();
