@@ -322,7 +322,6 @@ public class NeuralNetwork extends Joueur {
 		double maxNum = output[indice];
 
 		int stop = 0;
-		this.printMain();
 		do {
 
 			for (int j = 0; j < output.length; j++) {
@@ -336,11 +335,8 @@ public class NeuralNetwork extends Joueur {
 				}
 			}
 
-			System.out.println("output : " + output[indice]);
-			System.out.println(indice + "  " + maxNum);
 			maxNum = output[0];
 			stop++;
-			System.out.println(posCartesOutput.get(indice));
 
 			maxNum = output[0];
 		} while (!(main.contains(posCartesOutput.get(indice))
