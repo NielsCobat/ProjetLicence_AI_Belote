@@ -39,7 +39,7 @@ public class Joueur {
 	 * Détermine si le joueur a la belote
 	 * @param atout La couleur de l'atout
 	 */
-	void hasBelote(Couleur atout) {
+	public void hasBelote(Couleur atout) {
 		boolean roi = false;
 		boolean dame = false;
 		String a = atout.name();
