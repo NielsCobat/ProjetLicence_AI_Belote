@@ -134,7 +134,7 @@ public class Entrainement {
 			for (int id = 0; id < NB_AI_PAR_GENERATION; id++) {
 				int idPJ = r.nextInt(4) + 1;
 				int idJP = r.nextInt(4) + 1;
-				manche = new Manche(idJP, idPJ, ais.get(id), ais.get(id).clone(), ais.get(id).clone(),
+				manche = new Manche(idJP, idPJ, ais.get(id).clone(), ais.get(id).clone(), ais.get(id).clone(),
 						ais.get(id).clone(), (ArrayList<Carte>) getEnsCartes().clone());
 				manche.j2.idPartenaire = 4;
 				manche.j3.idPartenaire = 1;
