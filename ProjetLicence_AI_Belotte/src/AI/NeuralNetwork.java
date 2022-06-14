@@ -309,8 +309,9 @@ public class NeuralNetwork extends Joueur {
 		// mises à jour inputs
 		if (couleurDemandee != null)
 			setCouleurDemandee(couleurDemandee);
-		
+		if(pli != null)
 		setCartesSurTable(pli);
+		
 		setMaitre(joueurGagnant);
 
 		// forward propagation
@@ -370,7 +371,7 @@ public class NeuralNetwork extends Joueur {
 			if (cartesDuPli[i] != null) {
 				for (Carte c2 : posCartesInput.keySet()) {
 					if (cartesDuPli[i].equal(c2))
-						getInput()[posCartesInput.get(cartesDuPli[i]) + 256] = 1;
+						getInput()[posCartesInput.get(c2) + 256] = 1;
 				}
 			}
 		}
