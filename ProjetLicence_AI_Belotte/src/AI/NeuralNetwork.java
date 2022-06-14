@@ -3,8 +3,6 @@ package AI;
 import java.util.ArrayList;
 
 import java.util.HashMap;
-import java.util.List;
-
 import assets.Couleur;
 import assets.Valeur;
 import game.Carte;
@@ -83,7 +81,8 @@ public class NeuralNetwork extends Joueur {
 	/*
 	 * Remplit le hashMap output
 	 */
-	public void initHashmapOutput() {
+	public static void initHashmapOutput() {
+		posCartesOutput.clear();
 		posCartesOutput.put(0, new Carte(Couleur.Carreau, Valeur.Sept, 0));
 		posCartesOutput.put(1, new Carte(Couleur.Carreau, Valeur.Huit, 0));
 		posCartesOutput.put(2, new Carte(Couleur.Carreau, Valeur.Neuf, 0));
@@ -121,7 +120,8 @@ public class NeuralNetwork extends Joueur {
 	/*
 	 * Remplit le hashMap input
 	 */
-	public void initHashmap() {
+	public static void initHashmap() {
+		posCartesInput.clear();
 		posCartesInput.put(new Carte(Couleur.Carreau, Valeur.Sept, 0), 0);
 		posCartesInput.put(new Carte(Couleur.Carreau, Valeur.Huit, 0), 1);
 		posCartesInput.put(new Carte(Couleur.Carreau, Valeur.Neuf, 0), 2);
@@ -304,7 +304,8 @@ public class NeuralNetwork extends Joueur {
 	}
 
 	public Carte joueCoup(Couleur couleurDemandee, Carte[] pli, int joueurGagnant, Manche manche, Couleur atout) {
-
+		initHashmap();
+		initHashmapOutput();
 		// mises à jour inputs
 		if (couleurDemandee != null)
 			setCouleurDemandee(couleurDemandee);
@@ -317,8 +318,6 @@ public class NeuralNetwork extends Joueur {
 		// calcul de la meilleure carte à jouer
 		int indice = 0;
 		double maxNum = output[indice];
-		initHashmap();
-		initHashmapOutput();
 
 		int stop = 0;
 		this.printMain();
@@ -344,13 +343,13 @@ public class NeuralNetwork extends Joueur {
 			maxNum = output[0];
 		} while (!(main.contains(posCartesOutput.get(indice))
 				&& isLegalMove(posCartesOutput.get(indice), manche, atout)) && stop <= 32);
+		// TODO voir pourquoi il n'y a rien dans la main du joueur
 
 		// TODO remettre la ligne lorsque l'ia n'est plus en entrainement
 		// super.joueCoup(posCartesOutput.get(indice));
-		System.out.println(posCartesOutput.get(indice));
-		System.out.println(posCartesInput.get(posCartesOutput.get(indice)));
-		getInput()[posCartesInput.get(posCartesOutput.get(indice))] = 0;
-		getInput()[posCartesInput.get(posCartesOutput.get(indice)) + 32] = 1;
+
+		getInput()[indice] = 0;
+		getInput()[indice + 32] = 1;
 		return posCartesOutput.get(indice);
 	}
 
@@ -367,9 +366,11 @@ public class NeuralNetwork extends Joueur {
 
 	void setCartesSurTable(Carte[] cartesDuPli) {
 		for (int i = 0; i < cartesDuPli.length; i++) {
-			for (Carte c2 : posCartesInput.keySet()) {
-				if (cartesDuPli[i].equal(c2))
-					getInput()[posCartesInput.get(cartesDuPli[i]) + 256] = 1;
+			if (cartesDuPli[i] != null) {
+				for (Carte c2 : posCartesInput.keySet()) {
+					if (cartesDuPli[i].equal(c2))
+						getInput()[posCartesInput.get(cartesDuPli[i]) + 256] = 1;
+				}
 			}
 		}
 	}

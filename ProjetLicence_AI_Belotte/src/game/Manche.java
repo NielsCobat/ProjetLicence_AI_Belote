@@ -1,11 +1,13 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 import AI.Entrainement;
 import AI.NeuralNetwork;
 import assets.Couleur;
+import assets.Valeur;
 
 public class Manche {
 
@@ -369,6 +371,8 @@ public class Manche {
 		boolean half = false; // Pour savoir si la moitié de la belote a été utilisée.
 		NeuralNetwork joueurCourant = new NeuralNetwork("", 1, 3);
 		int idJoueurCourant = this.idPremierJoueur;
+		
+		
 		switch (idJoueurCourant) {
 		case 1:
 			if (joueurCourant instanceof NeuralNetwork && j1 instanceof NeuralNetwork)
@@ -642,6 +646,8 @@ public class Manche {
 
 						// met à jour les inputs des autres ia en jeu que l'on soit une ia ou un joueur
 						// réel
+						NeuralNetwork.initHashmap();
+						NeuralNetwork.initHashmapOutput();
 						if (j1 instanceof NeuralNetwork && joueurCourant.id != j1.id) {
 							((NeuralNetwork) j1).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
 									+ 64 * (joueurCourant.id - 1)] = 0;
