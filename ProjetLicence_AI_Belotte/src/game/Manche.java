@@ -16,7 +16,7 @@ public class Manche {
 	private int[] pointsEquipe, belotte;
 
 	// variables pour l'entrainement
-	public Joueur j1, j2, j3, j4;
+	public NeuralNetwork j1, j2, j3, j4;
 	public Equipe e1, e2;
 	public ArrayList<Carte> ensCarte;
 
@@ -49,7 +49,7 @@ public class Manche {
 		this.ensCarte = null;
 	}
 
-	public Manche(int idPremierJoueur, int joueurPreneur, Joueur j1, Joueur j2, Joueur j3, Joueur j4,
+	public Manche(int idPremierJoueur, int joueurPreneur, NeuralNetwork j1, NeuralNetwork j2, NeuralNetwork j3, NeuralNetwork j4,
 			ArrayList<Carte> ensCarte) throws Exception {
 		if ((this.idPremierJoueur > 4 || this.idPremierJoueur < 1) && (joueurPreneur > 4 || joueurPreneur < 1))
 			throw new Exception("game.Manche.Manche() : Un id de joueur n'est pas valide");
@@ -369,7 +369,7 @@ public class Manche {
 	public void runMancheEntrainement(Couleur atout) throws Exception {
 
 		boolean half = false; // Pour savoir si la moitié de la belote a été utilisée.
-		Joueur joueurCourant = new NeuralNetwork("", 1, 3);
+		NeuralNetwork joueurCourant = new NeuralNetwork("", 1, 3);
 		int idJoueurCourant = this.idPremierJoueur;
 
 		switch (idJoueurCourant) {
