@@ -1,6 +1,7 @@
 package game;
 
 import assets.Couleur;
+
 public class Pli {
 
 	private int idPremierJoueur, nbCarte, idJoueurGagnant;
@@ -16,46 +17,62 @@ public class Pli {
 	}
 
 	/**
-	 * Retourne l'indice dans le tableau des scores, present dans classe Manche, de l'equipe qui remporte le pli
+	 * Retourne l'indice dans le tableau des scores, present dans classe Manche, de
+	 * l'equipe qui remporte le pli
+	 * 
 	 * @return 0 si equipe1 gagne 1 si equipe2 gagne
 	 */
 	public int equipeGagnante() {
-		int idGagnant = (idPremierJoueur + indiceMeilleureCarte())%4;
-		if (idGagnant == 0) idJoueurGagnant = 4;
-		else idJoueurGagnant = idGagnant;
-		if(idJoueurGagnant == 1 || idJoueurGagnant == 3) return 1;
-		else return 2;
+		int idGagnant = (idPremierJoueur + indiceMeilleureCarte()) % 4;
+		if (idGagnant == 0)
+			idJoueurGagnant = 4;
+		else
+			idJoueurGagnant = idGagnant;
+		if (idJoueurGagnant == 1 || idJoueurGagnant == 3)
+			return 1;
+		else
+			return 2;
 	}
-	
+
+	/*
+	 * Version pour l'entrainement de l'ia sans appel à table
+	 */
 	public int equipeGagnante(Couleur atout) {
-		int idGagnant = (idPremierJoueur + indiceMeilleureCarte(atout))%4;
-		if (idGagnant == 0) idJoueurGagnant = 4;
-		else idJoueurGagnant = idGagnant;
-		if(idJoueurGagnant == 1 || idJoueurGagnant == 3) return 1;
-		else return 2;
+		int idGagnant = (idPremierJoueur + indiceMeilleureCarte(atout)) % 4;
+		if (idGagnant == 0)
+			idJoueurGagnant = 4;
+		else
+			idJoueurGagnant = idGagnant;
+		if (idJoueurGagnant == 1 || idJoueurGagnant == 3)
+			return 1;
+		else
+			return 2;
 	}
-	
+
 	/**
 	 * 
 	 * @return indice de la meilleure carte dans le pli
 	 */
 	private int indiceMeilleureCarte() {
 		Carte meilleureCarte = cartes[0];
-		int res=0;
+		int res = 0;
 		for (int i = 1; i < cartes.length; i++) {
-			if(cartes[i] != null && meilleureCarte.compareTo(cartes[i])==-1) {
+			if (cartes[i] != null && meilleureCarte.compareTo(cartes[i]) == -1) {
 				meilleureCarte = cartes[i];
 				res = i;
 			}
 		}
 		return res;
 	}
-	
+
+	/*
+	 * Version sans appel à table pour l'entrainement de l'ia
+	 */
 	private int indiceMeilleureCarte(Couleur atout) {
 		Carte meilleureCarte = cartes[0];
-		int res=0;
+		int res = 0;
 		for (int i = 1; i < cartes.length; i++) {
-			if(cartes[i] != null && meilleureCarte.compareTo(cartes[i], atout)==-1) {
+			if (cartes[i] != null && meilleureCarte.compareTo(cartes[i], atout) == -1) {
 				meilleureCarte = cartes[i];
 				res = i;
 			}
@@ -80,35 +97,38 @@ public class Pli {
 	 * 
 	 * @return total des points d'un pli
 	 */
-	public int calculPoints() { 
+	public int calculPoints() {
 		int res = 0;
 		for (Carte carte : cartes) {
 			if (carte != null) {
 				res += carte.getPoints();
-				if(carte.getValeur().name().equals("Valet") && carte.getCouleur().name().equals(Table.atout.name())) res += 18;//valet d'atout = 18 points de plus
-				if(carte.getValeur().name().equals("Neuf") && carte.getCouleur().name().equals(Table.atout.name())) res += 14;
+				if (carte.getValeur().name().equals("Valet") && carte.getCouleur().name().equals(Table.atout.name()))
+					res += 18;// valet d'atout = 18 points de plus
+				if (carte.getValeur().name().equals("Neuf") && carte.getCouleur().name().equals(Table.atout.name()))
+					res += 14;
 			}
-			
-		}
-		return res;
-	}
-	
-	public int calculPoints(Couleur atout) { 
-		int res = 0;
-		for (Carte carte : cartes) {
-			if (carte != null) {
-				res += carte.getPoints();
-				if(carte.getValeur().name().equals("Valet") && carte.getCouleur().name().equals(atout.name())) res += 18;//valet d'atout = 18 points de plus
-				if(carte.getValeur().name().equals("Neuf") && carte.getCouleur().name().equals(atout.name())) res += 14;
-			}
-			
+
 		}
 		return res;
 	}
 
-//	public int getIdPremierJoueur() {
-//		return idPremierJoueur;
-//	}
+	/*
+	 * Calcule les points d'un pli
+	 */
+	public int calculPoints(Couleur atout) {
+		int res = 0;
+		for (Carte carte : cartes) {
+			if (carte != null) {
+				res += carte.getPoints();
+				if (carte.getValeur().name().equals("Valet") && carte.getCouleur().name().equals(atout.name()))
+					res += 18;// valet d'atout = 18 points de plus
+				if (carte.getValeur().name().equals("Neuf") && carte.getCouleur().name().equals(atout.name()))
+					res += 14;
+			}
+
+		}
+		return res;
+	}
 
 	public int getNbCarte() {
 		return nbCarte;
@@ -121,15 +141,16 @@ public class Pli {
 	public int getIdJoueurGagnant() {
 		return this.idJoueurGagnant;
 	}
-	
+
 	public Carte[] getCartes() {
 		return this.cartes;
 	}
-	
+
 	public String toString() {
 		String res = "";
-		for(Carte c : cartes) {
-			if (c==null)break;
+		for (Carte c : cartes) {
+			if (c == null)
+				break;
 			res += c.toString() + " | ";
 		}
 		return res;

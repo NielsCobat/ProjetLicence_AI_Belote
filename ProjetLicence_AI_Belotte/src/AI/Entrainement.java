@@ -15,6 +15,12 @@ import assets.Valeur;
 import game.Carte;
 import game.Manche;
 
+/*
+ * Le but de la classe Entraînement est de permettre à l'IA de jouer contre/ avec des clones d'elle-même
+ * En jouant sans coups illégaux mais "au pif", elle va changer les poids du réseau neuronal afin qu'il ait au fur et à mesures les meilleures chances de réussite
+ * 
+ * Nous avons décidé de faire tourner l'entrainement sans appels à Table pour que cela demande moins de ressources, ainsi de nombreuses fonctions ont été clonées et légèrement modifiées
+ */
 public class Entrainement {
 
 	public final static int NB_AI_PAR_GENERATION = 10, NB_GENERATION = 10, POURCENTAGE_REPROD_DEBUT = 50,
@@ -29,6 +35,7 @@ public class Entrainement {
 
 	static ArrayList<NeuralNetwork> ais = new ArrayList<NeuralNetwork>();
 
+	// Crée le paquet de carte
 	public static void setEnsCartes() {
 		getEnsCartes().clear();
 		getEnsCartes().add(new Carte(Couleur.Carreau, Valeur.Sept, 0));
