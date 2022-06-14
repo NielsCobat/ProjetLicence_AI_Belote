@@ -528,6 +528,7 @@ public class Joueur {
 		for (Carte c : main) {
 			System.out.print(c.toString() + " | ");
 		}
+		System.out.println("");
 	}
 
 	public void printMainsFutures() {
