@@ -67,7 +67,7 @@ public class Entrainement {
 	static int getBestsMinInd() {
 		int res = -1;
 		int min = 1000000;
-		for (int i = 0; i < bests.size(); i++) {
+		for (int i : bests.keySet()) {
 			if (bests.get(i) < min)
 				res = i;
 		}
@@ -77,7 +77,7 @@ public class Entrainement {
 	static int getBestsMaxInd() {
 		int res = -1;
 		int min = -1;
-		for (int i = 0; i < bests.size(); i++) {
+		for (int i : bests.keySet()) {
 			if (bests.get(i) > min)
 				res = i;
 		}
