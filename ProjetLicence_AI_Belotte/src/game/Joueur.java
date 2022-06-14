@@ -12,7 +12,7 @@ import assets.Valeur;
 
 public class Joueur {
 
-	String nom;
+	public String nom;
 	public int id;
 	//boolean maitre; //Variable pas utilisée
 	public int idPartenaire;

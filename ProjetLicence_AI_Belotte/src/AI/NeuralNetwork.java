@@ -458,5 +458,18 @@ public class NeuralNetwork extends Joueur {
 	public double[] getOutput() {
 		return output;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public NeuralNetwork clone() {
+		NeuralNetwork res = new NeuralNetwork(this.nom, this.id, this.idPartenaire);
+		res.input = this.input.clone();
+		res.output = this.output.clone();
+		res.compteurJoueur = this.compteurJoueur;
+		res.allBias = (ArrayList<Matrix>) this.allBias.clone();
+		res.allHidden = (ArrayList<Matrix>) this.allHidden.clone();
+		res.allWeightHidden = (ArrayList<Matrix>) this.allWeightHidden.clone();
+		return res;
+	}
 
 }
