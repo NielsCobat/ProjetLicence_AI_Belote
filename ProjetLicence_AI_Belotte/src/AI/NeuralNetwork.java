@@ -309,6 +309,7 @@ public class NeuralNetwork extends Joueur {
 		// mises à jour inputs
 		if (couleurDemandee != null)
 			setCouleurDemandee(couleurDemandee);
+		
 		setCartesSurTable(pli);
 		setMaitre(joueurGagnant);
 

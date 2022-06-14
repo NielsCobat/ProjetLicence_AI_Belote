@@ -371,8 +371,7 @@ public class Manche {
 		boolean half = false; // Pour savoir si la moitié de la belote a été utilisée.
 		NeuralNetwork joueurCourant = new NeuralNetwork("", 1, 3);
 		int idJoueurCourant = this.idPremierJoueur;
-		
-		
+
 		switch (idJoueurCourant) {
 		case 1:
 			if (joueurCourant instanceof NeuralNetwork && j1 instanceof NeuralNetwork)
@@ -638,8 +637,8 @@ public class Manche {
 						// joue coup
 						Carte carteAJouer = ((NeuralNetwork) joueurCourant).joueCoup(
 								this.getPli(this.getNbPlis()).getCouleurDemandee(),
-								this.getPli(this.getNbPlis()).getCartes(), this.getPli(this.getNbPlis()).getIdJoueurGagnant(),
-								this, atout);
+								this.getPli(this.getNbPlis()).getCartes(),
+								this.getPli(this.getNbPlis()).getIdJoueurGagnant(), this, atout);
 
 						this.getPli(this.getNbPlis()).addCarte(carteAJouer, atout);
 						joueurCourant.main.remove(carteAJouer);
@@ -649,43 +648,66 @@ public class Manche {
 						NeuralNetwork.initHashmap();
 						NeuralNetwork.initHashmapOutput();
 						if (j1 instanceof NeuralNetwork && joueurCourant.id != j1.id) {
-							((NeuralNetwork) j1).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
-									+ 64 * (joueurCourant.id - 1)] = 0;
-							((NeuralNetwork) j1).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
-									+ 64 * (joueurCourant.id - 1) + 32] = 1;
+							for (Carte c2 : NeuralNetwork.posCartesInput.keySet()) {
+								if (carteAJouer.equal(c2)) {
+									((NeuralNetwork) j1).getInput()[NeuralNetwork.posCartesInput.get(c2)
+											+ 64 * (joueurCourant.id - 1)] = 0;
+									((NeuralNetwork) j1).getInput()[NeuralNetwork.posCartesInput.get(c2)
+											+ 64 * (joueurCourant.id - 1) + 32] = 1;
+								}
+							}
 						}
 						if (j2 instanceof NeuralNetwork && joueurCourant.id != j2.id) {
 							if (joueurCourant.id == 1) {
-								((NeuralNetwork) j2).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
+								for (Carte c2 : NeuralNetwork.posCartesInput.keySet()) {
+									if (carteAJouer.equal(c2)) {
+								((NeuralNetwork) j2).getInput()[NeuralNetwork.posCartesInput.get(c2)
 										+ 64 * (joueurCourant.id)] = 0;
-								((NeuralNetwork) j2).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
+								((NeuralNetwork) j2).getInput()[NeuralNetwork.posCartesInput.get(c2)
 										+ 64 * (joueurCourant.id) + 32] = 1;
+									}
+									}
 							} else {
-								((NeuralNetwork) j2).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
+								for (Carte c2 : NeuralNetwork.posCartesInput.keySet()) {
+									if (carteAJouer.equal(c2)) {
+								((NeuralNetwork) j2).getInput()[NeuralNetwork.posCartesInput.get(c2)
 										+ 64 * (joueurCourant.id - 1)] = 0;
-								((NeuralNetwork) j2).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
+								((NeuralNetwork) j2).getInput()[NeuralNetwork.posCartesInput.get(c2)
 										+ 64 * (joueurCourant.id - 1) + 32] = 1;
+									}
+								}
 							}
 						}
 						if (j3 instanceof NeuralNetwork && joueurCourant.id != j3.id) {
 							if (joueurCourant.id == 1 || joueurCourant.id == 2) {
-								((NeuralNetwork) j3).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
+								for (Carte c2 : NeuralNetwork.posCartesInput.keySet()) {
+									if (carteAJouer.equal(c2)) {
+								((NeuralNetwork) j3).getInput()[NeuralNetwork.posCartesInput.get(c2)
 										+ 64 * (joueurCourant.id)] = 0;
-								((NeuralNetwork) j3).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
+								((NeuralNetwork) j3).getInput()[NeuralNetwork.posCartesInput.get(c2)
 										+ 64 * (joueurCourant.id) + 32] = 1;
+									}
+								}
 							} else {
-
-								((NeuralNetwork) j3).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
+								for (Carte c2 : NeuralNetwork.posCartesInput.keySet()) {
+									if (carteAJouer.equal(c2)) {
+								((NeuralNetwork) j3).getInput()[NeuralNetwork.posCartesInput.get(c2)
 										+ 64 * (joueurCourant.id - 1)] = 0;
-								((NeuralNetwork) j3).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
+								((NeuralNetwork) j3).getInput()[NeuralNetwork.posCartesInput.get(c2)
 										+ 64 * (joueurCourant.id - 1) + 32] = 1;
+									}
+								}
 							}
 						}
 						if (j4 instanceof NeuralNetwork && joueurCourant.id != j4.id) {
-							((NeuralNetwork) j4).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
+							for (Carte c2 : NeuralNetwork.posCartesInput.keySet()) {
+								if (carteAJouer.equal(c2)) {
+							((NeuralNetwork) j4).getInput()[NeuralNetwork.posCartesInput.get(c2)
 									+ 64 * (joueurCourant.id)] = 0;
-							((NeuralNetwork) j4).getInput()[NeuralNetwork.posCartesInput.get(carteAJouer)
+							((NeuralNetwork) j4).getInput()[NeuralNetwork.posCartesInput.get(c2)
 									+ 64 * (joueurCourant.id) + 32] = 1;
+								}
+							}
 						}
 
 						// met à jour si belote
