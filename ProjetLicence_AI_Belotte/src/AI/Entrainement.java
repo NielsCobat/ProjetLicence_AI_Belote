@@ -164,7 +164,6 @@ public class Entrainement {
 				ais.get(ais.size() - 1).id = ais.size() - 1;
 				for (int j = 0; j < nbReproParBest; j++) {
 					NeuralNetwork toAdd = ais.get(ais.size() - 1).clone();
-					// TODO ajouter légères modifications des valeurs dans l'IA
 					
 					for (Matrix m : toAdd.allBias) {
 						for (int k = 0; i < m.rows; i++) {
