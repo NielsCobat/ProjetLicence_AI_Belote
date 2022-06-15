@@ -101,7 +101,7 @@ public class Entrainement {
 		setEnsCartes();
 
 		for (int id = 0; id < NB_AI_PAR_GENERATION; id++) { // initialisation des IA de bases
-			ais.add(new NeuralNetwork("", id, 3)); // valeurs aléatoires déjà en places dans le constructeur de base de
+			ais.add(new NeuralNetwork("", 1, 3)); // valeurs aléatoires déjà en places dans le constructeur de base de
 													// Matrix.java
 		}
 
@@ -154,9 +154,9 @@ public class Entrainement {
 
 				manche.runMancheEntrainement(atout);
 
-				int indMin = getBestsMinInd();
 				int score = manche.getPointsEquipe(1);
 				if (bests.size() >= nbReproduction) {
+					int indMin = getBestsMinInd();
 					if (score > bests.get(indMin)) {
 						bests.remove(indMin);
 						bests.put(id, score);
@@ -168,50 +168,63 @@ public class Entrainement {
 			for (int i : bests.keySet()) {
 				bestsAIs.add(ais.get(i));
 			}
+			
+			int ind = getBestsMaxInd();
+			bestOne = ais.get(ind).clone();
+			int bestOneScore = bests.get(ind);
+			
 			ais.clear();
 			int nbReproParBest = NB_AI_PAR_GENERATION / nbReproduction - 1;
 			int reste = NB_AI_PAR_GENERATION % nbReproduction;
 			for (int i = 0; i < bestsAIs.size(); i++) {
-				ais.add(bestsAIs.get(i));
+				ais.add(bestsAIs.get(i).clone());
 				ais.get(ais.size() - 1).id = ais.size() - 1;
 				for (int j = 0; j < nbReproParBest; j++) {
-					NeuralNetwork toAdd = ais.get(ais.size() - 1).clone();
+					NeuralNetwork toAdd = bestsAIs.get(i).clone();
 					for (Matrix m : toAdd.allBias) {
-						for (int k = 0; i < m.rows; i++) {
-							for (int l = 0; j < m.cols; j++) {
-								m.data[k][l] *= r.nextDouble() * LEARNING_RATE + 0.5;
+						for (int k = 0; k < m.rows; k++) {
+							for (int l = 0; l < m.cols; l++) {
+								m.data[k][l] *= r.nextDouble() * LEARNING_RATE + (1 - (LEARNING_RATE / 2));
+								if (m.data[k][l] >= 1)
+									m.data[k][l] = 0.9999;
+								else if (m.data[k][l] <= -1)
+									m.data[k][l] = -0.9999;
 							}
 						}
 					}
 					for (Matrix m : toAdd.allHidden) {
-						for (int k = 0; i < m.rows; i++) {
-							for (int l = 0; j < m.cols; j++) {
-								m.data[k][l] *= r.nextDouble() * LEARNING_RATE + 0.5;
+						for (int k = 0; k < m.rows; k++) {
+							for (int l = 0; l < m.cols; l++) {
+								m.data[k][l] *= r.nextDouble() * LEARNING_RATE + 1;
+								if (m.data[k][l] >= 1)
+									m.data[k][l] = 0.9999;
+								else if (m.data[k][l] <= -1)
+									m.data[k][l] = -0.9999;
 							}
 						}
 					}
 					for (Matrix m : toAdd.allWeightHidden) {
-						for (int k = 0; i < m.rows; i++) {
-							for (int l = 0; j < m.cols; j++) {
-								m.data[k][l] *= r.nextDouble() * LEARNING_RATE + 0.5;
+						for (int k = 0; k < m.rows; k++) {
+							for (int l = 0; l < m.cols; l++) {
+								m.data[k][l] *= r.nextDouble() * LEARNING_RATE + 1;
+								if (m.data[k][l] >= 1)
+									m.data[k][l] = 0.9999;
+								else if (m.data[k][l] <= -1)
+									m.data[k][l] = -0.9999;
 							}
 						}
 					}
 
 					ais.add(toAdd);
+					ais.get(ais.size() - 1).id = ais.size() - 1;
 				}
 			}
 			for (int i = 0; i < reste; i++) {
 				ais.add(new NeuralNetwork("", ais.size(), 3));
 			}
-
-			int ind = getBestsMaxInd();
-			bestOne = ais.get(ind);
-			int bestOneScore = bests.get(ind);
-
 			System.out.println("Fin");
 			System.out.println(nbReproduction
-					+ " ont été conservés pour la génération suivante. Le score de la meilleure IA de la génération est : "
+					+ " IA ont été conservés pour la génération suivante. Le score de la meilleure IA de la génération est : "
 					+ bestOneScore);
 
 			bestsAIs.clear();

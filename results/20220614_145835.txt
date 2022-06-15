@@ -1,1 +1,0 @@
-5_297_32_ //TODO nb neurones par couches cachées//TODO fichier à compléter
