@@ -61,9 +61,12 @@ public class NeuralNetwork extends Joueur {
 		// r sert aux calculs du nombre de neurones pour chaque hidden layer
 		int r = (input.length / output.length) ^ (1 / (nbHiddenLayer + 1));
 
-		// initialisation de chaque matrices correspondant aux poids/synapses enrte
+		// initialisation de chaque matrice correspondant aux poids/synapses enrte
 		// neurones le tout rassemblés dans une liste
 		// idem pour biais
+		// allHidden regroupe les neurones
+		// allWeightHidden corresponds aux poids entre entre les neurones
+		// allBias correspond au biais associé à chaque couche
 		this.allWeightHidden.add(new Matrix((output.length * (r) ^ (nbHiddenLayer)), input.length));
 		this.allBias.add(new Matrix((output.length * (r) ^ (nbHiddenLayer)), 1));
 
@@ -79,7 +82,8 @@ public class NeuralNetwork extends Joueur {
 	}
 
 	/*
-	 * Remplit le hashMap output
+	 * Remplit le hashMap output Relie la position des outputs à la carte à laquelle
+	 * elle correspond
 	 */
 	public static void initHashmapOutput() {
 		posCartesOutput.clear();
@@ -118,7 +122,7 @@ public class NeuralNetwork extends Joueur {
 	}
 
 	/*
-	 * Remplit le hashMap input
+	 * Remplit le hashMap input Inverse de l'output
 	 */
 	public static void initHashmap() {
 		posCartesInput.clear();
@@ -160,8 +164,11 @@ public class NeuralNetwork extends Joueur {
 	 * Initialise le neural network
 	 */
 	public void initInput() {
+		// initialisation des HashMap servant à connaître la position à associer aux
+		// cartes
 		initHashmap();
 		initHashmapOutput();
+
 		// on regarde la main du joueur et on update le init
 		for (Carte carte : this.main) {
 			for (Carte c2 : posCartesInput.keySet()) {
@@ -232,8 +239,13 @@ public class NeuralNetwork extends Joueur {
 	}
 
 	/**
-	 * forward propagation de tousle réseau neuronal, les outputs soont prêtes à
+	 * forward propagation de tous le réseau neuronal, les outputs sont prêtes à
 	 * être utilisées après
+	 * 
+	 * Le principe des calculs est de multiplier la valeur de tous les neurones de
+	 * la couche précédente par les poids associés puis d'ajouter le biais ensuite
+	 * on utilise la fonction sigmoid qui a pour particularité de renvoyer un
+	 * résultat situé entre 0 et 1
 	 */
 	double[] forwardPropagation() {
 
@@ -242,7 +254,6 @@ public class NeuralNetwork extends Joueur {
 		// calculs pour la première couche (en lien avec les inputs)
 		Matrix hidden = Matrix.multiply(allWeightHidden.get(0), input);
 		hidden.add(allBias.get(0));
-		// System.out.println("shape mismatch input");
 		hidden.sigmoid();
 
 		allHidden.set(0, hidden);
@@ -251,15 +262,14 @@ public class NeuralNetwork extends Joueur {
 		for (int i = 1; i < nbHiddenLayer; i++) {
 			Matrix hidden2 = Matrix.multiply(allWeightHidden.get(i), allHidden.get(i - 1));
 			hidden2.add(allBias.get(i));
-			// System.out.println("shape mismatch hidden");
 			hidden2.sigmoid();
 
 			allHidden.set(i, hidden2);
 		}
+
 		// calculs pour la dernière couche des hiddenLayers(en lien avec les outputs)
 		Matrix output = Matrix.multiply(allWeightHidden.get(nbHiddenLayer), allHidden.get(nbHiddenLayer - 1));
 		output.add(allBias.get(nbHiddenLayer));
-		// System.out.println("shape mismatch output");
 		output.sigmoid();
 
 		allHidden.set(allHidden.size() - 1, output);
@@ -296,22 +306,25 @@ public class NeuralNetwork extends Joueur {
 			}
 		} while ((!isLegalMove(posCartesOutput.get(indice))) || (!main.contains(posCartesOutput.get(indice))));
 
-		// TODO remettre la ligne lorsque l'ia n'est plus en entrainement
-		// super.joueCoup(posCartesOutput.get(indice));
-		getInput()[posCartesInput.get(posCartesOutput.get(indice))] = 0;
-		getInput()[posCartesInput.get(posCartesOutput.get(indice)) + 32] = 1;
+		// mise à jour des inputs lié à qui a quelle carte et qui a joué telle carte
+		super.joueCoup(posCartesOutput.get(indice));
+		getInput()[indice] = 0;
+		getInput()[indice + 32] = 1;
 		return posCartesOutput.get(indice);
 	}
 
+	/*
+	 * fonction joueCoup sans appel à Table pour l'entrainement de l'ia
+	 */
 	public Carte joueCoup(Couleur couleurDemandee, Carte[] pli, int joueurGagnant, Manche manche, Couleur atout) {
 		initHashmap();
 		initHashmapOutput();
 		// mises à jour inputs
 		if (couleurDemandee != null)
 			setCouleurDemandee(couleurDemandee);
-		if(pli != null)
-		setCartesSurTable(pli);
-		
+		if (pli != null)
+			setCartesSurTable(pli);
+
 		setMaitre(joueurGagnant);
 
 		// forward propagation
@@ -343,9 +356,6 @@ public class NeuralNetwork extends Joueur {
 				&& isLegalMove(posCartesOutput.get(indice), manche, atout)) && stop <= 32);
 		// TODO voir pourquoi il n'y a rien dans la main du joueur
 
-		// TODO remettre la ligne lorsque l'ia n'est plus en entrainement
-		// super.joueCoup(posCartesOutput.get(indice));
-
 		getInput()[indice] = 0;
 		getInput()[indice + 32] = 1;
 		return posCartesOutput.get(indice);
@@ -362,6 +372,9 @@ public class NeuralNetwork extends Joueur {
 		}
 	}
 
+	/*
+	 * Version sans appel à Table pour l'entrainement
+	 */
 	void setCartesSurTable(Carte[] cartesDuPli) {
 		for (int i = 0; i < cartesDuPli.length; i++) {
 			if (cartesDuPli[i] != null) {
@@ -396,6 +409,9 @@ public class NeuralNetwork extends Joueur {
 		}
 	}
 
+	/*
+	 * Version sans appel à Table pour l'entrainement
+	 */
 	void setCouleurDemandee(Couleur couleurEnCours) {
 
 		switch (couleurEnCours) {
@@ -426,6 +442,9 @@ public class NeuralNetwork extends Joueur {
 			getInput()[296] = 0;
 	}
 
+	/*
+	 * Version sans appel à Table pour l'entraînement de l'IA
+	 */
 	void setMaitre(int joueurGagnant) {
 		if (this.idPartenaire == joueurGagnant) {
 			getInput()[296] = 1;
@@ -451,14 +470,23 @@ public class NeuralNetwork extends Joueur {
 		}
 	}
 
+	/*
+	 * retourne les input du réseau
+	 */
 	public double[] getInput() {
 		return input;
 	}
 
+	/*
+	 * retourne les output du réseau
+	 */
 	public double[] getOutput() {
 		return output;
 	}
-	
+
+	/*
+	 * Retourne un clone du réseau neuronal instancié
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NeuralNetwork clone() {

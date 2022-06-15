@@ -20,7 +20,7 @@ public class Matrix {
 		}
 	}
 
-	public Matrix(int rows, int cols, String filename) { //TODO matrice à initialiser en fonction du fichier
+	public Matrix(int rows, int cols, String filename) { // TODO matrice à initialiser en fonction du fichier
 		data = new double[rows][cols];
 		this.rows = rows;
 		this.cols = cols;
@@ -63,19 +63,6 @@ public class Matrix {
 			for (int j = 0; j < cols; j++)
 				this.data[i][j] = 1 / (1 + Math.exp(-this.data[i][j]));
 		}
-
-	}
-
-	/*
-	 * Pour le back pourquoi pas
-	 */
-	public Matrix dsigmoid() {
-		Matrix temp = new Matrix(rows, cols);
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < cols; j++)
-				temp.data[i][j] = this.data[i][j] * (1 - this.data[i][j]);
-		}
-		return temp;
 
 	}
 
