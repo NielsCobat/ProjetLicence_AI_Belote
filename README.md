@@ -20,6 +20,13 @@ Par manque de temps, nous n'avons pas pu gérer la sauvegarde des résultats de 
 
 L'entrainement de l'IA est pour l'instant très demandant en ressources (temps et mémoire vive), il sertait donc intéressant à l'avenir de revoir une grande partie du code pour l'optimiser.
 
+IHM :
+ - animer les cartes afin de fluidifier le déroulement du jeu
+ - créer plusieurs scènes pour les différentes étapes (accueil, jeu, fin)
+ - mettre en évidence les coups légaux du joueur courant
+ - développer un menu pour le choix des adversaires robots ou non
+ - mettre en lien les coups
+
 ## Technologies utilisées
 
 Pour la partie graphique, nous utilisions la librairie javaFX de java. Pour le jeu en lui-même et l'entrainement, nous n'utilisons aucune librairie, et avons tout codé nous même. Par ailleurs nous n'utilisions pas de base de données pour entrainer l'IA. Ces deux derniers points sont probablement la source de nos difficultés à coder et entrainer l'IA. Cette dernière utilise un réseau neuronal codé grâce à des matrices plutôt que des classes objets, ce qui est plus complexe mais plus optimisé. Cette classe Matrix.java que nous utilisons a été codé par Suyash Sonawane.
