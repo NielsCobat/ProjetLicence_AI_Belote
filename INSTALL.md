@@ -4,7 +4,7 @@ Le projet peut être exécuté depuis Eclipse ou tout autre compilateur java. Po
 
 ## Jouer une partie
 
-Pour jouer une partie, lancer le fichier Main.java dans le package main.
+Pour lancer l'interface graphique vous devez pull le projet de la branche **ihmBranch** puis lancer le fichier **src/application/Main.java**
 
 ## Entrainer l'IA
 
