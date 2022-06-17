@@ -2,7 +2,7 @@
 **Membres du groupe :** Niels Cobat, Florian Alphonzair, Yael Mousel, Thomas Batkot
 **Tuteur :** Adrien Le Roch
 ## Les grandes tâches
-Le développement de ce projet se divise en trois grandes tâches. Premièrement, nous avons abstré et programmé les règles du jeu, les différentes entités intervenant dans la Belote (carte, joueur...). Puis nous nous sommes séparé en deux, avec d'un côté une equipe concentrée sur le dévelopement de l'intelligence artificielle. Et de l'autre une équipe sur l'implantation de L'IHM.
+Le développement de ce projet se divise en trois grandes tâches. Premièrement, nous avons abstrait et programmé les règles du jeu, les différentes entités intervenant dans la Belote (carte, joueur...). Puis nous nous sommes séparé en deux, avec d'un côté une equipe concentrée sur le dévelopement de l'intelligence artificielle. Et de l'autre une équipe sur l'implantation de L'IHM.
 
 ## Déroulement
 ##### 09/05 - 15/05
