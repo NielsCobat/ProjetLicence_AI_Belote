@@ -13,6 +13,7 @@ Niels s'est occupé de la classe Pli et Manche. Yael de la classe carte, Thomas 
 Florian a développer les fonctions de distributions de cartes **distribuer()** et **distribuerReste()**, et également les fonctions qui exécutent le déroulement d'une partie de Belote à savoir **runManche()** (de la classe Manche) et **run()** (de la classe Table).
 ##### 23/05 - 29/05
 Niels et Yael : début mise en oeuvre réseau neuronal, surtout axée sur la réflexion quant à comment modéliser l'IA et le déroulement de l'entrainement.
+
 Thomas : debugage
 
 Durant cette semaine Florian a commencé à réflechir à l'implémentation d'une interface graphique. Notre tuteur nous a orienté vers JavaFX qui permet en effet de produire des interfaces assez facilement. Après avoir parcourus internet à la recherche de référence d'IHM, on s'aperçoit qu'il existe beaucoup de façon d'organiser son code en fonction de la tâche à réaliser. C'est pourquoi cette semaine était surtout une phase d'apprentissage et de petites tentatives, et non une semaine de production acharnée de code.
