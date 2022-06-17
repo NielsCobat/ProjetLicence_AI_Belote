@@ -1,0 +1,28 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.root{
+	-fx-background-image: url('tableTexture.jpg');
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: cover;
+	-fx-background-position: center center;
+}
+
+.button{
+	-fx-background-color: transparent;
+}
+
+.button:hover {
+    /*-fx-background-color: #3A8F4D;
+    -fx-fill: radial-gradient(radius 180%, burlywood, derive(burlywood, -30%), derive(burlywood, 30%));*/
+}
+
+.label{
+	-fx-text-fill: white;
+	-fx-font-weight: bold;
+	-fx-font-size: 12pt;
+}
+
+#highLight {
+	-fx-text-fill: yellow;
+	-fx-font-weight: bold;
+	-fx-font-size: 12pt;
+}

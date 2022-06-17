@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.BeloteController">
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="215.0" prefWidth="1000.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="j1" text="J1" visible="false" />
+            <GridPane alignment="TOP_CENTER" prefHeight="195.0" prefWidth="326.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button fx:id="j11" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="95.0" prefWidth="62.0" />
+                  <Button fx:id="j12" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="95.0" prefWidth="65.0" GridPane.columnIndex="1" />
+                  <Button fx:id="j13" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="94.0" prefWidth="68.0" GridPane.columnIndex="2" />
+                  <Button fx:id="j14" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="95.0" prefWidth="61.0" GridPane.columnIndex="3" />
+                  <Button fx:id="j15" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="91.0" prefWidth="64.0" GridPane.rowIndex="1" />
+                  <Button fx:id="j16" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="91.0" prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Button fx:id="j17" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="67.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Button fx:id="j18" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="92.0" prefWidth="63.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+            
+               </children>
+         <opaqueInsets>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </opaqueInsets>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </HBox>
+   </bottom>
+   <center>
+      <Pane layoutX="166.0" layoutY="215.0" prefHeight="393.0" prefWidth="456.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="center1" layoutX="304.0" layoutY="358.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="58.0" />
+            <Button fx:id="start" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#startHandler" style="-fx-background-color: #ffcd76;" text="start" />
+            <Button fx:id="center2" layoutX="225.0" layoutY="254.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="58.0" />
+            <Button fx:id="center3" layoutX="304.0" layoutY="152.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="58.0" />
+            <Button fx:id="center4" layoutX="386.0" layoutY="254.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="58.0" />
+            <ImageView fx:id="carteAChoisir" fitHeight="90.0" fitWidth="58.0" layoutX="54.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true" x="250.0" y="250.0" />
+            <Button fx:id="prendreAtout" disable="true" layoutX="14.0" layoutY="46.0" mnemonicParsing="false" onAction="#prendreAtoutHandler" style="-fx-background-color: #ff734A;" text="Prendre atout" />
+            <Button fx:id="passer" disable="true" layoutX="14.0" layoutY="80.0" mnemonicParsing="false" onAction="#passerHandler" style="-fx-background-color: #6EB5FF;" text="Passer" />
+            <HBox alignment="CENTER" layoutX="233.0" layoutY="43.0" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+               <children>
+                  <Button fx:id="color1" disable="true" mnemonicParsing="false" onAction="#selectionCouleurHandler" prefHeight="50.0" prefWidth="50.0" />
+                  <Button fx:id="color2" disable="true" mnemonicParsing="false" onAction="#selectionCouleurHandler" prefHeight="50.0" prefWidth="50.0" />
+                  <Button fx:id="color3" disable="true" mnemonicParsing="false" onAction="#selectionCouleurHandler" prefHeight="50.0" prefWidth="51.0" />
+               </children>
+            </HBox>
+            <Label fx:id="instructAtout" layoutX="228.0" layoutY="31.0" prefHeight="19.0" prefWidth="275.0" text="Choisissez une couleur ou passez" textFill="WHITE" visible="false">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="animationCard" fitHeight="86.0" fitWidth="58.0" layoutX="103.0" layoutY="118.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="resString" alignment="CENTER" layoutX="215.0" layoutY="23.0" prefHeight="17.0" prefWidth="237.0" />
+            <Button fx:id="restart" disable="true" layoutX="307.0" layoutY="131.0" mnemonicParsing="false" onAction="#startHandler" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #ffcd76;" text="restart" visible="false" />
+            <Button fx:id="quit" disable="true" layoutX="307.0" layoutY="185.0" mnemonicParsing="false" onAction="#quitHandler" prefHeight="25.0" prefWidth="50.0" style="-fx-background-color: #ff734A;" text="quit" visible="false" />
+         </children>
+      </Pane>
+   </center>
+   <left>
+      <VBox alignment="CENTER" prefHeight="551.0" prefWidth="166.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="j2" text="J2" visible="false" />
+            <GridPane prefHeight="445.0" prefWidth="100.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button fx:id="j21" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" />
+                  <Button fx:id="j22" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.rowIndex="1" />
+                  <Button fx:id="j23" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.rowIndex="2" />
+                  <Button fx:id="j24" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.rowIndex="3" />
+                  <Button fx:id="j25" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.columnIndex="1" />
+                  <Button fx:id="j26" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Button fx:id="j27" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Button fx:id="j28" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
+   </left>
+   <right>
+      <VBox alignment="CENTER" prefHeight="600.0" prefWidth="166.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="j4" text="J4" visible="false" />
+            <GridPane prefHeight="466.0" prefWidth="166.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button fx:id="j41" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" />
+                  <Button fx:id="j42" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.rowIndex="1" />
+                  <Button fx:id="j43" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.rowIndex="2" />
+                  <Button fx:id="j44" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.rowIndex="3" />
+                  <Button fx:id="j45" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.columnIndex="1" />
+                  <Button fx:id="j46" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Button fx:id="j47" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Button fx:id="j48" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
+   </right>
+   <top>
+      <HBox alignment="CENTER_RIGHT" prefHeight="215.0" prefWidth="1000.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="j3" prefHeight="25.0" prefWidth="21.0" text="J3" visible="false" />
+            <GridPane alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="326.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="114.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.0" minWidth="10.0" prefWidth="115.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.0" minWidth="10.0" prefWidth="115.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.0" minWidth="10.0" prefWidth="115.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button fx:id="j31" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" />
+                  <Button fx:id="j32" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.columnIndex="1" />
+                  <Button fx:id="j33" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.columnIndex="2" />
+                  <Button fx:id="j34" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.columnIndex="3" />
+                  <Button fx:id="j35" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.rowIndex="1" />
+                  <Button fx:id="j36" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Button fx:id="j37" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Button fx:id="j38" mnemonicParsing="false" onAction="#imageClickHandler" prefHeight="90.0" prefWidth="57.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </GridPane>
+            <Pane prefHeight="215.0" prefWidth="109.0" />
+            <GridPane prefHeight="176.0" prefWidth="192.0" HBox.hgrow="NEVER">
+              <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets bottom="60.0" top="60.0" />
+               </HBox.margin>
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" text="J1 &amp; J3" GridPane.columnIndex="1" />
+                  <Label contentDisplay="CENTER" text="J2 &amp; J4" GridPane.columnIndex="2" />
+                  <Label contentDisplay="CENTER" text="points" GridPane.rowIndex="1" />
+                  <Label fx:id="score1" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="score2" text="0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+         </children>
+      </HBox>
+   </top>
+</BorderPane>
