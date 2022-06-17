@@ -16,6 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -92,6 +93,7 @@ public class BeloteController {
 	@FXML Button quit;
 	@FXML Label resString;
 	@FXML Button restart;
+	@FXML RadioButton cacheCarte;
 	
 
 	@FXML Label instructAtout;
@@ -171,7 +173,14 @@ public class BeloteController {
 		Carte playedCard = buttonCardMap.get(clickedCard);
 			
 		if(idCurrentPlayer==currentPlayer.id && clickedCard.getGraphic()!=null && currentPlayer.isLegalMove(playedCard) && atout!=null) {
-
+			if(cacheCarte.isSelected()) {
+				Image img = getImageFromCard(playedCard);
+				ImageView imgV = new ImageView(img);
+				imgV.setFitHeight(90);
+				imgV.setFitWidth(58);
+				clickedCard.setGraphic(imgV);
+				//hideCards();
+			}
 			//Tentative d'animation non fructueuse
 			//Image img = getImageFromCard(playedCard);
 			//animationCard.setImage(img);
@@ -240,7 +249,8 @@ public class BeloteController {
 		System.out.println("nb de plis = " + Table.mancheCourante.getNbPlis());
 		
 		//calcul des points de la manche et attribution
-		endManche(Table.mancheCourante);	
+		endManche(Table.mancheCourante);
+		System.out.println(cartesJouees);
 	}
 
 	/**
@@ -266,6 +276,7 @@ public class BeloteController {
 			Table.joueur1.printMain();
 			initBoardCards();
 			setBoardCards();
+			displayCards();
 			carteAChoisir.setImage(getImageFromCard(topDeck));
 			j1.setVisible(true);
 			j2.setVisible(true);
@@ -317,7 +328,10 @@ public class BeloteController {
 		Table.atout = atout;
 		Table.distribuerReste(currentPlayer);
 		setBoardCards();
-		
+		displayCards();
+		if(cacheCarte.isSelected()) {
+			hideCards();
+		}
 		System.out.println(buttonCardMap);
 		try {
 			Table.mancheCourante= new Manche(firstPlayer.id, currentPlayer.clone().id);
@@ -338,7 +352,6 @@ public class BeloteController {
 	 */
 	public void passerHandler(ActionEvent evt) {
 		nbTour++;
-		System.out.println(nbTour);
 		if(nbTour>=4 && atout==null) {
 			color1.setDisable(false); color2.setDisable(false); color3.setDisable(false);
 			instructAtout.setVisible(true);
@@ -382,7 +395,6 @@ public class BeloteController {
 		color1.setDisable(false); color1.setVisible(false);
 		color2.setDisable(false); color2.setVisible(false);
 		color3.setDisable(false); color3.setVisible(false);
-		System.out.println("Atout = " + atout);
 		displayAtout(colorStr);
 
 		prendreAtout.setDisable(true);
@@ -414,12 +426,26 @@ public class BeloteController {
 		}
 		Table.distribuerReste(currentPlayer);
 		setBoardCards();
+		displayCards();
+		if(cacheCarte.isSelected()) {
+			hideCards();
+		}
 		try {
 			Table.mancheCourante= new Manche(firstPlayer.id, currentPlayer.clone().id);
 			currentPli = new Pli(firstPlayer.id);
 			Table.mancheCourante.plis[Table.mancheCourante.getNbPlis()] = currentPli;
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void radioBtnHandler(ActionEvent event) {
+		RadioButton btn = (RadioButton) event.getTarget();
+		if(btn.isSelected()) {
+			hideCards();
+		}
+		else {
+			displayCards();
 		}
 	}
 	
@@ -439,9 +465,25 @@ public class BeloteController {
 	 *******************************************************************************/
 
 	/**
-	 * Affiche toutes les cartes des joueurs face decouverte
+	 * Met a jour les structures de donnees contenant les cartes
 	 */
 	private void setBoardCards() {
+		for(int i=0 ; i<Table.joueur1.main.size(); i++) {
+			p1Cards[i].setDisable(false);
+			p2Cards[i].setDisable(false);
+			p3Cards[i].setDisable(false);
+			p4Cards[i].setDisable(false);
+			buttonCardMap.put(p1Cards[i],Table.joueur1.main.get(i));
+			buttonCardMap.put(p2Cards[i],Table.joueur2.main.get(i));
+			buttonCardMap.put(p3Cards[i],Table.joueur3.main.get(i));
+			buttonCardMap.put(p4Cards[i],Table.joueur4.main.get(i));
+		}
+	}
+	
+	/**
+	 * Affiche toutes les cartes des joueurs face decouverte
+	 */
+	private void displayCards() {
 		for(int i=0 ; i<Table.joueur1.main.size(); i++) {
 			Image img1 = getImageFromCard(Table.joueur1.main.get(i));
 			ImageView imgV1 = new ImageView(img1);
@@ -459,14 +501,14 @@ public class BeloteController {
 			imgV3.setFitHeight(90);
 			imgV4.setFitWidth(58);
 			imgV4.setFitHeight(90);
-			p1Cards[i].setGraphic(imgV1); p1Cards[i].setDisable(false);
-			p2Cards[i].setGraphic(imgV2); p2Cards[i].setDisable(false);
-			p3Cards[i].setGraphic(imgV3); p3Cards[i].setDisable(false);
-			p4Cards[i].setGraphic(imgV4); p4Cards[i].setDisable(false);
-			buttonCardMap.put(p1Cards[i],Table.joueur1.main.get(i));
-			buttonCardMap.put(p2Cards[i],Table.joueur2.main.get(i));
-			buttonCardMap.put(p3Cards[i],Table.joueur3.main.get(i));
-			buttonCardMap.put(p4Cards[i],Table.joueur4.main.get(i));
+			if(!p1Cards[i].isDisable())
+				p1Cards[i].setGraphic(imgV1); 
+			if(!p2Cards[i].isDisable())
+				p2Cards[i].setGraphic(imgV2); 
+			if(!p3Cards[i].isDisable())
+				p3Cards[i].setGraphic(imgV3);
+			if(!p4Cards[i].isDisable())
+				p4Cards[i].setGraphic(imgV4);
 		}
 	}
 
@@ -656,6 +698,36 @@ public class BeloteController {
 	}
 	
 	/**
+	 * Affiche le dos des cartes
+	 */
+	private void hideCards() {
+		for(int i=0 ; i<Table.joueur1.main.size(); i++) {
+			Image p1Card = getImageFromCard(Table.joueur1.main.get(i)); //image pour le joueur1 non cache
+			ImageView p1CardView = new ImageView(p1Card);				//seul joueur non caché
+			
+			Image img = CARDS[CARDS.length-1];
+			ImageView imgV1 = new ImageView(img);
+			ImageView imgV2 = new ImageView(img);
+			ImageView imgV3 = new ImageView(img);
+			p1CardView.setFitWidth(58);
+			p1CardView.setFitHeight(90);
+			imgV1.setFitWidth(58);
+			imgV1.setFitHeight(90);
+			imgV2.setFitWidth(58);
+			imgV2.setFitHeight(90);
+			imgV3.setFitWidth(58);
+			imgV3.setFitHeight(90);
+			p1Cards[i].setGraphic(p1CardView); //mettre a jour le joueur car il n'est pas cache
+			if(!p2Cards[i].isDisable())
+				p2Cards[i].setGraphic(imgV1);
+			if(!p3Cards[i].isDisable())
+				p3Cards[i].setGraphic(imgV2);
+			if(!p4Cards[i].isDisable())
+				p4Cards[i].setGraphic(imgV3);
+		}
+	}
+	
+	/**
 	 * Animation d'une carte quand elle est jouee (ne fonctionne pas encore)
 	 * @param img l'image qui sera animee a l'ecran
 	 * @param btn bouton que le joueur courant vient de presser pour jouer une carte
@@ -665,7 +737,6 @@ public class BeloteController {
 		double centerX = 0;
 		double centerY = 0;
 		int currentID = getPlayerFromBtn(btn);
-		System.out.println(currentID + " = joueur from bouton");
 		Bounds boundInScene = btn.localToScene(btn.getBoundsInLocal());
 		double cardX = boundInScene.getCenterX();
 		double cardY = boundInScene.getCenterY();
@@ -816,6 +887,10 @@ public class BeloteController {
 		topDeck = Table.distribuer();
 		carteAChoisir.setImage(getImageFromCard(topDeck));
 		setBoardCards();
+		if(cacheCarte.isSelected())
+			hideCards();
+		else
+			displayCards();
 	}
 
 	/**

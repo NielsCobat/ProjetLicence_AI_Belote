@@ -83,16 +83,16 @@ public class Table {
 	 */
 	public static void coupe() {
 		// on demande au joueur courant où il souhaite couper
-		System.out.println();
-		Scanner scanner = scannerInt;
-		System.out.println(
-				"Joueur " + joueurCourant.id + ", où souhaitez-vous couper? Donnez l'indice de la carte (De 3 à 28). ");
-		int index = scanner.nextInt();
+		//System.out.println();
+		//Scanner scanner = scannerInt;
+		//System.out.println(
+		//		"Joueur " + joueurCourant.id + ", où souhaitez-vous couper? Donnez l'indice de la carte (De 3 à 28). ");
+		int index = (int) (Math.random() * (28 - 3 + 1) + 3);/*scanner.nextInt();
 
 		while (index < 3 || index > 28) {
 			System.out.println("Choisissez un nombre valide svp ( entre 3 et 28 inclus). ");
 			index = scanner.nextInt();
-		}
+		}*/
 
 		// on divise le paquet de cartes
 		ArrayList<Carte> head = new ArrayList<Carte>();
