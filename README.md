@@ -10,9 +10,13 @@ Dans ce projet, nous visons à développer une application de belotte à 4 joueu
 Une partie complète de belote est jouable, c'est-à-dire deux équipes de deux joueurs (et/ou IA) s'afrontent et tentent d'arriver à 501 points en premier en remportant le plus de manches. Vous trouverez ici les règles complètes de la belote : https://www.belote.com/regles-et-variantes/les-regles-de-la-belote-classique/
 Pour jouer ces parties, une interface graphique (présentée plus en détail dans IHM.md) permet d'interagir avec les différents éléments de l'application.
 
-Il est également possible d'entrainer l'IA de réseau neuronal et de sauvegarder les résultats de cet entrainement dans un fichier, pour ensuite utiliser ce fichier afin de créer les IAs du jeu avec ces résultats.
+Il est également possible d'entrainer l'IA de réseau neuronal via un système de génération et de reproduction des meilleurs éléments de chaque génération.
 
 ## Fonctionnalités à développer
+
+De nombreux bugs restent dans le code de l'entrainement, qui sont à fixer.
+
+Par manque de temps, nous n'avons pas pu gérer la sauvegarde des résultats de l'entrainement dans un fichier, pour ensuite utiliser ce fichier afin de créer les IAs du jeu avec ces résultats.
 
 L'entrainement de l'IA est pour l'instant très demandant en ressources (temps et mémoire vive), il sertait donc intéressant à l'avenir de revoir une grande partie du code pour l'optimiser.
 
