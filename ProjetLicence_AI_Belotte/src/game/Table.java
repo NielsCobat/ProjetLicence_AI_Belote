@@ -13,7 +13,7 @@ import assets.Valeur;
 
 public class Table {
 
-	private final static int scoreToWin = 501;
+	public final static int scoreToWin = 501;
 
 	public static Joueur joueur1;
 	public static Joueur joueur2;
@@ -81,7 +81,7 @@ public class Table {
 	 * Demande au joueur courant à quelle carte il souhaite couper Coupe Le joueur
 	 * courant devient le joueur suivant
 	 */
-	static void coupe() {
+	public static void coupe() {
 		// on demande au joueur courant où il souhaite couper
 		System.out.println();
 		Scanner scanner = scannerInt;
@@ -136,7 +136,7 @@ public class Table {
 	 * 
 	 * @return la carte au dessus du paquet pour choix de l'atout
 	 */
-	static Carte distribuer() {
+	public static Carte distribuer() {
 		// int indiceCourantEnsCartes = 0;
 		for (int i = 0; i <= 7; i++) {
 			// commence distribution par le joueur suivant
@@ -204,7 +204,7 @@ public class Table {
 	 * 
 	 * @param peneur joueur qui se voit distribue deux cartes
 	 */
-	static void distribuerReste(Joueur preneur) {
+	public static void distribuerReste(Joueur preneur) {
 		// indice 21 car 4*5 cartes distribuees + 1
 		// int indiceCourantEnsCartes = 21;
 		for (int i = 0; i < 4; i++) {
@@ -263,7 +263,7 @@ public class Table {
 	/**
 	 * @return joueur suivant le joueur courant
 	 */
-	static Joueur joueurSuivant() {
+	public static Joueur joueurSuivant() {
 		int idCourant = joueurCourant.id;
 		if (idCourant == 1)
 			return joueur2;

@@ -72,7 +72,7 @@ public class Joueur {
 	 * @param carte La carte dont on s'interroge sur la légalité
 	 * @return true si le coup est légal, false sinon.
 	 */
-	protected boolean isLegalMove(Carte carte) {
+	public boolean isLegalMove(Carte carte) {
 		Manche manche = Table.mancheCourante;
 		Pli pli = manche.getPli(manche.getNbPlis());
 
@@ -283,7 +283,7 @@ public class Joueur {
 	 * 
 	 * @param carte La carte prise
 	 */
-	void prend(Carte carte) {
+	public void prend(Carte carte) {
 		this.main.add(carte);
 	}
 

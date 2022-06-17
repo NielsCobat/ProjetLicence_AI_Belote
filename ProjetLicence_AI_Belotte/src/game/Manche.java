@@ -8,9 +8,12 @@ import assets.Couleur;
 
 public class Manche {
 
-	private Pli[] plis;
-	private int idPremierJoueur, equipePreneur, nbPlis;
-	private int[] pointsEquipe, belotte;
+	public Pli[] plis;
+	private int idPremierJoueur;
+	public int equipePreneur;
+	private int nbPlis;
+	public int[] pointsEquipe;
+	public int[] belotte;
 
 	// variables pour l'entrainement
 	public NeuralNetwork j1, j2, j3, j4;
@@ -868,6 +871,10 @@ public class Manche {
 	 */
 	public int getNbPlis() {
 		return nbPlis;
+	}
+	
+	public void addPli() {
+		nbPlis++;
 	}
 
 	/**
