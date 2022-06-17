@@ -24,6 +24,10 @@ L'entrainement de l'IA est pour l'instant très demandant en ressources (temps e
 
 Pour la partie graphique, nous utilisions la librairie javaFX de java. Pour le jeu en lui-même et l'entrainement, nous n'utilisons aucune librairie, et avons tout codé nous même. Par ailleurs nous n'utilisions pas de base de données pour entrainer l'IA. Ces deux derniers points sont probablement la source de nos difficultés à coder et entrainer l'IA. Cette dernière utilise un réseau neuronal codé grâce à des matrices plutôt que des classes objets, ce qui est plus complexe mais plus optimisé. Cette classe Matrix.java que nous utilisons a été codé par Suyash Sonawane.
 
+## Vidéo démonstrative
+
+https://youtu.be/5goI6FeBo7Q
+
 ## Licence du projet
 
 Ce projet est sous licence Creative Commons Attribution 4.0 International License, c'est-à-dire que vous pouvez copier, utiliser, présenter, modifier ce travail mais pour des raisons non-commerciales seulement. Plus d'informations sur https://creativecommons.org/licenses/by-nc/4.0/legalcode.fr
