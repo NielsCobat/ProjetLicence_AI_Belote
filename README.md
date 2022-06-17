@@ -25,7 +25,7 @@ IHM :
  - créer plusieurs scènes pour les différentes étapes (accueil, jeu, fin)
  - mettre en évidence les coups légaux du joueur courant
  - développer un menu pour le choix des adversaires robots ou non
- - mettre en lien les coups
+ - mettre en lien les coups de l'ia et l'interface graphique
 
 ## Technologies utilisées
 
