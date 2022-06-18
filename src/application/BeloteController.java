@@ -172,7 +172,7 @@ public class BeloteController {
 		int idCurrentPlayer = getPlayerFromBtn(clickedCard);
 		Carte playedCard = buttonCardMap.get(clickedCard);
 			
-		if(idCurrentPlayer==currentPlayer.id && clickedCard.getGraphic()!=null && currentPlayer.isLegalMove(playedCard) && atout!=null) {
+		if(idCurrentPlayer==currentPlayer.id && clickedCard.getGraphic()!=null && Table.joueurCourant.isLegalMove(playedCard) && atout!=null) {
 			if(cacheCarte.isSelected()) {
 				Image img = getImageFromCard(playedCard);
 				ImageView imgV = new ImageView(img);
@@ -224,7 +224,7 @@ public class BeloteController {
 				score1.setText(scoreTeam1);
 				score2.setText(scoreTeam2);
 				
-				if(Table.mancheCourante.getNbPlis() == 8) {
+				if(Table.mancheCourante.getNbPlis() == 8 && Table.equipe1.getScore()<Table.scoreToWin && Table.equipe2.getScore()<Table.scoreToWin) {
 					restartManche();
 					prendreAtout.setDisable(false);
 					for (int i=0 ; i<p1Cards.length ; i++) {
@@ -242,7 +242,8 @@ public class BeloteController {
 					highlightCurrPlayer(Table.joueurCourant);
 					System.out.println("ID joueur Gagnant : " + idLastWinner + "  id courant = " + Table.joueurCourant.id);
 					currentPli = new Pli(idLastWinner);
-					Table.mancheCourante.plis[Table.mancheCourante.getNbPlis()] = currentPli;
+					if(Table.mancheCourante.getNbPlis()<8)
+						Table.mancheCourante.plis[Table.mancheCourante.getNbPlis()] = currentPli;
 				}
 			}
 		}
@@ -250,7 +251,6 @@ public class BeloteController {
 		
 		//calcul des points de la manche et attribution
 		endManche(Table.mancheCourante);
-		System.out.println(cartesJouees);
 	}
 
 	/**
@@ -327,12 +327,6 @@ public class BeloteController {
 		}
 		Table.atout = atout;
 		Table.distribuerReste(currentPlayer);
-		setBoardCards();
-		displayCards();
-		if(cacheCarte.isSelected()) {
-			hideCards();
-		}
-		System.out.println(buttonCardMap);
 		try {
 			Table.mancheCourante= new Manche(firstPlayer.id, currentPlayer.clone().id);
 			currentPli = new Pli(firstPlayer.id);
@@ -344,6 +338,12 @@ public class BeloteController {
 		Table.joueurCourant = firstPlayer;
 		highlightCurrPlayer(currentPlayer);
 		displayAtout(String.valueOf(atout));
+		setBoardCards();
+		displayCards();
+		if(cacheCarte.isSelected()) {
+			hideCards();
+		}
+		System.out.println(buttonCardMap);
 	}
 
 	/**
@@ -373,6 +373,8 @@ public class BeloteController {
 			passer.setDisable(false);
 			prendreAtout.setDisable(false);
 		}
+
+		System.out.println(buttonCardMap);
 	}
 
 	/**
@@ -841,15 +843,19 @@ public class BeloteController {
 				quit.setVisible(true);
 				quit.setDisable(false);
 				if(Table.equipe1.getScore()>Table.equipe2.getScore()) {
+					resString.setVisible(true);
 					resString.setText("J1 et J3 remportent la partie");
 					
 				}
 				else if(Table.equipe1.getScore()<Table.equipe2.getScore()) {
+					resString.setVisible(true);
 					resString.setText("J2 et J4 remportent la partie");
 					
 				}
-				else
+				else {
+					resString.setVisible(true);
 					resString.setText("égalité");
+				}
 			}
 		}
 	}
@@ -876,7 +882,10 @@ public class BeloteController {
 		Table.joueur2.main.clear();
 		Table.joueur3.main.clear();
 		Table.joueur4.main.clear();
-		
+		System.out.println(Table.joueur1.main.size());
+		System.out.println(Table.joueur2.main.size());
+		System.out.println(Table.joueur3.main.size());
+		System.out.println(Table.joueur4.main.size());
 		
 		firstPlayer = Table.joueurSuivant().clone();
 		Table.joueurCourant= firstPlayer; //a revoir
@@ -884,13 +893,17 @@ public class BeloteController {
 		initBoardCards();
 		hideColorToChoose();
 		Table.coupe();
-		topDeck = Table.distribuer();
+		topDeck = Table.distribuer(); 
 		carteAChoisir.setImage(getImageFromCard(topDeck));
 		setBoardCards();
 		if(cacheCarte.isSelected())
 			hideCards();
 		else
 			displayCards();
+		System.out.println(Table.joueur1.main.size());
+		System.out.println(Table.joueur2.main.size());
+		System.out.println(Table.joueur3.main.size());
+		System.out.println(Table.joueur4.main.size());
 	}
 
 	/**
