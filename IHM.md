@@ -18,5 +18,4 @@ Quand un tour de table est réalisé sans que personne n'est pris l'atout, un de
 
 Quand une manche se termine est qu'une des deux équipes a atteint le nombre de points nécessaires pour gagner alors deux boutons apparaissent. Le bouton restart qui a le même effet que le bouton start, c'est-à-dire qu'il reinitialise les mains des joueurs, l'atout revient à null et les joueurs doivent choisir de prendre ou de passer. Le deuxième bouton est le bouton quit, qui ferme tout simplement la fenêtre d'exécution et arrête le programme.
 
-
 <img src="https://github.com/NielsCobat/ProjetLicence_AI_Belotte/blob/master/docs/end.gif" width="500" height="500"/>
